@@ -9,7 +9,7 @@ const useStyles = makeStyles(() => ({
     },
     container: {
         height: (props: any) => `calc(100vh - ${props.headerHeight}px)`,
-        overflow:'auto'
+        overflow: 'auto'
     },
 
 }))
@@ -20,7 +20,10 @@ const Layout: FC = ({children}) => {
     return (
         <Box className={classes.root}>
             <Header height={headerHeight}/>
-            <Container className={classes.container} maxWidth={'lg'} children={children!}/>
+            <Box className={classes.container}>
+                <Container maxWidth={'lg'} children={children!}/>
+                <Box style={{height: 50, background: 'orange'}}>FOOOOTERR</Box>
+            </Box>
         </Box>
     );
 }

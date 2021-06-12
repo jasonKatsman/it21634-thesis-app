@@ -7,7 +7,8 @@ const useStyles = makeStyles(() => ({
     root: {
         height: (props: any) => props.height,
         display: 'flex',
-        background: 'lightblue'
+        background: 'lightblue',
+        padding: '0 16px'
     },
     rightLinks: {
         display: 'flex',

@@ -1,11 +1,11 @@
 import axios from 'axios'
 
-const URL = '';
+const URL = 'https://cors-anywhere.herokuapp.com/https://ghoapi.azureedge.net/api/';
 
 const axiosInstance = axios.create({
     baseURL: URL
 })
 
-const get = (url: string, params?: any) => {
+export const get = (url: string, params?: any): Promise<any> => {
     return axiosInstance.get(url, params);
 }

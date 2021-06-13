@@ -5,7 +5,7 @@ import Footer from "./Footer";
 
 const useStyles = makeStyles(() => ({
     root: {
-        background: 'lightcoral'
+        background: 'white'
 
     },
     container: {

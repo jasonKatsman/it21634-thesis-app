@@ -46,9 +46,8 @@ const Header: FC<headerProps> = ({height = 60}) => {
             {smUp && <Grid container justify={'space-between'} alignItems={'center'}>
                 <NavLink to={'/'} className={classes.link} activeClassName={classes.activeLink}>HOME</NavLink>
                 <Box className={classes.rightLinks}>
-                    <NavLink to={'/csv'} className={classes.link} activeClassName={classes.activeLink}>
-                        ONLINE DATA
-                    </NavLink>
+                    <NavLink to={'/indicators'} className={classes.link} activeClassName={classes.activeLink}>
+                        Indicators </NavLink>
                     <NavLink to={'/more'} className={classes.link} activeClassName={classes.activeLink}> ADD YOUR CSV
                     </NavLink>
                 </Box>

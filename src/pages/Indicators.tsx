@@ -1,6 +1,7 @@
 import React, {FC, useEffect, useState} from 'react';
-import {Box, Input, List, ListItem, Checkbox, ListItemText, makeStyles} from "@material-ui/core";
-import Dimensions from '../Dummy/DimensionsDummy.json'
+import {Box, Input, List, ListItem, ListItemText, makeStyles} from "@material-ui/core";
+import IndicatorDummy from '../Dummy/IndicatorsDummy.json'
+import {useHistory} from "react-router";
 
 const useStyles = makeStyles(() => ({
     list: {
@@ -15,18 +16,16 @@ const useStyles = makeStyles(() => ({
     }
 }))
 
-const Home: FC = () => {
+const Indicators: FC = () => {
     const classes = useStyles();
-    const [selectedDimension, setSelectedDimension] = useState('')
     const [search, setSearch] = useState('')
-    const [dimensions, setDimensions] = useState<{ Code: string, Title: string }[]>([])
+    const history = useHistory()
+    const [indicators, setIndicators] = useState<{ IndicatorCode: string, IndicatorName: string, Language: string }[]>([])
     useEffect(() => {
         const getData = async () => {
             try {
-                const res = Dimensions
-                setDimensions(res.value)
-                //const res = await getDimensions()
-                console.log(res.value)
+                const res = IndicatorDummy
+                setIndicators(res.value)
             } catch (e) {
                 console.log(e)
             }
@@ -35,14 +34,13 @@ const Home: FC = () => {
 
     }, [])
     const prepareDimensionItems = () => {
-        return dimensions.filter(item => item.Title.toLowerCase().includes(search.toLowerCase()))
+        return indicators.filter(item => item.IndicatorName.toLowerCase().includes(search.toLowerCase()))
             .map((item, i) => {
-                return <ListItem button={true} focusRipple={true} key={i}
-                                 onClick={() => setSelectedDimension(item.Code)}
+                return <ListItem button={true} focusRipple={true}
+                                 onClick={() => history.push(`/data/${item.IndicatorCode}`)} key={i}
                                  className={classes.listItem}>
-
-                    <Checkbox checked={item.Code === selectedDimension}/>
-                    <ListItemText primary={item.Title} secondary={item.Code}/>
+                    <ListItemText primary={item.IndicatorName}
+                                  secondary={`LANG:${item.Language} - ${item.IndicatorCode}`}/>
                 </ListItem>
             })
     }
@@ -58,4 +56,4 @@ const Home: FC = () => {
     );
 }
 
-export default Home;
+export default Indicators;

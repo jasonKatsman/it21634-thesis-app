@@ -1,6 +1,7 @@
 import React, {FC} from 'react';
 import {Box, Container, makeStyles} from "@material-ui/core";
 import Header from "./Header";
+import Footer from "./Footer";
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -11,18 +12,21 @@ const useStyles = makeStyles(() => ({
         height: (props: any) => `calc(100vh - ${props.headerHeight}px)`,
         overflow: 'auto'
     },
+    childContainer: {
+        minHeight: (props: any) => `calc(100% - ${props.footerHeight}px)`,
+    }
 
 }))
 const headerHeight = 60
-
+const footerHeight = 90
 const Layout: FC = ({children}) => {
-    const classes = useStyles({headerHeight});
+    const classes = useStyles({headerHeight, footerHeight});
     return (
         <Box className={classes.root}>
             <Header height={headerHeight}/>
             <Box className={classes.container}>
-                <Container maxWidth={'lg'} children={children!}/>
-                <Box style={{height: 50, background: 'orange'}}>FOOOOTERR</Box>
+                <Container maxWidth={'lg'} className={classes.childContainer} children={children!}/>
+                <Footer height={footerHeight}/>
             </Box>
         </Box>
     );

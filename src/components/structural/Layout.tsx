@@ -25,7 +25,7 @@ const Layout: FC = ({children}) => {
         <Box className={classes.root}>
             <Header height={headerHeight}/>
             <Box className={classes.container}>
-                <Container maxWidth={'lg'} className={classes.childContainer} children={children!}/>
+                <Container maxWidth={'xl'} className={classes.childContainer} children={children!}/>
                 <Footer height={footerHeight}/>
             </Box>
         </Box>

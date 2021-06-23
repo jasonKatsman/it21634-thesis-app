@@ -1,13 +1,11 @@
 import React, {FC, useEffect, useState} from 'react';
-import {Box, Grid, Input, List, ListItem, ListItemText, makeStyles, Select, Typography} from "@material-ui/core";
+import {Box, Grid, List, ListItem, ListItemText, makeStyles, Typography} from "@material-ui/core";
 import {useParams} from "react-router";
 import DataDummy from '../Dummy/DataDummy.json'
 import DataChoices from '../Dummy/DataChoices.json'
-import VegaComponent from "../components/vega/VegaComponent";
-import VegaComponent2 from "../components/vega/VegaComponent2";
 import DropComponent from "../components/common/DropComponent";
-import MyVega from "../components/vega/MyVega";
 import VegaLiteComponent from "../components/vega/VegaLiteComponent";
+import {vegaFieldType} from "../Types/VegaFieldType";
 
 const useStyles = makeStyles(() => ({
     list: {
@@ -63,10 +61,19 @@ const DataPage: FC = () => {
         mark: 'bar',
     })
     const [dataValues, setDataValues] = useState<dataType[]>([])
-    const [selectedFields, setSelectedFields] = useState<{
-        x: string, y: string, xType: string, yType: string
-    }>
-    ({x: '', y: '', xType: '', yType: ''})
+
+    const [xAxis, setXAxis] = useState<vegaFieldType>({
+        aggregate: 'average',
+        field: '',
+        type: '',
+        title: ''
+    })
+    const [yAxis, setYAxis] = useState<vegaFieldType>({
+        field: '',
+        type: '',
+        title: ''
+
+    })
 
     const onSimpleStylesChange = (e: React.ChangeEvent<HTMLInputElement & HTMLSelectElement>) => {
         setSimpleStyles({...simpleStyles, [e.target.name]: e.target.value})
@@ -163,10 +170,10 @@ const DataPage: FC = () => {
                         </Grid>
                     </Grid>
                     <Grid item xs={12}>
-                        {!selectedFields.x && !selectedFields.y ?
+                        {!xAxis.field && !yAxis.field ?
                             <Typography>Please put X and Y axis Fields</Typography> :
                             <VegaLiteComponent basicStyling={simpleStyles} data={dataValues}
-                                               selectedFields={selectedFields}/>
+                                               xAxis={xAxis} yAxis={yAxis}/>
                             // <MyVega fieldData={dataValues} selectedFields={selectedFields}/>
                             // <VegaComponent2 data={dataValues} selectedFields={selectedFields}/>
                         }
@@ -179,9 +186,12 @@ const DataPage: FC = () => {
                         onDrop={(event) => {
                             event.preventDefault()
                             let data = event.dataTransfer.getData("text");
-                            setSelectedFields({...selectedFields, x: data, xType: 'quantitative'})
+                            setXAxis({...xAxis, field: data, title: data, type: 'quantitative'})
                         }}
-                        value={selectedFields.x}
+                        onInputChange={(e: React.ChangeEvent<HTMLInputElement & HTMLSelectElement>) => {
+                            setXAxis({...xAxis, [e.target.name]: e.target.value})
+                        }}
+                        value={xAxis}
                     />
 
                     <DropComponent
@@ -190,9 +200,12 @@ const DataPage: FC = () => {
                         onDrop={(event) => {
                             event.preventDefault()
                             let data = event.dataTransfer.getData("text");
-                            setSelectedFields({...selectedFields, y: data, yType: 'nominal'})
+                            setYAxis({...yAxis, field: data, title: data, type: 'nominal'})
                         }}
-                        value={selectedFields.y}
+                        value={yAxis}
+                        onInputChange={(e: React.ChangeEvent<HTMLInputElement & HTMLSelectElement>) => {
+                            setYAxis({...yAxis, [e.target.name]: e.target.value})
+                        }}
                     />
 
 

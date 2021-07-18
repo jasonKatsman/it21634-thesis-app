@@ -5,7 +5,7 @@ import DataDummy from '../Dummy/DataDummy.json'
 import DataChoices from '../Dummy/DataChoices.json'
 import DropComponent from "../components/common/DropComponent";
 import VegaLiteComponent from "../components/vega/VegaLiteComponent";
-import {vegaFieldType} from "../Types/VegaFieldType";
+import {vegaEncodingType, vegaFieldType} from "../Types/VegaFieldType";
 
 const useStyles = makeStyles(() => ({
     list: {
@@ -58,26 +58,45 @@ const DataPage: FC = () => {
         width: 200,
         height: 200,
         background: 'white',
-        mark: 'bar',
+        mark: 'point',
     })
     const [dataValues, setDataValues] = useState<dataType[]>([])
 
     const [xAxis, setXAxis] = useState<vegaFieldType>({
-        aggregate: 'average',
+        aggregate: '',
         field: '',
         type: '',
-        title: ''
+        title: '',
+        bin: false
+    })
+    const [encodingContent, setEncodingContent] = useState<vegaEncodingType>({
+        size: {
+            value: '30',
+        },
+        opacity: {
+            value: '0.4',
+        },
+        color: {
+            value: 'blue',
+        },
     })
     const [yAxis, setYAxis] = useState<vegaFieldType>({
+        aggregate: '',
         field: '',
         type: '',
-        title: ''
-
+        title: '',
+        bin: false
     })
 
     const onSimpleStylesChange = (e: React.ChangeEvent<HTMLInputElement & HTMLSelectElement>) => {
         setSimpleStyles({...simpleStyles, [e.target.name]: e.target.value})
     }
+    const onEncodingChange = (e: React.ChangeEvent<HTMLInputElement & HTMLSelectElement>) => {
+        console.log(e.target.value)
+        const value = {value: e.target.value}
+        setEncodingContent({...encodingContent, [e.target.name]: value})
+    }
+    console.log(encodingContent)
 
     useEffect(() => {
         const getData = async () => {
@@ -150,21 +169,24 @@ const DataPage: FC = () => {
                                    onChange={onSimpleStylesChange}/>
                         </Grid>
                         <Grid item>
+                            <Typography variant={'subtitle1'}>color</Typography>
+                            <input placeholder={'choose color'} value={encodingContent.color?.value}
+                                   name={'color'}
+                                   type="color"
+                                   onChange={onEncodingChange}/>
+                        </Grid>
+
+                        <Grid item>
                             <Typography variant={'subtitle1'}>Mark Type</Typography>
 
                             <select id="mark" value={simpleStyles.mark} name="mark" onChange={onSimpleStylesChange}>
-                                <option value="rect">rect</option>
-                                <option value="trail">trail</option>
-                                <option value="arc">arc</option>
-                                <option value="area">area</option>
-                                <option value="image">image</option>
-                                <option value="group">group</option>
+                                <option value="bar">bar</option>
                                 <option value="line">line</option>
-                                <option value="path">path</option>
-
-                                <option value="rule">rule</option>
-                                <option value="shape">shape</option>
-                                <option value="symbol">symbol</option>
+                                <option value="circle">circle</option>
+                                <option value="square">square</option>
+                                <option value="tick">tick</option>
+                                <option value="area">area</option>
+                                <option value="point">point</option>
                                 <option value="text">text</option>
                             </select>
                         </Grid>
@@ -173,7 +195,7 @@ const DataPage: FC = () => {
                         {!xAxis.field && !yAxis.field ?
                             <Typography>Please put X and Y axis Fields</Typography> :
                             <VegaLiteComponent basicStyling={simpleStyles} data={dataValues}
-                                               xAxis={xAxis} yAxis={yAxis}/>
+                                               xAxis={xAxis} yAxis={yAxis} encoding={encodingContent}/>
                             // <MyVega fieldData={dataValues} selectedFields={selectedFields}/>
                             // <VegaComponent2 data={dataValues} selectedFields={selectedFields}/>
                         }
@@ -192,6 +214,8 @@ const DataPage: FC = () => {
                             setXAxis({...xAxis, [e.target.name]: e.target.value})
                         }}
                         value={xAxis}
+                        setValue={setXAxis}
+
                     />
 
                     <DropComponent
@@ -206,6 +230,7 @@ const DataPage: FC = () => {
                         onInputChange={(e: React.ChangeEvent<HTMLInputElement & HTMLSelectElement>) => {
                             setYAxis({...yAxis, [e.target.name]: e.target.value})
                         }}
+                        setValue={setYAxis}
                     />
 
 

@@ -1,6 +1,5 @@
 import React, {FC, useEffect, useState} from 'react';
 import {makeStyles} from "@material-ui/core";
-import * as vegaLite from "vega-lite";
 import vegaEmbed from "vega-embed"
 import {vegaEncodingType, vegaFieldType} from "../../Types/VegaFieldType";
 
@@ -38,6 +37,7 @@ const VegaLiteComponent: FC<VegaComponentProps> = ({encoding, xAxis, yAxis, basi
             },
             ...basicStyling,
             encoding: {
+                ...encoding,
                 y: {
                     ...yAxis
                 },

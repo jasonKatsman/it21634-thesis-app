@@ -23,6 +23,8 @@ import aggregateOptions from "../../Dummy/aggregateOptions.json";
 import markOptions from "../../Dummy/markOptions.json";
 import CustomOption from "../common/CustomOption";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import FieldsTab from "./tabs/FieldsTab";
+import DetailsTab from "./tabs/DetailsTab";
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -194,96 +196,14 @@ const CreateDialog: FC = () => {
         setSelectedValue(e.target.value as string)
     }
 
-    const prepareFields = () => {
-        return coinFields.map((field, i) => {
-            return <ListItem
-                draggable
-                onDragStart={(ev: any) => {
-                    setCurrentDrag(true)
-                    ev.dataTransfer.setData("text", ev.target.id);
-                }}
-                onDragEnd={() => setCurrentDrag(false)}
-                button id={field} key={i}>
-                {field.replaceAll('_', ' ')}
-            </ListItem>
-        })
-    }
-
     const prepareTabs = () => {
         if (tabValue === 'fields') {
-            return <List className={`${classes.list}`}>
-                {prepareFields()}
-            </List>
+            return <FieldsTab currentDrag={currentDrag} setCurrentDrag={setCurrentDrag}/>
         }
         if (tabValue === 'details') {
-            return <Grid container>
-                <Grid item xs={12}>
-                    <Accordion>
-                        <AccordionSummary
-                            expandIcon={<ExpandMoreIcon/>}
-                            aria-controls="mark-content"
-                            id="mark-header"
-                        >
-                            <Typography>Mark options</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <SelectAggregate selectTitle={'Mark type'} value={simpleStyles.mark}
-                                             onChange={(e => setSimpleStyles({
-                                                 ...simpleStyles,
-                                                 mark: e.target.value as string
-                                             }))}>
-                                {markOptions.map((option) => <CustomOption
-                                    value={option.value}>{option.title}</CustomOption>)}
-                            </SelectAggregate>
-                        </AccordionDetails>
-                    </Accordion>
-                </Grid>
-                <Grid item xs={12}>
-                    <Accordion>
-                        <AccordionSummary
-                            expandIcon={<ExpandMoreIcon/>}
-                            aria-controls="mark-content"
-                            id="mark-header"
-                        >
-                            <Typography>Mark styles</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <SelectAggregate selectTitle={'Mark type'} value={simpleStyles.mark}
-                                             onChange={(e => setSimpleStyles({
-                                                 ...simpleStyles,
-                                                 mark: e.target.value as string
-                                             }))}>
-                                {markOptions.map((option) => <CustomOption
-                                    value={option.value}>{option.title}</CustomOption>)}
-                            </SelectAggregate>
-                        </AccordionDetails>
-                    </Accordion>
-                </Grid>
-                <Grid item xs={12}>
-                    <Accordion>
-                        <AccordionSummary
-                            expandIcon={<ExpandMoreIcon/>}
-                            aria-controls="sen-content"
-                            id="ts-header"
-                        >
-                            <Typography>Mark options</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <SelectAggregate selectTitle={'Mark type'} value={simpleStyles.mark}
-                                             onChange={(e => setSimpleStyles({
-                                                 ...simpleStyles,
-                                                 mark: e.target.value as string
-                                             }))}>
-                                {markOptions.map((option) => <CustomOption
-                                    value={option.value}>{option.title}</CustomOption>)}
-                            </SelectAggregate>
-                        </AccordionDetails>
-                    </Accordion>
-                </Grid>
-            </Grid>
+            return <DetailsTab simpleStyles={simpleStyles} setSimpleStyles={setSimpleStyles}/>
 
         }
-
     }
 
     const onDragOver = (e: any) => {
@@ -395,9 +315,13 @@ const CreateDialog: FC = () => {
                             </Grid>
                             <Grid item xs={9} className={classes.chartBox} container justify={'center'}
                                   alignItems={'center'}>
-                                <Box><VegaLiteComponent data={dummyCoin} xAxis={xAxis} yAxis={yAxis}
+                                <Box>
+
+                                    <VegaLiteComponent data={dummyCoin} xAxis={xAxis} yAxis={yAxis}
                                                         encoding={encodingContent}
-                                                        basicStyling={simpleStyles}/></Box>
+                                                        basicStyling={simpleStyles}/>
+
+                                </Box>
                                 {prepareChartArea()}
                             </Grid>
                         </Grid> :
@@ -405,14 +329,10 @@ const CreateDialog: FC = () => {
                             <Typography>No coin selected</Typography>
                         </Grid>}
                 </Box>
-
-
                 <Box className={classes.buttons}>
                     <Button>cancel</Button>
                     <Button variant={'outlined'} color={'primary'}>SAVE</Button>
                 </Box>
-
-
             </Box>
         </Box>
     );

@@ -10,15 +10,17 @@ const useStyles = makeStyles(() => ({
     },
     container: {
         height: (props: any) => `calc(100vh - ${props.headerHeight}px)`,
-        overflow: 'auto'
+        overflow: 'auto',
+        background:'#f6f6f6'
     },
     childContainer: {
         minHeight: (props: any) => `calc(100% - ${props.footerHeight}px)`,
+
     }
 
 }))
-const headerHeight = 60
-const footerHeight = 90
+const headerHeight = 70
+const footerHeight = 70
 const Layout: FC = ({children}) => {
     const classes = useStyles({headerHeight, footerHeight});
     return (

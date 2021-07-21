@@ -7,7 +7,7 @@ const useStyles = makeStyles(() => ({
     root: {
         height: (props: any) => props.height,
         display: 'flex',
-        background: 'lightblue',
+        background: '#343434',
         padding: '0 16px'
     },
     rightLinks: {
@@ -17,13 +17,13 @@ const useStyles = makeStyles(() => ({
         }
     },
     link: {
-        color: 'black',
+        color: '#a8a7a7',
         fontWeight: 600,
         textDecoration: 'none',
     },
     activeLink: {
         transition: '0.2s',
-        color: 'red'
+        color: 'white'
     },
     drawerButton: {
         marginRight: 16,
@@ -44,12 +44,12 @@ const Header: FC<headerProps> = ({height = 60}) => {
     return (
         <Box className={classes.root}>
             {smUp && <Grid container justify={'space-between'} alignItems={'center'}>
-                <NavLink to={'/'} className={classes.link} activeClassName={classes.activeLink}>HOME</NavLink>
+                <NavLink to={'/'} exact={true} className={classes.link} activeClassName={classes.activeLink}>HOME</NavLink>
                 <Box className={classes.rightLinks}>
-                    <NavLink to={'/indicators'} className={classes.link} activeClassName={classes.activeLink}>
-                        Indicators </NavLink>
-                    <NavLink to={'/more'} className={classes.link} activeClassName={classes.activeLink}> ADD YOUR CSV
-                    </NavLink>
+                    <NavLink to={'/create'} className={classes.link} activeClassName={classes.activeLink}>
+                        Create a chart</NavLink>
+                    <NavLink to={'/help'} className={classes.link} activeClassName={classes.activeLink}>
+                        Help</NavLink>
                 </Box>
             </Grid>}
             <Drawer open={isOpen && !smUp} anchor={'right'} onClose={() => setIsOpen(false)}>

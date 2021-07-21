@@ -1,0 +1,94 @@
+[
+  {
+    "value": "",
+    "title": "none"
+  },
+  {
+    "value": "valid",
+    "title": "VALID (count of valid field values)"
+  },
+  {
+    "value": "average",
+    "title": "MEAN average"
+  },
+  {
+    "value": "count",
+    "title": "COUNT of Data"
+  },
+  {
+    "value": "sum",
+    "title": "SUM"
+  },
+  {
+    "value": "mean",
+    "title": "MEAN"
+  },
+  {
+    "value": "distinct",
+    "title": "DISTINCT (distinct values)"
+  },
+  {
+    "value": "min",
+    "title": "MIN VALUE"
+  },
+  {
+    "value": "max",
+    "title": "MAX VALUE"
+  },
+  {
+    "value": "median",
+    "title": "MEDIAN"
+  },
+  {
+    "value": "stdev",
+    "title": "STANDARD DEVIATION"
+  },
+  {
+    "value": "argmin",
+    "title": "ARGMIN"
+  },
+  {
+    "value": "argmax",
+    "title": "ARGMAX"
+  },
+  {
+    "value": "values",
+    "title": "VALUES (a list of data objects in the group)"
+  },
+  {
+    "value": "missing",
+    "title": "MISSING ( missing value)"
+  },
+  {
+    "value": "product",
+    "title": "PRODUCT"
+  },
+  {
+    "value": "variance",
+    "title": "VARIANCE"
+  },
+  {
+    "value": "variancep",
+    "title": "POPULATION VARIANCE"
+  },
+  {
+    "value": "stderr",
+    "title": "STANDARD ERROR"
+  },
+  {
+    "value": "q1",
+    "title": "LOWER QUARTILE BOUNDARY"
+  },
+  {
+    "value": "Q3",
+    "title": "UPPER QUARTILE BOUNDARY"
+  },
+  {
+    "value": "ci0",
+    "title": "LOWER QUARTILE BOUNDARY 95%"
+  },
+  {
+    "value": "ci1",
+    "title": "UPPER QUARTILE BOUNDARY 95%"
+  }
+]

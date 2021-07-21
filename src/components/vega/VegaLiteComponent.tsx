@@ -49,7 +49,7 @@ const VegaLiteComponent: FC<VegaComponentProps> = ({encoding, xAxis, yAxis, basi
         })
 
     }, [data, basicStyling, xAxis, yAxis, type])
-    console.log(vlSpec)
+    // console.log(vlSpec)
 
     useEffect(() => {
         vegaEmbed('#chart', vlSpec).then(() => console.log('success')).catch((e) => console.log(e));

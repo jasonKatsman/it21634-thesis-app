@@ -1,11 +1,10 @@
 import React, {FC, useEffect, useState} from 'react';
 import {Box, Grid, List, ListItem, ListItemText, makeStyles, Typography} from "@material-ui/core";
 import {useParams} from "react-router";
-import DataDummy from '../Dummy/DataDummy.json'
-import DataChoices from '../Dummy/DataChoices.json'
 import DropComponent from "../components/common/DropComponent";
 import VegaLiteComponent from "../components/vega/VegaLiteComponent";
 import {vegaEncodingType, vegaFieldType} from "../Types/VegaFieldType";
+import {findValueType} from "../utils/findValueType";
 
 const useStyles = makeStyles(() => ({
     list: {
@@ -26,31 +25,6 @@ const useStyles = makeStyles(() => ({
 
 }))
 
-interface dataType {
-    Comments: string | null,
-    DataSourceDim: string | null,
-    DataSourceDimType: string | null,
-    Date: string,
-    Dim1: string | null,
-    Dim1Type: string | null,
-    Dim2: string | null,
-    Dim2Type: string | null,
-    Dim3: string | null,
-    Dim3Type: string | null,
-    High: number | null,
-    Id: number,
-    IndicatorCode: string | null,
-    Low: number | null,
-    NumericValue: number,
-    SpatialDim: string | null,
-    SpatialDimType: string | null,
-    TimeDim: number,
-    TimeDimType: string | null,
-    TimeDimensionBegin: string,
-    TimeDimensionEnd: string,
-    TimeDimensionValue: string | null
-}
-
 const DataPage: FC = () => {
     const classes = useStyles();
     const {id} = useParams<{ id: string }>()
@@ -60,9 +34,16 @@ const DataPage: FC = () => {
         background: 'white',
         mark: 'point',
     })
-    const [dataValues, setDataValues] = useState<dataType[]>([])
+    const [dataValues, setDataValues] = useState<any[]>([])
 
     const [xAxis, setXAxis] = useState<vegaFieldType>({
+        aggregate: '',
+        field: '',
+        type: '',
+        title: '',
+        bin: false
+    })
+    const [yAxis, setYAxis] = useState<vegaFieldType>({
         aggregate: '',
         field: '',
         type: '',
@@ -80,13 +61,7 @@ const DataPage: FC = () => {
             value: 'blue',
         },
     })
-    const [yAxis, setYAxis] = useState<vegaFieldType>({
-        aggregate: '',
-        field: '',
-        type: '',
-        title: '',
-        bin: false
-    })
+
 
     const onSimpleStylesChange = (e: React.ChangeEvent<HTMLInputElement & HTMLSelectElement>) => {
         setSimpleStyles({...simpleStyles, [e.target.name]: e.target.value})
@@ -103,8 +78,8 @@ const DataPage: FC = () => {
             try {
 //                setDimensions(res.value)
 //                 const res = await getDataById(id)
-                const res = DataDummy
-                setDataValues(res.value)
+                const res = [{one: 1, two: 2}]
+                setDataValues(res)
             } catch (e) {
                 console.log(e)
             }
@@ -113,7 +88,7 @@ const DataPage: FC = () => {
 
     }, [id])
     const prepareFieldView = () => {
-        const dataNames: any = Object.keys(DataChoices)
+        const dataNames: any = Object.keys([{one: 1, two: 2}])
         return dataNames.map((item: any, i: number) => {
             return <ListItem
                 id={item}

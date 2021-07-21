@@ -1,0 +1,34 @@
+[
+  {
+    "value": "bar",
+    "title": "bar"
+  },
+  {
+    "value": "line",
+    "title": "line"
+  },
+  {
+    "value": "circle",
+    "title": "circle"
+  },
+  {
+    "value": "square",
+    "title": "square"
+  },
+  {
+    "value": "tick",
+    "title": "tick"
+  },
+  {
+    "value": "area",
+    "title": "area"
+  },
+  {
+    "value": "point",
+    "title": "point"
+  },
+  {
+    "value": "text",
+    "title": "text"
+  }
+]

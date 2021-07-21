@@ -1,0 +1,17 @@
+[
+  "date",
+  "id",
+  "name",
+  "current_price",
+  "market_cap",
+  "market_cap_rank",
+  "fully_diluted_valuation",
+  "total_volume",
+  "circulating_supply",
+  "total_supply",
+  "max_supply",
+  "ath",
+  "ath_date",
+  "atl",
+  "atl_date"
+]

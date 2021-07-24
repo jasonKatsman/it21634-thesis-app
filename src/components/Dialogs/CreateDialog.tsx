@@ -1,30 +1,28 @@
 import React, {ChangeEvent, FC, useEffect, useState} from 'react';
 import {
-    Accordion, AccordionDetails, AccordionSummary,
     Box,
-    Button, Divider,
+    Button,
+    Divider,
     FormControl,
-    Grid, InputLabel, List, ListItem,
+    Grid,
+    InputLabel,
     makeStyles,
-    Select, Tab, Tabs,
+    Select,
+    Tab,
+    Tabs,
     Typography
 } from "@material-ui/core";
 import coins from '../../Dummy/coins.json'
-import coinFields from '../../Dummy/coinFields.json'
 import TextFieldsIcon from '@material-ui/icons/TextFields';
 import SettingsApplicationsIcon from '@material-ui/icons/SettingsApplications';
 import ColorLensIcon from '@material-ui/icons/ColorLens';
 import {vegaEncodingType, vegaFieldType} from "../../Types/VegaFieldType";
 import VegaLiteComponent from "../vega/VegaLiteComponent";
 import dummyCoin from '../../Dummy/dummyCoin.json'
-import SelectAggregate from "../common/SelectAggregate";
 import {findValueType} from "../../utils/findValueType";
-import aggregateOptions from "../../Dummy/aggregateOptions.json";
-import markOptions from "../../Dummy/markOptions.json";
-import CustomOption from "../common/CustomOption";
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import FieldsTab from "./tabs/FieldsTab";
 import DetailsTab from "./tabs/DetailsTab";
+import StylesTab from "./tabs/StylesTab";
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -36,6 +34,27 @@ const useStyles = makeStyles(() => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between'
+    },
+    tabsContainer: {
+        maxHeight: 'calc( 80vh - 270px )',
+        overflow: 'auto',
+        width: '100%',
+        '&::-webkit-scrollbar-track': {
+            background: '#dfdfdf',
+            borderRadius: 4,
+
+        },
+        '&::-webkit-scrollbar': {
+            width: 8,
+            height: 0,
+            borderRadius: 4,
+
+        },
+        '&::-webkit-scrollbar-thumb': {
+            background: '#686868',
+            borderRadius: 4,
+
+        },
     },
     coinBox: {
         marginTop: 16,
@@ -155,19 +174,21 @@ const CreateDialog: FC = () => {
         field: '',
         type: 'nominal',
         title: '',
-        bin: false
+        bin: false,
+        scale: undefined
     })
     const [yAxis, setYAxis] = useState<vegaFieldType>({
         aggregate: '',
         field: '',
         type: 'nominal',
         title: '',
-        bin: false
+        bin: false,
+        scale: undefined
     })
     const [encodingContent, setEncodingContent] = useState<vegaEncodingType>({
-        size: {
-            value: '10',
-        },
+        // size: {
+        //     value: '10',
+        // },
         opacity: {
             value: '0.4',
         },
@@ -179,7 +200,9 @@ const CreateDialog: FC = () => {
         width: 200,
         height: 200,
         background: 'white',
-        mark: 'point',
+    })
+    const [mark, setMark] = useState({
+        mark: {type: 'point', interpolate: ''}
     })
     useEffect(() => {
         if (selectedValue) {
@@ -201,8 +224,12 @@ const CreateDialog: FC = () => {
             return <FieldsTab currentDrag={currentDrag} setCurrentDrag={setCurrentDrag}/>
         }
         if (tabValue === 'details') {
-            return <DetailsTab simpleStyles={simpleStyles} setSimpleStyles={setSimpleStyles}/>
-
+            return <DetailsTab xAxis={xAxis} setXAxis={setXAxis} yAxis={yAxis} setYAxis={setYAxis} mark={mark}
+                               setMark={setMark}/>
+        }
+        if (tabValue === 'styles') {
+            return <StylesTab xAxis={xAxis} setXAxis={setXAxis} yAxis={yAxis} setYAxis={setYAxis} mark={mark}
+                               setMark={setMark}/>
         }
     }
 
@@ -226,11 +253,6 @@ const CreateDialog: FC = () => {
         }
     }
 
-    const prepareOptions = () => {
-        return aggregateOptions.map(option => {
-            return <CustomOption value={option.value}>{option.title}</CustomOption>
-        })
-    }
     const prepareChartArea = () => {
         return <Box className={classes.chartArea}>
             {!currentDrag && !xAxis.field && !yAxis.field ?
@@ -250,11 +272,6 @@ const CreateDialog: FC = () => {
                         <Typography variant={'h6'} className={classes.noPointerEvents}>
                             {xAxis.field ? xAxis.field.replaceAll('_', ' ') : 'X'}
                         </Typography>
-                        <SelectAggregate selectTitle={'Aggregation'} value={xAxis.aggregate}
-                                         onChange={(e) => setXAxis({
-                                             ...xAxis,
-                                             aggregate: e.target.value as string
-                                         })}>{prepareOptions()}</SelectAggregate>
                     </>
                     : undefined}
             </Box>
@@ -269,11 +286,7 @@ const CreateDialog: FC = () => {
                 <><Typography variant={'h6'}
                               className={classes.noPointerEvents}>
                     {yAxis.field ? yAxis.field.replaceAll('_', ' ') : 'Y'}</Typography>
-                    <SelectAggregate selectTitle={'Aggregation'} value={yAxis.aggregate}
-                                     onChange={(e) => setYAxis({
-                                         ...yAxis,
-                                         aggregate: e.target.value as string
-                                     })}>{prepareOptions()}</SelectAggregate></>
+                </>
                 : undefined}
         </Box>
         </Box>
@@ -311,15 +324,19 @@ const CreateDialog: FC = () => {
                                          icon={<SettingsApplicationsIcon/>}/>
                                     <Tab label={'Styles'} value={'styles'} className={classes.tab} icon={<ColorLensIcon/>}/>
                                 </Tabs>
-                                {prepareTabs()}
+                                <Box className={classes.tabsContainer}>
+
+                                    {prepareTabs()}
+                                </Box>
                             </Grid>
                             <Grid item xs={9} className={classes.chartBox} container justify={'center'}
                                   alignItems={'center'}>
                                 <Box>
 
                                     <VegaLiteComponent data={dummyCoin} xAxis={xAxis} yAxis={yAxis}
-                                                        encoding={encodingContent}
-                                                        basicStyling={simpleStyles}/>
+                                                       encoding={encodingContent}
+                                                       basicStyling={simpleStyles}
+                                                       mark={mark}/>
 
                                 </Box>
                                 {prepareChartArea()}

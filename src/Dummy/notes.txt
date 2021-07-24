@@ -1,0 +1,3 @@
+TIME UNIT & BIN
+ When you bin data on a date, it automatically aggregates - sum the other axis. That means that if you want to see
+ the average of one hour-day etc, you should manually set the aggregate on the other axis.

@@ -4,26 +4,26 @@ import React, {FC} from "react";
 
 const useStyles = makeStyles(() => ({
     list: {
-        maxHeight: 'calc( 80vh - 270px )',
-        overflow: 'auto',
+        // maxHeight: 'calc( 80vh - 270px )',
+        // overflow: 'auto',
         '& > *': {
             padding: '12px 12px',
             width: 'calc( 100% - 8px )'
         },
-        '&::-webkit-scrollbar-track': {
-            background: '#dfdfdf',
-            borderRadius: 4,
-
-        },
-        '&::-webkit-scrollbar': {
-            width: 8,
-            borderRadius: 4,
-
-        },
-        '&::-webkit-scrollbar-thumb': {
-            background: '#686868',
-            borderRadius: 4,
-        },
+        // '&::-webkit-scrollbar-track': {
+        //     background: '#dfdfdf',
+        //     borderRadius: 4,
+        //
+        // },
+        // '&::-webkit-scrollbar': {
+        //     width: 8,
+        //     borderRadius: 4,
+        //
+        // },
+        // '&::-webkit-scrollbar-thumb': {
+        //     background: '#686868',
+        //     borderRadius: 4,
+        // },
     },
 }))
 type FieldsTabProps = {

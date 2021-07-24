@@ -20,14 +20,14 @@ const useStyles = makeStyles(() => ({
 }))
 
 type selectAggregateProps = {
-    selectTitle: string
+    selectTitle?: string
 }
 
 const SelectAggregate: FC<SelectProps & selectAggregateProps> = ({selectTitle, children, ...props}) => {
     const classes = useStyles()
 
     return <FormControl>
-        <InputLabel htmlFor={'aggregate-select'}>{selectTitle}</InputLabel>
+        {selectTitle?<InputLabel htmlFor={'aggregate-select'}>{selectTitle}</InputLabel>:undefined}
         <Select id={'aggregate-select'} className={classes.select} {...props}>
             {children}
         </Select>

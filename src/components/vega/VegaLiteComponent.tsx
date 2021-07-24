@@ -1,7 +1,7 @@
 import React, {FC, useEffect, useState} from 'react';
 import {makeStyles} from "@material-ui/core";
 import vegaEmbed from "vega-embed"
-import {vegaEncodingType, vegaFieldType} from "../../Types/VegaFieldType";
+import {Mark, vegaEncodingType, vegaFieldType} from "../../Types/VegaFieldType";
 
 const useStyles = makeStyles(() => ({
     list: {
@@ -21,21 +21,28 @@ type VegaComponentProps = {
     xAxis: vegaFieldType,
     yAxis: vegaFieldType,
     encoding: vegaEncodingType,
-    basicStyling?: any
+    basicStyling?: any,
+    mark: Mark
 }
-const VegaLiteComponent: FC<VegaComponentProps> = ({encoding, xAxis, yAxis, basicStyling, data, type}) => {
+const VegaLiteComponent: FC<VegaComponentProps> = ({mark, encoding, xAxis, yAxis, basicStyling, data, type}) => {
     const classes = useStyles();
     const [vlSpec, setVlSpec] = useState<any>()
     // "quantitative" if the datum is a number
     // "nominal" if the datum is a string
     // "temporal" if the datum is a date time object
-
+    console.log(vlSpec)
     useEffect(() => {
         setVlSpec({
             data: {
                 values: [...data]
             },
+            "selection": {
+                "grid": {
+                    "type": "interval", "bind": "scales"
+                }
+            },
             ...basicStyling,
+            ...mark,
             encoding: {
                 ...encoding,
                 y: {
@@ -48,7 +55,7 @@ const VegaLiteComponent: FC<VegaComponentProps> = ({encoding, xAxis, yAxis, basi
             }
         })
 
-    }, [data, basicStyling, xAxis, yAxis, type])
+    }, [data, basicStyling, xAxis, yAxis, type,mark])
     // console.log(vlSpec)
 
     useEffect(() => {

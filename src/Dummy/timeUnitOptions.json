@@ -1,0 +1,50 @@
+[
+  {
+    "value": "",
+    "title": "none"
+  },
+  {
+    "value": "year",
+    "title": "year"
+  },
+  {
+    "value": "quarter",
+    "title": "quarter (3-month)"
+  },
+  {
+    "value": "month",
+    "title": "month"
+  },
+  {
+    "value": "date",
+    "title": "date"
+  },
+  {
+    "value": "week",
+    "title": "week"
+  },
+  {
+    "value": "day",
+    "title": "day"
+  },
+  {
+    "value": "dayofyear",
+    "title": "dayofyear"
+  },
+  {
+    "value": "hours",
+    "title": "hours"
+  },
+  {
+    "value": "minutes",
+    "title": "minutes"
+  },
+  {
+    "value": "seconds",
+    "title": "seconds"
+  },
+  {
+    "value": "milliseconds",
+    "title": "milliseconds"
+  }
+]

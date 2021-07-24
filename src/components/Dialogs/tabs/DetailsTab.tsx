@@ -1,80 +1,33 @@
-import {Accordion, AccordionDetails, AccordionSummary, Grid, makeStyles, Typography} from "@material-ui/core";
+import {Grid, makeStyles} from "@material-ui/core";
 import React, {FC} from "react";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import SelectAggregate from "../../common/SelectAggregate";
-import markOptions from "../../../Dummy/markOptions.json";
-import CustomOption from "../../common/CustomOption";
+import AxisAccordionContainer from "../../DetailsComponents/AxisAccordionContainer";
+import MarkAccordionContainer from "../../DetailsComponents/MarkAccordionContainer";
+import {vegaFieldType} from "../../../Types/VegaFieldType";
 
 const useStyles = makeStyles(() => ({}))
 type DetailsTabProps = {
-    simpleStyles: any
-    setSimpleStyles: (value: any) => void
+    mark: any
+    setMark: (value: any) => void
+    xAxis: vegaFieldType
+    yAxis: vegaFieldType
+    setXAxis: (value: vegaFieldType) => void
+    setYAxis: (value: vegaFieldType) => void
+
 }
-const DetailsTab: FC<DetailsTabProps> = ({simpleStyles, setSimpleStyles}) => {
+const DetailsTab: FC<DetailsTabProps> = ({xAxis, yAxis, setXAxis, setYAxis, mark, setMark}) => {
     const classes = useStyles()
     return (<Grid container>
         <Grid item xs={12}>
-            <Accordion>
-                <AccordionSummary
-                    expandIcon={<ExpandMoreIcon/>}
-                    aria-controls="mark-content"
-                    id="mark-header"
-                >
-                    <Typography>Mark options</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                    <SelectAggregate selectTitle={'Mark type'} value={simpleStyles.mark}
-                                     onChange={(e => setSimpleStyles({
-                                         ...simpleStyles,
-                                         mark: e.target.value as string
-                                     }))}>
-                        {markOptions.map((option) => <CustomOption
-                            value={option.value}>{option.title}</CustomOption>)}
-                    </SelectAggregate>
-                </AccordionDetails>
-            </Accordion>
+            <MarkAccordionContainer mark={mark} setMark={setMark}/>
+            {/*mark*/}
         </Grid>
         <Grid item xs={12}>
-            <Accordion>
-                <AccordionSummary
-                    expandIcon={<ExpandMoreIcon/>}
-                    aria-controls="mark-content"
-                    id="mark-header"
-                >
-                    <Typography>Mark styles</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                    <SelectAggregate selectTitle={'Mark type'} value={simpleStyles.mark}
-                                     onChange={(e => setSimpleStyles({
-                                         ...simpleStyles,
-                                         mark: e.target.value as string
-                                     }))}>
-                        {markOptions.map((option) => <CustomOption
-                            value={option.value}>{option.title}</CustomOption>)}
-                    </SelectAggregate>
-                </AccordionDetails>
-            </Accordion>
+            <AxisAccordionContainer axis={xAxis} setAxis={setXAxis}  title={'X Axis'}/>
+            {/*  encoding.x.scale.domain[min,max]  */}
+
         </Grid>
         <Grid item xs={12}>
-            <Accordion>
-                <AccordionSummary
-                    expandIcon={<ExpandMoreIcon/>}
-                    aria-controls="sen-content"
-                    id="ts-header"
-                >
-                    <Typography>Position options</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                    <SelectAggregate selectTitle={'Mark type'} value={simpleStyles.mark}
-                                     onChange={(e => setSimpleStyles({
-                                         ...simpleStyles,
-                                         mark: e.target.value as string
-                                     }))}>
-                        {markOptions.map((option) => <CustomOption
-                            value={option.value}>{option.title}</CustomOption>)}
-                    </SelectAggregate>
-                </AccordionDetails>
-            </Accordion>
+            <AxisAccordionContainer axis={yAxis} setAxis={setYAxis} title={'Y Axis'}/>
         </Grid>
     </Grid>)
 }

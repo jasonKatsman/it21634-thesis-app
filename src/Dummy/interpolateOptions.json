@@ -1,0 +1,58 @@
+[
+  {
+    "value": "",
+    "title": "none"
+  },
+  {
+    "value": "monotone",
+    "title": "monotone"
+  },
+  {
+    "value": "linear",
+    "title": "linear"
+  },
+  {
+    "value": "linear-closed",
+    "title": "linear-closed"
+  },
+  {
+    "value": "step",
+    "title": "step"
+  },
+  {
+    "value": "step-before",
+    "title": "step-before"
+  },
+  {
+    "value": "step-after",
+    "title": "step-after"
+  },
+  {
+    "value": "basis",
+    "title": "basis"
+  },
+  {
+    "value": "basis-open",
+    "title": "basis-open"
+  },
+  {
+    "value": "basis-closed",
+    "title": "basis-closed"
+  },
+  {
+    "value": "cardinal",
+    "title": "cardinal"
+  },
+  {
+    "value": "cardinal-open",
+    "title": "cardinal-open"
+  },
+  {
+    "value": "cardinal-closed",
+    "title": "cardinal-closed"
+  },
+  {
+    "value": "bundle",
+    "title": "bundle"
+  }
+]

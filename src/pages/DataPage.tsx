@@ -169,8 +169,9 @@ const DataPage: FC = () => {
                     <Grid item xs={12}>
                         {!xAxis.field && !yAxis.field ?
                             <Typography>Please put X and Y axis Fields</Typography> :
-                            <VegaLiteComponent basicStyling={simpleStyles} data={dataValues}
-                                               xAxis={xAxis} yAxis={yAxis} encoding={encodingContent}/>
+                            undefined
+                            // <VegaLiteComponent basicStyling={simpleStyles} data={dataValues}
+                            //                    xAxis={xAxis} yAxis={yAxis} encoding={encodingContent}/>
                             // <MyVega fieldData={dataValues} selectedFields={selectedFields}/>
                             // <VegaComponent2 data={dataValues} selectedFields={selectedFields}/>
                         }

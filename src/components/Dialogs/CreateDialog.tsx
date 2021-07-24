@@ -16,7 +16,7 @@ import coins from '../../Dummy/coins.json'
 import TextFieldsIcon from '@material-ui/icons/TextFields';
 import SettingsApplicationsIcon from '@material-ui/icons/SettingsApplications';
 import ColorLensIcon from '@material-ui/icons/ColorLens';
-import {vegaEncodingType, vegaFieldType} from "../../Types/VegaFieldType";
+import {Mark, vegaEncodingType, vegaFieldType} from "../../Types/VegaFieldType";
 import VegaLiteComponent from "../vega/VegaLiteComponent";
 import dummyCoin from '../../Dummy/dummyCoin.json'
 import {findValueType} from "../../utils/findValueType";
@@ -189,19 +189,19 @@ const CreateDialog: FC = () => {
         // size: {
         //     value: '10',
         // },
-        opacity: {
-            value: '0.4',
-        },
-        color: {
-            value: 'blue',
-        },
+        // opacity: {
+        //     value: '0.4',
+        // },
+        // color: {
+        //     value: 'blue',
+        // },
     })
     const [simpleStyles, setSimpleStyles] = useState({
         width: 200,
         height: 200,
         background: 'white',
     })
-    const [mark, setMark] = useState({
+    const [mark, setMark] = useState<Mark>({
         mark: {type: 'point', interpolate: ''}
     })
     useEffect(() => {

@@ -26,6 +26,12 @@ export type Mark = {
     mark: {
         type: string;
         interpolate: string
+        color?:string
+        width?:number
+        strokeWidth?:number
+        cornerRadius?:number
+        size?:number
+        opacity?:number
     },
 
 

@@ -1,10 +1,6 @@
-import {Accordion, AccordionDetails, AccordionSummary, Grid, makeStyles, Typography} from "@material-ui/core";
+import {Accordion, AccordionDetails, AccordionSummary, Grid, makeStyles, Slider, Typography} from "@material-ui/core";
 import React, {FC} from "react";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import SelectAggregate from "../common/SelectAggregate";
-import interpolateOptions from "../../Dummy/interpolateOptions.json";
-import CustomOption from "../common/CustomOption";
-import markOptions from "../../Dummy/markOptions.json";
 import {Mark} from "../../Types/VegaFieldType";
 
 const useStyles = makeStyles(() => ({
@@ -26,19 +22,43 @@ const useStyles = makeStyles(() => ({
 type MarkStylesAccordionContainerProps = {
     mark: Mark
     setMark: (value: Mark) => void
-    title?:string
+    title?: string
 }
-const MarkStylesAccordionContainer: FC<MarkStylesAccordionContainerProps> = ({title,mark, setMark}) => {
+const MarkStylesAccordionContainer: FC<MarkStylesAccordionContainerProps> = ({title, mark, setMark}) => {
     const classes = useStyles()
-    const prepareMarkOptions = () => {
-        return markOptions.map((option) => <CustomOption
-            value={option.value}>{option.title}</CustomOption>)
-    }
-    const prepareInterpolateOptions = () => {
-        return interpolateOptions.map((option) => <CustomOption
-            value={option.value}>{option.title}</CustomOption>)
+    const onValuesChange = (e: any) => {
+        setMark({...mark, mark: {...mark.mark, [e.target.name]: e.target.value}})
     }
     console.log(mark.mark)
+
+    const prepareSlider = () => {
+        if (mark.mark.type === 'line') {
+            return <Slider value={mark.mark.strokeWidth ?? 1}
+                           onChange={(val, newVal) => {
+                               setMark({...mark, mark: {...mark.mark, strokeWidth: newVal as number}})
+                           }}
+                           min={1}
+                           max={10}
+                           valueLabelDisplay="auto"/>
+        }
+        if (mark.mark.type === 'bar') {
+            return <Slider value={mark.mark.width ?? 1}
+                           onChange={(val, newVal) => {
+                               setMark({...mark, mark: {...mark.mark, width: newVal as number}})
+                           }}
+                           min={5}
+                           max={100}
+                           valueLabelDisplay="auto"/>
+        }
+        return <Slider value={mark.mark.size ?? 1}
+                       onChange={(val, newVal) => {
+                           setMark({...mark, mark: {...mark.mark, size: newVal as number}})
+                       }}
+                       min={1}
+                       max={1000}
+                       valueLabelDisplay="auto"/>
+    }
+
     return (
         <Accordion>
             <AccordionSummary
@@ -52,33 +72,54 @@ const MarkStylesAccordionContainer: FC<MarkStylesAccordionContainerProps> = ({ti
                 <Grid container className={classes.inputs}>
                     <Grid container item xs={12}>
                         <Grid item xs={12}>
-                            <Typography variant={'body1'}>Aggregation</Typography>
+                            <Typography variant={'body1'}>{mark.mark.type} color</Typography>
                         </Grid>
                         <Grid item xs={12}>
-                            <SelectAggregate selectTitle={'Mark type'} value={mark.mark.type}
-                                             onChange={(e => setMark({
-                                                 mark: {...mark.mark, type: e.target.value as string}
-                                             }))}>
-                                {prepareMarkOptions()}
-                            </SelectAggregate> </Grid>
+                            <input type={'color'} name={'color'} defaultValue={'rgb(76, 120, 168)'}
+                                   value={mark.mark?.color || 'red'}
+                                   onChange={onValuesChange}/> {mark.mark?.color}</Grid>
                     </Grid>
-
-                    {/*interpolate is for line & area marks. It finds the middle value between two data points*/}
                     <Grid container item xs={12}>
                         <Grid item xs={12}>
-                            <Typography variant={'body1'}>Interpolate</Typography>
+                            <Typography variant={'body1'}>{mark.mark.type} size</Typography>
                         </Grid>
                         <Grid item xs={12}>
-                            <SelectAggregate disabled={mark.mark.type !== 'line' && mark.mark.type !== 'area'}
-                                             value={mark.mark.interpolate}
-                                             onChange={(e => setMark({
-                                                 mark: {...mark.mark, interpolate: e.target.value as string}
-                                             }))}>
-                                {prepareInterpolateOptions()}
-                            </SelectAggregate> </Grid>
+                            {prepareSlider()}
+                        </Grid>
+                    </Grid>
+
+                    <Grid container item xs={12}>
+                        <Grid item xs={12}>
+                            <Typography variant={'body1'}>{mark.mark.type} Radius</Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Slider value={mark.mark.cornerRadius ?? 0}
+                                    onChange={(val, newVal) => {
+                                        setMark({...mark, mark: {...mark.mark, cornerRadius: newVal as number}})
+                                    }}
+                                    min={1}
+                                    max={10}
+                                    valueLabelDisplay="auto"/>
+                        </Grid>
+                    </Grid>
+
+                    <Grid container item xs={12}>
+                        <Grid item xs={12}>
+                            <Typography variant={'body1'}>{mark.mark.type} opacity</Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Slider value={mark.mark?.opacity ? mark.mark.opacity * 10 : 0}
+                                    onChange={(val, newVal) => {
+                                        setMark({...mark, mark: {...mark.mark, opacity: newVal as number / 10}})
+                                    }}
+                                    min={1}
+                                    scale={(x) => x / 10}
+
+                                    max={10}
+                                    valueLabelDisplay="auto"/>
+                        </Grid>
                     </Grid>
                 </Grid>
-
             </AccordionDetails>
         </Accordion>
     )

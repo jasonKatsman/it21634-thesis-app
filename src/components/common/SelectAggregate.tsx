@@ -14,7 +14,7 @@ const useStyles = makeStyles(() => ({
     },
     select: {
         minWidth: '150px',
-        maxWidth: '250px'
+        width:'100%'
 
     }
 }))

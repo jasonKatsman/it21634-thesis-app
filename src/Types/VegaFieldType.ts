@@ -4,7 +4,7 @@ export type vegaFieldType = {
     type: string,
     timeUnit?: string,
     title: string
-    bandPosition?:number
+    bandPosition?: number
     bin?: boolean // discretize VALUES (approximate a set of values) prettified set of values
     scale?: { domain?: any[], domainMax?: any, domainMin?: any, domainMid?: any } // Scales are functions that transform a domain of data values to a range of visual values
 }
@@ -22,17 +22,21 @@ export type vegaEncodingType = {
 
 }
 
+export type Transform = {
+    transform?: [{
+        "filter": { "field": string, "timeUnit"?: string, "range"?: any[] }
+    }]
+}
+
 export type Mark = {
     mark: {
         type: string;
         interpolate: string
-        color?:string
-        width?:number
-        strokeWidth?:number
-        cornerRadius?:number
-        size?:number
-        opacity?:number
-    },
-
-
+        color?: string
+        width?: number
+        strokeWidth?: number
+        cornerRadius?: number
+        size?: number
+        opacity?: number
+    }
 }

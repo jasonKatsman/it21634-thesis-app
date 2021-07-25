@@ -16,7 +16,7 @@ import coins from '../../Dummy/coins.json'
 import TextFieldsIcon from '@material-ui/icons/TextFields';
 import SettingsApplicationsIcon from '@material-ui/icons/SettingsApplications';
 import ColorLensIcon from '@material-ui/icons/ColorLens';
-import {Mark, vegaEncodingType, vegaFieldType} from "../../Types/VegaFieldType";
+import {Mark, Transform, vegaEncodingType, vegaFieldType} from "../../Types/VegaFieldType";
 import VegaLiteComponent from "../vega/VegaLiteComponent";
 import dummyCoin from '../../Dummy/dummyCoin.json'
 import {findValueType} from "../../utils/findValueType";
@@ -185,6 +185,7 @@ const CreateDialog: FC = () => {
         bin: false,
         scale: undefined
     })
+    const [transform, setTransform] = useState<Transform>({})
     const [encodingContent, setEncodingContent] = useState<vegaEncodingType>({
         // size: {
         //     value: '10',
@@ -224,12 +225,13 @@ const CreateDialog: FC = () => {
             return <FieldsTab currentDrag={currentDrag} setCurrentDrag={setCurrentDrag}/>
         }
         if (tabValue === 'details') {
-            return <DetailsTab xAxis={xAxis} setXAxis={setXAxis} yAxis={yAxis} setYAxis={setYAxis} mark={mark}
+            return <DetailsTab setTransform={setTransform} transform={transform} xAxis={xAxis} setXAxis={setXAxis}
+                               yAxis={yAxis} setYAxis={setYAxis} mark={mark}
                                setMark={setMark}/>
         }
         if (tabValue === 'styles') {
             return <StylesTab xAxis={xAxis} setXAxis={setXAxis} yAxis={yAxis} setYAxis={setYAxis} mark={mark}
-                               setMark={setMark}/>
+                              setMark={setMark}/>
         }
     }
 
@@ -320,9 +322,11 @@ const CreateDialog: FC = () => {
                                       onChange={(e, val) => setTabValue(val)}>
                                     <Tab label={'Fields'} value={'fields'} className={classes.tab}
                                          icon={<TextFieldsIcon/>}/>
-                                    <Tab label={'Details'} value={'details'} className={classes.tab}
+                                    <Tab disabled={!xAxis.field && !yAxis.field} label={'Details'} value={'details'}
+                                         className={classes.tab}
                                          icon={<SettingsApplicationsIcon/>}/>
-                                    <Tab label={'Styles'} value={'styles'} className={classes.tab} icon={<ColorLensIcon/>}/>
+                                    <Tab disabled={!xAxis.field && !yAxis.field} label={'Styles'} value={'styles'}
+                                         className={classes.tab} icon={<ColorLensIcon/>}/>
                                 </Tabs>
                                 <Box className={classes.tabsContainer}>
 
@@ -333,7 +337,9 @@ const CreateDialog: FC = () => {
                                   alignItems={'center'}>
                                 <Box>
 
-                                    <VegaLiteComponent data={dummyCoin} xAxis={xAxis} yAxis={yAxis}
+                                    <VegaLiteComponent data={dummyCoin}
+                                                       transform={transform}
+                                                       xAxis={xAxis} yAxis={yAxis}
                                                        encoding={encodingContent}
                                                        basicStyling={simpleStyles}
                                                        mark={mark}/>
@@ -348,7 +354,7 @@ const CreateDialog: FC = () => {
                 </Box>
                 <Box className={classes.buttons}>
                     <Button>cancel</Button>
-                    <Button variant={'outlined'} color={'primary'}>SAVE</Button>
+                    <Button variant={'outlined'} onClick={()=>console.log('save')} color={'primary'}>SAVE</Button>
                 </Box>
             </Box>
         </Box>

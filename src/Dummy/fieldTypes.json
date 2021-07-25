@@ -1,0 +1,62 @@
+[
+  {
+    "field": "date",
+    "type": "temporal"
+  },
+  {
+    "field": "id",
+    "type": "nominal"
+  },
+  {
+    "field": "name",
+    "type": "nominal"
+  },
+  {
+    "field": "current_price",
+    "type": "quantitative"
+  },
+  {
+    "field": "market_cap",
+    "type": "quantitative"
+  },
+  {
+    "field": "market_cap_rank",
+    "type": "quantitative"
+  },
+  {
+    "field": "fully_diluted_valuation",
+    "type": "quantitative"
+  },
+  {
+    "field": "total_volume",
+    "type": "quantitative"
+  },
+  {
+    "field": "circulating_supply",
+    "type": "quantitative"
+  },
+  {
+    "field": "total_supply",
+    "type": "quantitative"
+  },
+  {
+    "field": "max_supply",
+    "type": "quantitative"
+  },
+  {
+    "field": "ath",
+    "type": "quantitative"
+  },
+  {
+    "field": "ath_date",
+    "type": "temporal"
+  },
+  {
+    "field": "atl",
+    "type": "quantitative"
+  },
+  {
+    "field": "atl_date",
+    "type": "temporal"
+  }
+]

@@ -1,7 +1,7 @@
 import React, {FC, useEffect, useState} from 'react';
 import {makeStyles} from "@material-ui/core";
 import vegaEmbed from "vega-embed"
-import {Mark, vegaEncodingType, vegaFieldType} from "../../Types/VegaFieldType";
+import {Mark, Transform, vegaEncodingType, vegaFieldType} from "../../Types/VegaFieldType";
 
 const useStyles = makeStyles(() => ({
     list: {
@@ -23,8 +23,9 @@ type VegaComponentProps = {
     encoding: vegaEncodingType,
     basicStyling?: any,
     mark: Mark
+    transform:Transform
 }
-const VegaLiteComponent: FC<VegaComponentProps> = ({mark, encoding, xAxis, yAxis, basicStyling, data, type}) => {
+const VegaLiteComponent: FC<VegaComponentProps> = ({transform,mark, encoding, xAxis, yAxis, basicStyling, data, type}) => {
     const classes = useStyles();
     const [vlSpec, setVlSpec] = useState<any>()
     // "quantitative" if the datum is a number
@@ -42,6 +43,7 @@ const VegaLiteComponent: FC<VegaComponentProps> = ({mark, encoding, xAxis, yAxis
                 }
             },
             ...basicStyling,
+            ...transform,
             ...mark,
             encoding: {
                 ...encoding,
@@ -55,7 +57,7 @@ const VegaLiteComponent: FC<VegaComponentProps> = ({mark, encoding, xAxis, yAxis
             }
         })
 
-    }, [data, basicStyling, xAxis, yAxis, type,mark])
+    }, [data, basicStyling,transform, xAxis, yAxis, type,mark])
     // console.log(vlSpec)
 
     useEffect(() => {

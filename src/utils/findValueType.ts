@@ -11,3 +11,5 @@ export const findValueType = (value: any) => {
     }
     return 'nominal'
 }
+
+

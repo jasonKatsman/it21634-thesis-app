@@ -17,12 +17,12 @@ import TextFieldsIcon from '@material-ui/icons/TextFields';
 import SettingsApplicationsIcon from '@material-ui/icons/SettingsApplications';
 import ColorLensIcon from '@material-ui/icons/ColorLens';
 import {Mark, Transform, vegaEncodingType, vegaFieldType} from "../../Types/VegaFieldType";
-import VegaLiteComponent from "../vega/VegaLiteComponent";
 import dummyCoin from '../../Dummy/dummyCoin.json'
 import {findValueType} from "../../utils/findValueType";
 import FieldsTab from "./tabs/FieldsTab";
 import DetailsTab from "./tabs/DetailsTab";
 import StylesTab from "./tabs/StylesTab";
+import VegaLitePreview from "../vega/VegaLitePreview";
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -164,10 +164,10 @@ const useStyles = makeStyles(() => ({
 
 type dialogType = {
     onSaveClick: (vega: any) => void
-    onClose:()=>void
+    onClose: () => void
 }
 
-const CreateDialog: FC<dialogType> = ({onClose,onSaveClick}) => {
+const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
     const classes = useStyles();
     const [selectedValue, setSelectedValue] = useState('')
     const [tabValue, setTabValue] = useState('fields')
@@ -210,6 +210,42 @@ const CreateDialog: FC<dialogType> = ({onClose,onSaveClick}) => {
     const [mark, setMark] = useState<Mark>({
         mark: {type: 'point', interpolate: ''}
     })
+
+    const [vlSpec, setVlSpec] = useState<any>()
+    // "quantitative" if the datum is a number
+    // "nominal" if the datum is a string
+    // "temporal" if the datum is a date time object
+
+    useEffect(() => {
+        const selection = {
+            "selection": xAxis.field && yAxis.field ? {
+                "grid": {
+                    "type": "interval", "bind": "scales"
+                }
+            } : undefined
+        }
+        setVlSpec({
+            data: {
+                values: [...dummyCoin]
+            },
+            ...selection,
+            ...simpleStyles,
+            ...transform,
+            ...mark,
+            encoding: {
+                ...encodingContent,
+                y: {
+                    ...yAxis
+                },
+                x: {
+
+                    ...xAxis
+                },
+            }
+        })
+
+    }, [dummyCoin, simpleStyles, transform, xAxis, yAxis, mark])
+
     useEffect(() => {
         if (selectedValue) {
             console.log('fetching coin')
@@ -341,14 +377,7 @@ const CreateDialog: FC<dialogType> = ({onClose,onSaveClick}) => {
                             <Grid item xs={9} className={classes.chartBox} container justify={'center'}
                                   alignItems={'center'}>
                                 <Box>
-
-                                    <VegaLiteComponent data={dummyCoin}
-                                                       transform={transform}
-                                                       xAxis={xAxis} yAxis={yAxis}
-                                                       encoding={encodingContent}
-                                                       basicStyling={simpleStyles}
-                                                       mark={mark}/>
-
+                                    <VegaLitePreview vegaConfig={vlSpec} keyId={"vegaLite-create"}/>
                                 </Box>
                                 {prepareChartArea()}
                             </Grid>
@@ -359,29 +388,7 @@ const CreateDialog: FC<dialogType> = ({onClose,onSaveClick}) => {
                 </Box>
                 <Box className={classes.buttons}>
                     <Button onClick={onClose}>cancel</Button>
-                    <Button variant={'outlined'} onClick={() => onSaveClick({
-                        data: {
-                            values: [...dummyCoin]
-                        },
-                        // "selection": {
-                        //     "grid": {
-                        //         "type": "interval", "bind": "scales"
-                        //     }
-                        // },
-                        ...simpleStyles,
-                        ...transform,
-                        ...mark,
-                        encoding: {
-                            ...encodingContent,
-                            y: {
-                                ...yAxis
-                            },
-                            x: {
-
-                                ...xAxis
-                            },
-                        }
-                    })} color={'primary'}>SAVE</Button>
+                    <Button variant={'outlined'} onClick={() => onSaveClick(vlSpec)} color={'primary'}>SAVE</Button>
                 </Box>
             </Box>
         </Box>

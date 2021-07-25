@@ -31,7 +31,6 @@ const VegaLiteComponent: FC<VegaComponentProps> = ({transform,mark, encoding, xA
     // "quantitative" if the datum is a number
     // "nominal" if the datum is a string
     // "temporal" if the datum is a date time object
-    console.log(vlSpec)
     useEffect(() => {
         setVlSpec({
             data: {

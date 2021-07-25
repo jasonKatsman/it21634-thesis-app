@@ -162,7 +162,12 @@ const useStyles = makeStyles(() => ({
 
 }))
 
-const CreateDialog: FC = () => {
+type dialogType = {
+    onSaveClick: (vega: any) => void
+    onClose:()=>void
+}
+
+const CreateDialog: FC<dialogType> = ({onClose,onSaveClick}) => {
     const classes = useStyles();
     const [selectedValue, setSelectedValue] = useState('')
     const [tabValue, setTabValue] = useState('fields')
@@ -353,8 +358,30 @@ const CreateDialog: FC = () => {
                         </Grid>}
                 </Box>
                 <Box className={classes.buttons}>
-                    <Button>cancel</Button>
-                    <Button variant={'outlined'} onClick={()=>console.log('save')} color={'primary'}>SAVE</Button>
+                    <Button onClick={onClose}>cancel</Button>
+                    <Button variant={'outlined'} onClick={() => onSaveClick({
+                        data: {
+                            values: [...dummyCoin]
+                        },
+                        "selection": {
+                            "grid": {
+                                "type": "interval", "bind": "scales"
+                            }
+                        },
+                        ...simpleStyles,
+                        ...transform,
+                        ...mark,
+                        encoding: {
+                            ...encodingContent,
+                            y: {
+                                ...yAxis
+                            },
+                            x: {
+
+                                ...xAxis
+                            },
+                        }
+                    })} color={'primary'}>SAVE</Button>
                 </Box>
             </Box>
         </Box>

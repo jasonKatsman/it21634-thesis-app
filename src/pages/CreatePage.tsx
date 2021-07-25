@@ -1,14 +1,10 @@
 import React, {FC, useState} from 'react';
-import {
-    Box, Button, Dialog,
-    Grid,
-    makeStyles, Modal,
-    Typography
-} from "@material-ui/core";
+import {Box, Button, Dialog, Grid, makeStyles, Typography} from "@material-ui/core";
 import {useHistory} from "react-router";
 import AddIcon from '@material-ui/icons/Add';
 import InsertChartIcon from '@material-ui/icons/InsertChart';
 import CreateDialog from "../components/Dialogs/CreateDialog";
+import VegaLitePreview from "../components/vega/VegaLitePreview";
 
 const useStyles = makeStyles(() => ({
     drawer: {
@@ -36,38 +32,53 @@ const CreatePage: FC = () => {
     const classes = useStyles();
     const history = useHistory()
     const [createModal, setCreateModal] = useState(false)
-    return (
-        <Box mt={2}>
-            <Grid container>
+    const [vegaConfigs, setVegaConfigs] = useState<any[]>([])
+console.log(vegaConfigs)
+    const prepareVegaInstances = () => {
+        return vegaConfigs?.map((vega, i) => {
+            return <Grid item key={i}><VegaLitePreview vegaConfig={vega} keyId={`preview-${i}`}/></Grid>
+        })
+    }
+
+return (
+    <Box mt={2}>
+        <Grid container>
+            <Grid item xs={12}>
+                <Typography variant={'h5'}>
+                    Create a Chart
+                </Typography>
                 <Grid item xs={12}>
-                    <Typography variant={'h5'}>
-                        Create a Chart
+                    <Typography variant={'body1'}>
+                        Click the add button to get started!
                     </Typography>
-                    <Grid item xs={12}>
-                        <Typography variant={'body1'}>
-                            Click the add button to get started!
-                        </Typography>
-                    </Grid>
                 </Grid>
-                <Grid item container xs={12} className={classes.buttonContainer}>
-                    <Grid item>
-                        <Button className={classes.button} onClick={() => setCreateModal(true)}>
-                            <Box>
-                                <Typography>Add Chart</Typography>
-                                <Box>
-                                    <InsertChartIcon className={classes.image}/>
-                                    <AddIcon className={classes.image}/>
-                                </Box>
-                            </Box>
-                        </Button>
-                    </Grid>
-                </Grid>
-                <Dialog open={createModal} fullWidth maxWidth={'xl'} onClose={() => setCreateModal(false)}>
-                    <CreateDialog/>
-                </Dialog>
             </Grid>
-        </Box>
-    );
+            <Grid item container xs={12} spacing={2} justify={'flex-start'} alignItems={'center'} className={classes.buttonContainer}>
+                {prepareVegaInstances()}
+                <Grid item>
+                    <Button className={classes.button} onClick={() => setCreateModal(true)}>
+                        <Box>
+                            <Typography>Add Chart</Typography>
+                            <Box>
+                                <InsertChartIcon className={classes.image}/>
+                                <AddIcon className={classes.image}/>
+                            </Box>
+                        </Box>
+                    </Button>
+                </Grid>
+            </Grid>
+            <Dialog open={createModal} fullWidth maxWidth={'xl'} onClose={() => setCreateModal(false)}>
+                <CreateDialog onClose={() => setCreateModal(false)}
+                              onSaveClick={(val) => {
+                                  console.log(val)
+                                  setVegaConfigs([...vegaConfigs, val])
+                                  // setCreateModal(false)
+
+                              }}/>
+            </Dialog>
+        </Grid>
+    </Box>
+);
 }
 
 export default CreatePage;

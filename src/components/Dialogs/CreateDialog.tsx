@@ -363,11 +363,11 @@ const CreateDialog: FC<dialogType> = ({onClose,onSaveClick}) => {
                         data: {
                             values: [...dummyCoin]
                         },
-                        "selection": {
-                            "grid": {
-                                "type": "interval", "bind": "scales"
-                            }
-                        },
+                        // "selection": {
+                        //     "grid": {
+                        //         "type": "interval", "bind": "scales"
+                        //     }
+                        // },
                         ...simpleStyles,
                         ...transform,
                         ...mark,

@@ -23,24 +23,36 @@ type VegaComponentProps = {
     encoding: vegaEncodingType,
     basicStyling?: any,
     mark: Mark
-    transform:Transform
+    transform: Transform
 }
-const VegaLiteComponent: FC<VegaComponentProps> = ({transform,mark, encoding, xAxis, yAxis, basicStyling, data, type}) => {
+const VegaLiteComponent: FC<VegaComponentProps> = ({
+                                                       transform,
+                                                       mark,
+                                                       encoding,
+                                                       xAxis,
+                                                       yAxis,
+                                                       basicStyling,
+                                                       data,
+                                                       type
+                                                   }) => {
     const classes = useStyles();
     const [vlSpec, setVlSpec] = useState<any>()
     // "quantitative" if the datum is a number
     // "nominal" if the datum is a string
     // "temporal" if the datum is a date time object
     useEffect(() => {
+        const selection = {
+            "selection": xAxis.field && yAxis.field ? {
+                "grid": {
+                    "type": "interval", "bind": "scales"
+                }
+            } : undefined
+        }
         setVlSpec({
             data: {
                 values: [...data]
             },
-            "selection": {
-                "grid": {
-                    "type": "interval", "bind": "scales"
-                }
-            },
+            ...selection,
             ...basicStyling,
             ...transform,
             ...mark,
@@ -56,8 +68,8 @@ const VegaLiteComponent: FC<VegaComponentProps> = ({transform,mark, encoding, xA
             }
         })
 
-    }, [data, basicStyling,transform, xAxis, yAxis, type,mark])
-    // console.log(vlSpec)
+    }, [data, basicStyling, transform, xAxis, yAxis, type, mark])
+    console.log(vlSpec)
 
     useEffect(() => {
         vegaEmbed('#chart', vlSpec).then(() => console.log('success')).catch((e) => console.log(e));

@@ -33,13 +33,27 @@ const CreatePage: FC = () => {
     const history = useHistory()
     const [createModal, setCreateModal] = useState(false)
     const [vegaConfigs, setVegaConfigs] = useState<any[]>([])
-console.log(vegaConfigs)
+    const [vegaConcat, setVegaConcat] = useState<any>()
     const prepareVegaInstances = () => {
         return vegaConfigs?.map((vega, i) => {
             return <Grid item key={i}><VegaLitePreview vegaConfig={vega} keyId={`preview-${i}`}/></Grid>
         })
     }
 
+    const concatInstances=()=>{
+        let preparedVega=vegaConfigs.map((item,i)=>{
+            if(i) return{...item,  name:`chart-${i}`}
+
+            return{...item, selection:undefined, name:`chart-${i}`}
+        })
+        console.log(preparedVega)
+setVegaConcat({
+    layer: [
+        ...preparedVega
+    ]
+})
+    }
+    console.log(vegaConcat)
 return (
     <Box mt={2}>
         <Grid container>
@@ -67,6 +81,8 @@ return (
                     </Button>
                 </Grid>
             </Grid>
+            <Button variant={'outlined'} onClick={concatInstances}>VCONCAT</Button>
+            {vegaConcat?<VegaLitePreview vegaConfig={vegaConcat} keyId={`concat-preview`}/>:undefined}
             <Dialog open={createModal} fullWidth maxWidth={'xl'} onClose={() => setCreateModal(false)}>
                 <CreateDialog onClose={() => setCreateModal(false)}
                               onSaveClick={(val) => {

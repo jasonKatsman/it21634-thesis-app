@@ -1,10 +1,11 @@
 import React, {FC, useState} from 'react';
 import {Box, Button, Dialog, Grid, makeStyles, Typography} from "@material-ui/core";
-import {useHistory} from "react-router";
 import AddIcon from '@material-ui/icons/Add';
 import InsertChartIcon from '@material-ui/icons/InsertChart';
 import CreateDialog from "../components/Dialogs/CreateDialog";
 import VegaLitePreview from "../components/vega/VegaLitePreview";
+import PreviewWrapper from "../components/common/PreviewWrapper";
+import CombineDialog from "../components/Dialogs/CombineDialog";
 
 const useStyles = makeStyles(() => ({
     drawer: {
@@ -30,49 +31,83 @@ const useStyles = makeStyles(() => ({
 
 const CreatePage: FC = () => {
     const classes = useStyles();
-    const history = useHistory()
     const [createModal, setCreateModal] = useState(false)
+    const [combineModal, setCombineModal] = useState(false)
+
     const [vegaConfigs, setVegaConfigs] = useState<any[]>([])
-    const [vegaConcat, setVegaConcat] = useState<any>()
+    const [interactiveCharts, setInteractiveCharts] = useState<boolean>(false)
+    const [selectedIndex, setSelectedIndex] = useState<number[]>([])
+
+    const setSelectedVega = (i: number) => {
+        const index = selectedIndex.findIndex(value => value === i)
+        if (index > -1) {
+            setSelectedIndex([...selectedIndex.slice(0, index), ...selectedIndex.slice(index + 1)])
+            return
+        }
+        setSelectedIndex([...selectedIndex, i])
+    }
+
     const prepareVegaInstances = () => {
         return vegaConfigs?.map((vega, i) => {
-            return <Grid item key={i}><VegaLitePreview vegaConfig={vega} keyId={`preview-${i}`}/></Grid>
+            return <Grid item key={i}>
+                <PreviewWrapper isInteractive={interactiveCharts}
+                                selected={selectedIndex.findIndex(value => value === i) > -1}
+                                onClick={() => setSelectedVega(i)}>
+                    <VegaLitePreview vegaConfig={vega} keyId={`preview-${i}`}/>
+                </PreviewWrapper>
+            </Grid>
         })
     }
 
-    const concatInstances = () => {
-        let selected = false
-        let preparedVega = vegaConfigs.map((item, i) => {
-            if (!selected && item.selection) {
-                selected = true
-                return {...item, name: `chart-${i}`}
+    const prepareTopContainer = () => {
+        if (vegaConfigs.length) {
+            return <Grid item xs={12}>
+                <Typography variant={'h5'}>
+                    Create a Chart
+                </Typography>
+                <Grid item xs={12}>
+                    <Typography variant={'body1'}>
+                        You can combine charts by pressing the following buttons, and then picking your charts.
+                    </Typography>
+                </Grid>
+                <Grid xs={12} style={{marginTop: 16}} item container>
+                    <Button variant={"contained"} color={interactiveCharts ? "secondary" : 'primary'}
+                            onClick={() => {
+                                setSelectedIndex([])
+                                setInteractiveCharts(!interactiveCharts)
+                            }}>
+                        {interactiveCharts ? 'CANCEL COMBINATION' : 'COMBINE CHARTS'}
+                    </Button>
+                    {interactiveCharts ?
+                        <Button style={{marginLeft: 32}} variant={"contained"} color={'primary'}
+                                onClick={() => {
+                                    setCombineModal(true)
+                                }}>
+                            COMBINE
+                        </Button>
+                        : undefined}
+                </Grid>
+            </Grid>
+        }
 
-            }
-            return {...item, selection:undefined, name: `chart-${i}`}
+        return <Grid item xs={12}>
+            <Typography variant={'h5'}>
+                Create a Chart
+            </Typography>
+            <Grid item xs={12}>
+                <Typography variant={'body1'}>
+                    Click the add button to get started!
+                </Typography>
+            </Grid>
+        </Grid>
 
-            // return{...item, selection:undefined, name:`chart-${i}`}
-        })
-        console.log(preparedVega)
-        setVegaConcat({
-            layer: [
-                ...preparedVega
-            ]
-        })
+
     }
-    console.log(vegaConcat)
+
     return (
         <Box mt={2}>
             <Grid container>
-                <Grid item xs={12}>
-                    <Typography variant={'h5'}>
-                        Create a Chart
-                    </Typography>
-                    <Grid item xs={12}>
-                        <Typography variant={'body1'}>
-                            Click the add button to get started!
-                        </Typography>
-                    </Grid>
-                </Grid>
+                {prepareTopContainer()}
                 <Grid item container xs={12} spacing={2} justify={'flex-start'} alignItems={'center'}
                       className={classes.buttonContainer}>
                     {prepareVegaInstances()}
@@ -88,16 +123,23 @@ const CreatePage: FC = () => {
                         </Button>
                     </Grid>
                 </Grid>
-                <Button variant={'outlined'} onClick={concatInstances}>VCONCAT</Button>
-                {vegaConcat ? <VegaLitePreview vegaConfig={vegaConcat} keyId={`concat-preview`}/> : undefined}
                 <Dialog open={createModal} fullWidth maxWidth={'xl'} onClose={() => setCreateModal(false)}>
                     <CreateDialog onClose={() => setCreateModal(false)}
                                   onSaveClick={(val) => {
-                                      console.log(val)
                                       setVegaConfigs([...vegaConfigs, val])
-                                      // setCreateModal(false)
-
+                                      setCreateModal(false)
                                   }}/>
+                </Dialog>
+
+                <Dialog open={combineModal} fullWidth maxWidth={'xl'} onClose={() => setCombineModal(false)}>
+                    <CombineDialog
+                        vegaConfigs={vegaConfigs}
+                        selectedIndex={selectedIndex}
+                        onClose={() => setCombineModal(false)}
+                        onSaveClick={(val) => {
+                            setVegaConfigs([...vegaConfigs, val])
+                            setCombineModal(false)
+                        }}/>
                 </Dialog>
             </Grid>
         </Box>

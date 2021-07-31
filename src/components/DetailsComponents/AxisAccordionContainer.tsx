@@ -97,7 +97,7 @@ const AxisAccordionContainer: FC<AxisAccordionContainerProps> = ({axis, setAxis,
                         </Grid>
                     </Grid>
 
-                    <Grid container item xs={12}>
+                    {axis.type !== 'temporal' ? <Grid container item xs={12}>
                         <Grid item xs={12}>
                             <Typography variant={'body1'}>Bin Data</Typography>
                         </Grid>
@@ -109,10 +109,9 @@ const AxisAccordionContainer: FC<AxisAccordionContainerProps> = ({axis, setAxis,
                                 <FormControlLabel value={false} control={<Radio/>} label="no"/>
                             </RadioGroup>
                         </Grid>
-                    </Grid>
+                    </Grid> : undefined}
 
-                    {/*show only when field is date*/}
-                    <Grid container item xs={12}>
+                    {axis.type === 'temporal' ? <Grid container item xs={12}>
                         <Grid item xs={12}>
                             <Typography variant={'body1'}>Time Unit</Typography>
                         </Grid>
@@ -120,8 +119,8 @@ const AxisAccordionContainer: FC<AxisAccordionContainerProps> = ({axis, setAxis,
                             <SelectAggregate value={axis.timeUnit} name={'timeUnit'}
                                              onChange={(e: any) => onInputChange(e)}>{prepareDateOptions()}</SelectAggregate>
                         </Grid>
-                    </Grid>
-                    <Grid container item xs={12}>
+                    </Grid> : undefined}
+                    {axis.type === 'temporal' ? <Grid container item xs={12}>
                         <Grid item xs={12}>
                             <Typography variant={'body1'}>Band Position (shift)</Typography>
                         </Grid>
@@ -136,52 +135,22 @@ const AxisAccordionContainer: FC<AxisAccordionContainerProps> = ({axis, setAxis,
                                     scale={(x) => x / 10}
                                     valueLabelDisplay="auto"/>
                         </Grid>
-                    </Grid>
+                    </Grid> : undefined}
 
-                    <Grid container item xs={12}>
+                    {axis.type !== 'temporal' ? <Grid container item xs={12}>
                         <Grid item xs={12}>
-                            <Typography variant={'body1'}>Scale Range</Typography>
+                            Start at zero:
+                            <RadioGroup aria-label="zero" name="zero" value={axis.scale?.zero ?? true}
+                                        onChange={(event => setAxis({
+                                            ...axis,
+                                            scale: {zero: event.target.value === 'true'}
+                                        }))}
+                                        className={classes.radios}>
+                                <FormControlLabel value={true} control={<Radio color={'primary'}/>} label="yes"/>
+                                <FormControlLabel value={false} control={<Radio/>} label="no"/>
+                            </RadioGroup>
                         </Grid>
-
-                        <Grid item xs={6}>
-                            <Typography variant={'subtitle2'}>Min value</Typography>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Typography variant={'subtitle2'}>Max value</Typography>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField value={axis?.scale?.domain?.[0] || 0} type={'number'}
-                                       onChange={(e) => {
-                                           console.log(e.target.value)
-                                           const newValue = e.target.value
-                                           const secondDomain = axis.scale?.domain?.[1]
-                                           let domain
-                                           if (secondDomain) {
-                                               domain = [newValue, secondDomain]
-                                           } else {
-                                               domain = [newValue]
-                                           }
-                                           setAxis({...axis, scale: {...axis.scale, domain: domain}})
-                                       }}/>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField value={axis?.scale?.domain?.[1] || 0} type={'number'}
-                                       onChange={(e) => {
-                                           const newValue = parseInt(e.target.value)
-                                           const firstDomain = axis.scale?.domain?.[0]
-                                           let domain
-                                           if (firstDomain) {
-                                               domain = [firstDomain, newValue]
-                                           } else {
-                                               domain = [0, newValue]
-                                           }
-                                           setAxis({...axis, scale: {...axis.scale, domain: domain}})
-                                       }}/>
-                        </Grid>
-                        {/*  encoding.y/x.scale.domain[min,max]  */
-                        }
-
-                    </Grid>
+                    </Grid> : undefined}
                 </Grid>
 
             </AccordionDetails>

@@ -3,7 +3,6 @@ import React, {FC} from "react";
 import AxisAccordionContainer from "../../DetailsComponents/AxisAccordionContainer";
 import MarkAccordionContainer from "../../DetailsComponents/MarkAccordionContainer";
 import {Transform, vegaFieldType} from "../../../Types/VegaFieldType";
-import FilterAccordionContainer from "../../DetailsComponents/FilterAccordionContainer";
 
 const useStyles = makeStyles(() => ({}))
 type DetailsTabProps = {
@@ -18,8 +17,6 @@ type DetailsTabProps = {
 
 }
 const DetailsTab: FC<DetailsTabProps> = ({
-                                             transform,
-                                             setTransform,
                                              xAxis,
                                              yAxis,
                                              setXAxis,
@@ -29,10 +26,10 @@ const DetailsTab: FC<DetailsTabProps> = ({
                                          }) => {
     const classes = useStyles()
     return (<Grid container>
-        <Grid item xs={12}>
-            <FilterAccordionContainer transform={transform} setTransform={setTransform}/>
+        {/*<Grid item xs={12}>*/}
+        {/*    <FilterAccordionContainer transform={transform} setTransform={setTransform}/>*/}
 
-        </Grid>
+        {/*</Grid>*/}
         <Grid item xs={12}>
             <MarkAccordionContainer mark={mark} setMark={setMark}/>
             {/*mark*/}

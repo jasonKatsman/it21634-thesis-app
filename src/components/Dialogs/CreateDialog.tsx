@@ -17,12 +17,12 @@ import TextFieldsIcon from '@material-ui/icons/TextFields';
 import SettingsApplicationsIcon from '@material-ui/icons/SettingsApplications';
 import ColorLensIcon from '@material-ui/icons/ColorLens';
 import {Mark, Transform, vegaEncodingType, vegaFieldType} from "../../Types/VegaFieldType";
-import dummyCoin from '../../Dummy/dummyCoin.json'
 import {findValueType} from "../../utils/findValueType";
 import FieldsTab from "./tabs/FieldsTab";
 import DetailsTab from "./tabs/DetailsTab";
 import StylesTab from "./tabs/StylesTab";
 import VegaLitePreview from "../vega/VegaLitePreview";
+import {getCoinById} from "../../http/endpoints/coins";
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -172,6 +172,7 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
     const [selectedValue, setSelectedValue] = useState('')
     const [tabValue, setTabValue] = useState('fields')
     const [currentDrag, setCurrentDrag] = useState(false)
+    const [coinData, setCoinData] = useState<any[]>([])
     const [yDrag, setYDrag] = useState(false)
     const [xDrag, setXDrag] = useState(false)
     const [xAxis, setXAxis] = useState<vegaFieldType>({
@@ -224,31 +225,40 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
                 }
             } : undefined
         }
-        setVlSpec({
-            data: {
-                values: [...dummyCoin]
-            },
-            ...selection,
-            ...simpleStyles,
-            ...transform,
-            ...mark,
-            encoding: {
-                ...encodingContent,
-                y: {
-                    ...yAxis
+        if (coinData.length)
+            setVlSpec({
+                data: {
+                    values: [...coinData]
                 },
-                x: {
+                ...selection,
+                ...simpleStyles,
+                ...transform,
+                ...mark,
+                encoding: {
+                    ...encodingContent,
+                    y: {
+                        ...yAxis
+                    },
+                    x: {
 
-                    ...xAxis
-                },
-            }
-        })
+                        ...xAxis
+                    },
+                }
+            })
 
-    }, [dummyCoin, simpleStyles, transform, xAxis, yAxis, mark])
+    }, [coinData, simpleStyles, transform, xAxis, yAxis, mark])
 
     useEffect(() => {
+        const fetchCoin = async (coin: string) => {
+            try {
+                const res = await getCoinById({id: coin})
+                setCoinData(res.data)
+            } catch (e) {
+                console.log(e)
+            }
+        }
         if (selectedValue) {
-            console.log('fetching coin')
+            fetchCoin(selectedValue)
         }
     }, [selectedValue])
 
@@ -271,7 +281,8 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
                                setMark={setMark}/>
         }
         if (tabValue === 'styles') {
-            return <StylesTab simpleStyles={simpleStyles} setSimpleStyles={setSimpleStyles} xAxis={xAxis} setXAxis={setXAxis} yAxis={yAxis} setYAxis={setYAxis} mark={mark}
+            return <StylesTab simpleStyles={simpleStyles} setSimpleStyles={setSimpleStyles} xAxis={xAxis}
+                              setXAxis={setXAxis} yAxis={yAxis} setYAxis={setYAxis} mark={mark}
                               setMark={setMark}/>
         }
     }
@@ -285,12 +296,12 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
         setYDrag(false)
         let data = event.dataTransfer.getData("text");
         if (event.target.id === 'x') {
-            const coin: any = dummyCoin[0]
+            const coin: any = coinData[0]
             const type = findValueType(coin[data])
             setXAxis({...xAxis, type: type, field: data})
         }
         if (event.target.id === 'y') {
-            const coin: any = dummyCoin[0]
+            const coin: any = coinData[0]
             const type = findValueType(coin[data])
             setYAxis({...yAxis, type: type, field: data})
         }
@@ -357,7 +368,7 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
 
 
                 <Box className={classes.coinBox}>
-                    {selectedValue ? <Grid container>
+                    {selectedValue && coinData.length ? <Grid container>
                             <Grid item xs={3}>
                                 <Tabs classes={{indicator: classes.indicator}} variant={'fullWidth'} value={tabValue}
                                       onChange={(e, val) => setTabValue(val)}>

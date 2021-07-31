@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const URL = 'https://cors-anywhere.herokuapp.com/https://ghoapi.azureedge.net/api/';
+const URL = 'http://localhost:8080/api/';
 
 const axiosInstance = axios.create({
     baseURL: URL

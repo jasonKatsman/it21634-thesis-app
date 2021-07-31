@@ -271,7 +271,7 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
                                setMark={setMark}/>
         }
         if (tabValue === 'styles') {
-            return <StylesTab xAxis={xAxis} setXAxis={setXAxis} yAxis={yAxis} setYAxis={setYAxis} mark={mark}
+            return <StylesTab simpleStyles={simpleStyles} setSimpleStyles={setSimpleStyles} xAxis={xAxis} setXAxis={setXAxis} yAxis={yAxis} setYAxis={setYAxis} mark={mark}
                               setMark={setMark}/>
         }
     }

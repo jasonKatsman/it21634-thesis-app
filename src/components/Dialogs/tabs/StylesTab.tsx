@@ -1,25 +1,31 @@
 import {Grid, makeStyles} from "@material-ui/core";
 import React, {FC} from "react";
-import {vegaFieldType} from "../../../Types/VegaFieldType";
+import {Mark, vegaFieldType} from "../../../Types/VegaFieldType";
 import MarkStylesAccordionContainer from "../../DetailsComponents/MarkStylesAccordionContainer";
 import AxisStylesAccordionContainer from "../../DetailsComponents/AxisStylesAccordionContainer";
+import GeneralStylesAccordionContainer from "../../DetailsComponents/GeneralStylesAccordionContainer";
 
 const useStyles = makeStyles(() => ({}))
 type StylesTabProps = {
-    mark: any
-    setMark: (value: any) => void
+    mark: Mark
+    setMark: (value: Mark) => void
     xAxis: vegaFieldType
     yAxis: vegaFieldType
     setXAxis: (value: vegaFieldType) => void
     setYAxis: (value: vegaFieldType) => void
+    simpleStyles:any
+    setSimpleStyles:(value: any) => void
 
 }
-const StylesTab: FC<StylesTabProps> = ({xAxis, yAxis, setXAxis, setYAxis, mark, setMark}) => {
+const StylesTab: FC<StylesTabProps> = ({simpleStyles,setSimpleStyles,xAxis, yAxis, setXAxis, setYAxis, mark, setMark}) => {
     const classes = useStyles()
     return (<Grid container>
         <Grid item xs={12}>
         </Grid>
         <Grid item xs={12}>
+        </Grid>
+        <Grid item xs={12}>
+            <GeneralStylesAccordionContainer simpleStyles={simpleStyles} setSimpleStyles={setSimpleStyles} title={'General styles'}/>
         </Grid>
         <Grid item xs={12}>
             <MarkStylesAccordionContainer mark={mark} setMark={setMark} title={'Mark styles'}/>

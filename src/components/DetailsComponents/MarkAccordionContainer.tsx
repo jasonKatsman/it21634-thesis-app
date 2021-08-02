@@ -63,18 +63,19 @@ const MarkAccordionContainer: FC<DetailsTabProps> = ({mark, setMark}) => {
                     </Grid>
 
                     {/*interpolate is for line & area marks. It finds the middle value between two data points*/}
-                    <Grid container item xs={12}>
+                    {mark.mark.type==='line'?<Grid container item xs={12}>
                         <Grid item xs={12}>
                             <Typography variant={'body1'}>Interpolate</Typography>
                         </Grid>
                         <Grid item xs={12}>
-                            <SelectAggregate disabled={mark.mark.type!=='line' && mark.mark.type!=='area'} value={mark.mark.interpolate}
+                            <SelectAggregate disabled={mark.mark.type !== 'line' && mark.mark.type !== 'area'}
+                                             value={mark.mark.interpolate}
                                              onChange={(e => setMark({
                                                  mark: {...mark.mark, interpolate: e.target.value as string}
                                              }))}>
                                 {prepareInterpolateOptions()}
                             </SelectAggregate> </Grid>
-                    </Grid>
+                    </Grid>:undefined}
                 </Grid>
 
             </AccordionDetails>

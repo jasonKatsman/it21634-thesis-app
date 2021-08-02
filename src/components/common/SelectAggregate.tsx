@@ -17,7 +17,7 @@ const useStyles = makeStyles(() => ({
         minWidth: '150px',
         padding: '4px 8px',
         width: '100% !important',
-        boxShadow: '0 1px 4px 2px #E8E8E8',
+        boxShadow: '1px 2px 3px 2px #E8E8E8',
         border: '1px solid #C0C0C0',
         borderRadius: 4,
         transition: '0.2s',
@@ -29,7 +29,17 @@ const useStyles = makeStyles(() => ({
             background: 'none'
         }
     },
-    formControl: {}
+    formControl: {},
+    label:{
+        marginTop:6,
+        marginLeft:12,
+        zIndex:50,
+        '&.MuiInputLabel-shrink':{
+            transform:'translate(-10px , -8px) scale(0.9)',
+            marginBottom:32,
+            color:'black'
+        }
+    }
 }))
 
 type selectAggregateProps = {
@@ -40,7 +50,7 @@ const SelectAggregate: FC<SelectProps & selectAggregateProps> = ({selectTitle, c
     const classes = useStyles()
 
     return <FormControl className={classes.formControl}>
-        {selectTitle ? <InputLabel htmlFor={'aggregate-select'}>{selectTitle}</InputLabel> : undefined}
+        {selectTitle ? <InputLabel htmlFor={'aggregate-select'} className={classes.label}>{selectTitle}</InputLabel> : undefined}
         <Select MenuProps={{
             anchorOrigin: {
                 vertical: "bottom",

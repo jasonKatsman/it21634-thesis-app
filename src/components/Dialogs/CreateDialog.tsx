@@ -24,6 +24,7 @@ import DetailsTab from "./tabs/DetailsTab";
 import StylesTab from "./tabs/StylesTab";
 import VegaLitePreview from "../vega/VegaLitePreview";
 import {getCoinById} from "../../http/endpoints/coins";
+import SelectAggregate from "../common/SelectAggregate";
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -34,7 +35,8 @@ const useStyles = makeStyles(() => ({
     inputBox: {
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        marginBottom:8
     },
     tabsContainer: {
         maxHeight: 'calc( 80vh - 270px )',
@@ -371,13 +373,10 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
                     <Typography variant={'body1'}>
                         {!selectedValue ? 'First, select a coin from the input.' : 'Drag fields in the boxes'}
                     </Typography>
-                    <FormControl>
-                        <InputLabel htmlFor={'coin-select'}>Select a coin</InputLabel>
-                        <Select value={selectedValue} onChange={onSelectCoinChange} id={'coin-select'}
-                                style={{width: 250}}>
+                        <SelectAggregate selectTitle={'Select a coin'} value={selectedValue} onChange={onSelectCoinChange} id={'coin-select'}
+                                style={{minWidth: 300}}>
                             {prepareSelectOptions()}
-                        </Select>
-                    </FormControl>
+                        </SelectAggregate>
                 </Box>
                 <Divider/>
 

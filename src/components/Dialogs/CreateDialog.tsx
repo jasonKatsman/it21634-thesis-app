@@ -2,6 +2,7 @@ import React, {ChangeEvent, FC, useEffect, useState} from 'react';
 import {
     Box,
     Button,
+    CircularProgress,
     Divider,
     FormControl,
     Grid,
@@ -56,6 +57,14 @@ const useStyles = makeStyles(() => ({
 
         },
     },
+    loading:{
+        color:'gray',
+
+        marginTop:180,
+        display:'flex',
+        justifyContent:'center'
+    },
+
     coinBox: {
         marginTop: 16,
     },
@@ -175,6 +184,7 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
     const [coinData, setCoinData] = useState<any[]>([])
     const [yDrag, setYDrag] = useState(false)
     const [xDrag, setXDrag] = useState(false)
+    const [loading, setLoading] = useState(false)
     const [xAxis, setXAxis] = useState<vegaFieldType>({
         aggregate: '',
         field: '',
@@ -250,10 +260,15 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
 
     useEffect(() => {
         const fetchCoin = async (coin: string) => {
+            setLoading(true)
             try {
                 const res = await getCoinById({id: coin})
+                setLoading(false)
+
                 setCoinData(res.data)
             } catch (e) {
+                setLoading(false)
+
                 console.log(e)
             }
         }
@@ -367,36 +382,40 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
                 <Divider/>
 
 
-                <Box className={classes.coinBox}>
-                    {selectedValue && coinData.length ? <Grid container>
-                            <Grid item xs={3}>
-                                <Tabs classes={{indicator: classes.indicator}} variant={'fullWidth'} value={tabValue}
-                                      onChange={(e, val) => setTabValue(val)}>
-                                    <Tab label={'Fields'} value={'fields'} className={classes.tab}
-                                         icon={<TextFieldsIcon/>}/>
-                                    <Tab disabled={!xAxis.field && !yAxis.field} label={'Details'} value={'details'}
-                                         className={classes.tab}
-                                         icon={<SettingsApplicationsIcon/>}/>
-                                    <Tab disabled={!xAxis.field && !yAxis.field} label={'Styles'} value={'styles'}
-                                         className={classes.tab} icon={<ColorLensIcon/>}/>
-                                </Tabs>
-                                <Box className={classes.tabsContainer}>
+                {loading ?
+                    <Box className={classes.loading}>
+                        <CircularProgress color={'inherit'} size={60}/>
+                    </Box>
+                    : <Box className={classes.coinBox}>
+                        {selectedValue && coinData.length ? <Grid container>
+                                <Grid item xs={3}>
+                                    <Tabs classes={{indicator: classes.indicator}} variant={'fullWidth'} value={tabValue}
+                                          onChange={(e, val) => setTabValue(val)}>
+                                        <Tab label={'Fields'} value={'fields'} className={classes.tab}
+                                             icon={<TextFieldsIcon/>}/>
+                                        <Tab disabled={!xAxis.field && !yAxis.field} label={'Details'} value={'details'}
+                                             className={classes.tab}
+                                             icon={<SettingsApplicationsIcon/>}/>
+                                        <Tab disabled={!xAxis.field && !yAxis.field} label={'Styles'} value={'styles'}
+                                             className={classes.tab} icon={<ColorLensIcon/>}/>
+                                    </Tabs>
+                                    <Box className={classes.tabsContainer}>
 
-                                    {prepareTabs()}
-                                </Box>
-                            </Grid>
-                            <Grid item xs={9} className={classes.chartBox} container justify={'center'}
-                                  alignItems={'center'}>
-                                <Box>
-                                    <VegaLitePreview vegaConfig={vlSpec} keyId={"vegaLite-create"}/>
-                                </Box>
-                                {prepareChartArea()}
-                            </Grid>
-                        </Grid> :
-                        <Grid container justify={'center'} alignItems={'center'} style={{minHeight: 200}}>
-                            <Typography>No coin selected</Typography>
-                        </Grid>}
-                </Box>
+                                        {prepareTabs()}
+                                    </Box>
+                                </Grid>
+                                <Grid item xs={9} className={classes.chartBox} container justify={'center'}
+                                      alignItems={'center'}>
+                                    <Box>
+                                        <VegaLitePreview vegaConfig={vlSpec} keyId={"vegaLite-create"}/>
+                                    </Box>
+                                    {prepareChartArea()}
+                                </Grid>
+                            </Grid> :
+                            <Grid container justify={'center'} alignItems={'center'} style={{minHeight: 200}}>
+                                <Typography>No coin selected</Typography>
+                            </Grid>}
+                    </Box>}
                 <Box className={classes.buttons}>
                     <Button onClick={onClose}>cancel</Button>
                     <Button variant={'outlined'} onClick={() => onSaveClick(vlSpec)} color={'primary'}>SAVE</Button>

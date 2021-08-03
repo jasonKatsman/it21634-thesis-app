@@ -25,6 +25,7 @@ import StylesTab from "./tabs/StylesTab";
 import VegaLitePreview from "../vega/VegaLitePreview";
 import {getCoinById} from "../../http/endpoints/coins";
 import SelectAggregate from "../common/SelectAggregate";
+import RequestOptions from "../common/RequestOptions";
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -411,9 +412,11 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
                                     {prepareChartArea()}
                                 </Grid>
                             </Grid> :
-                            <Grid container justify={'center'} alignItems={'center'} style={{minHeight: 200}}>
-                                <Typography>No coin selected</Typography>
-                            </Grid>}
+                            <RequestOptions/>
+                            // <Grid container justify={'center'} alignItems={'center'} style={{minHeight: 200}}>
+                            //     <Typography>No coin selected</Typography>
+                            // </Grid>
+                        }
                     </Box>}
                 <Box className={classes.buttons}>
                     <Button onClick={onClose}>cancel</Button>

@@ -1,5 +1,16 @@
 import React, {ChangeEvent, FC, useEffect, useState} from 'react';
-import {Box, Button, CircularProgress, Divider, Grid, makeStyles, Tab, Tabs, Typography} from "@material-ui/core";
+import {
+    Box,
+    Button,
+    CircularProgress,
+    Divider,
+    Grid,
+    makeStyles,
+    Tab,
+    Tabs,
+    Theme,
+    Typography
+} from "@material-ui/core";
 import coins from '../../Dummy/coins.json'
 import TextFieldsIcon from '@material-ui/icons/TextFields';
 import SettingsApplicationsIcon from '@material-ui/icons/SettingsApplications';
@@ -13,12 +24,13 @@ import VegaLitePreview from "../vega/VegaLitePreview";
 import {getCustomCoinById} from "../../http/endpoints/coins";
 import SelectAggregate from "../common/SelectAggregate";
 import RequestOptions from "../common/RequestOptions";
+import CustomButtonBig from "../common/CustomButtonBig";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme: Theme) => ({
     root: {
         position: 'relative',
         padding: 32,
-        minHeight: 'calc( 100vh - 220px )',
+        minHeight: 'calc( 100vh - 150px )',
     },
     inputBox: {
         display: 'flex',
@@ -42,7 +54,7 @@ const useStyles = makeStyles(() => ({
 
         },
         '&::-webkit-scrollbar-thumb': {
-            background: '#686868',
+            background: theme.palette.primary.main,
             borderRadius: 4,
 
         },
@@ -59,7 +71,7 @@ const useStyles = makeStyles(() => ({
         marginTop: 16,
     },
     indicator: {
-        backgroundColor: '#323232'
+        backgroundColor: theme.palette.primary.main
     },
     tab: {
         '&.MuiTab-root': {
@@ -72,13 +84,16 @@ const useStyles = makeStyles(() => ({
     buttons: {
         position: 'absolute',
         bottom: 24,
-        right: 24
+        right: 24,
+        '&>:nth-child(n)': {
+            marginLeft: 16
+        }
     },
     chartBox: {
         borderLeft: '12px solid #ffffff',
         width: '100%',
 
-        height: 'calc( 80vh - 200px )'
+        height: 'calc( 90vh - 250px )'
     },
     options: {
         cursor: 'pointer',
@@ -357,11 +372,11 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
     return (
         <Box className={classes.root}>
             <Box style={{height: '100%'}}>
-                <Typography variant={'h5'}>
+                <Typography variant={'h5'} color={'primary'} style={{fontWeight: 'bold'}}>
                     Create a custom chart!
                 </Typography>
                 <Box className={classes.inputBox}>
-                    <Typography variant={'body1'}>
+                    <Typography variant={'body1'} color={'secondary'}>
                         {!coinData.length ? 'First, select a coin from the input.' : 'Drag fields in the boxes'}
                     </Typography>
                     {!coinData.length ? undefined
@@ -414,8 +429,11 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
                         }
                     </Box>}
                 <Box className={classes.buttons}>
-                    <Button onClick={onClose}>cancel</Button>
-                    <Button variant={'outlined'} onClick={() => onSaveClick(vlSpec)} color={'primary'}>SAVE</Button>
+                    <Button color={'secondary'} onClick={onClose}>cancel</Button>
+                    <CustomButtonBig variant={'contained'} style={{padding: '6px 48px'}}
+                                     onClick={() => onSaveClick(vlSpec)} color={'primary'}>
+                        <Typography>SAVE</Typography>
+                    </CustomButtonBig>
                 </Box>
             </Box>
         </Box>

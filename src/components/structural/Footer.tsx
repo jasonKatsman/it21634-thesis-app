@@ -1,11 +1,11 @@
 import React, {FC, useState} from 'react';
-import {Box, Grid, makeStyles, Typography, useMediaQuery, useTheme} from "@material-ui/core";
+import {Box, Grid, makeStyles, Theme, Typography, useMediaQuery, useTheme} from "@material-ui/core";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme:Theme) => ({
     root: {
         height: (props: any) => props.height,
         display: 'flex',
-        background: '#343434',
+        background: theme.palette.primary.main,
         padding: '0 16px',
         color: 'whitesmoke'
     }
@@ -18,8 +18,6 @@ interface FooterProps {
 const Footer: FC<FooterProps> = ({height = 60}) => {
     const classes = useStyles({height});
     const theme = useTheme();
-    const [isOpen, setIsOpen] = useState(false);
-    const smUp = useMediaQuery(theme.breakpoints.up('sm'));
 
     return (
         <Box className={classes.root}>

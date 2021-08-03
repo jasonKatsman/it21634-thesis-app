@@ -1,12 +1,12 @@
 import React, {FC} from "react";
-import {makeStyles, Tabs, TabsProps} from "@material-ui/core";
+import {makeStyles, Tabs, TabsProps, Theme} from "@material-ui/core";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme: Theme) => ({
     tabs: {
         color: 'rgba(0,0,0,0.9)',
         '& button': {
             '&:hover': {
-                borderRadius:6,
+                borderRadius: 6,
                 background: 'rgba(0,0,0,0.05)'
             }
         }
@@ -15,7 +15,7 @@ const useStyles = makeStyles(() => ({
         borderTopLeftRadius: 8,
         borderTopRightRadius: 8,
         height: 6,
-        background: '#343434'
+        background: theme.palette.primary.main
     },
 }))
 

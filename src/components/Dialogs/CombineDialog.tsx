@@ -1,19 +1,26 @@
 import React, {FC, useEffect, useState} from 'react';
-import {Box, Button, Divider, Grid, makeStyles, Typography,} from "@material-ui/core";
+import {Box, Grid, makeStyles, Typography,} from "@material-ui/core";
 import CombinationAccordionContainer from "../DetailsComponents/CombinationAccordionContainer";
 import CombinationSettingsAccordionContainer from "../DetailsComponents/CombinationSettingsAccordionContainer";
 import VegaLitePreview from "../vega/VegaLitePreview";
+import CustomButtonBig from "../common/CustomButtonBig";
 
 
 const useStyles = makeStyles(() => ({
     root: {
         position: 'relative',
         padding: 32,
-        minHeight: 'calc( 100vh - 220px )',
+        minHeight: 'calc( 100vh - 150px )',
     },
     introBox: {
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        borderBottom: '1px solid lightgray',
+        paddingBottom: 8
+
+    },
+    vegaLocation: {
+        minHeight: 'calc( 90vh - 150px )',
     },
     settingsBox: {
         maxHeight: 'calc( 90vh - 170px )',
@@ -71,13 +78,12 @@ const CombineDialog: FC<CombineDialogType> = ({vegaConfigs, selectedIndex, onClo
     return (
         <Box className={classes.root}>
             <Box className={classes.introBox}>
-                <Typography variant={'h6'}>
+                <Typography variant={'h5'} color={'primary'} style={{fontWeight: 'bold'}}>
                     Combine multiple charts!
                 </Typography>
-                <Typography variant={'body1'}>
+                <Typography variant={'body1'} color={'secondary'}>
                     Select the type of combination you want to occur!
                 </Typography>
-                <Divider/>
             </Box>
             <Box>
                 <Grid container>
@@ -91,14 +97,22 @@ const CombineDialog: FC<CombineDialogType> = ({vegaConfigs, selectedIndex, onClo
                             <Grid item xs={12}>
                                 <CombinationSettingsAccordionContainer/>
                             </Grid>
+                            <Grid item xs={12} container justify={'flex-end'}>
+                                <Box marginY={2} marginRight={2}>
+                                    <CustomButtonBig padding={'6px 32px'}
+                                                     onClick={() => onSaveClick(vegaCombination)}>
+                                        SAVE</CustomButtonBig>
+                                </Box>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={9} container justify={'center'} alignItems={'center'}>
+                        <Grid className={classes.vegaLocation} item xs={9} container justify={'center'}
+                              alignItems={'center'}>
                             <VegaLitePreview vegaConfig={vegaCombination} keyId={'combination-1'}/>
                         </Grid>
+
                     </Grid>
                 </Grid>
             </Box>
-            <Button onClick={() => onSaveClick(vegaCombination)} variant={'outlined'} color={'primary'}>SAVE</Button>
         </Box>
     );
 }

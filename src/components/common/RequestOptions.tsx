@@ -7,7 +7,7 @@ import CustomOption from "./CustomOption";
 
 const useStyles = makeStyles(() => ({
     root: {
-        marginTop: 80
+        marginTop: 50
     },
     button: {
         width: 300,
@@ -34,7 +34,7 @@ const RequestOptions: FC<RequestOptionsProps> = ({
     }
 
     const prepareSelectOptions = () => {
-        return coins.map((coin, i) => {
+        return coins.map((coin) => {
             return <CustomOption value={coin}>{coin}</CustomOption>
         })
     }
@@ -42,7 +42,7 @@ const RequestOptions: FC<RequestOptionsProps> = ({
     return (
         <Grid container item className={classes.root} xs={12} justify={'center'} alignItems={'center'}>
             <Grid item container justify={'center'} xs={12}>
-                <Typography variant={'h6'}>Please pick a coin and the desired duration!</Typography>
+                <Typography variant={'h5'} color={'secondary'} style={{fontWeight: 'bold'}}>Please pick a coin and the desired duration!</Typography>
             </Grid>
             <Grid item xs={6} style={{margin: '10px'}}>
                 <Divider/>

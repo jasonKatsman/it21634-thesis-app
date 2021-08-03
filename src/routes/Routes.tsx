@@ -10,9 +10,7 @@ const Routes: FC = () => {
         <Switch>
             <Route exact path={'/createData'} component={DataPage}/>
             <Route exact path={'/create'} component={CreatePage}/>
-            <Route exact path={'/test'} component={TestPage}/>
-
-
+            <Route exact path={'/help'} component={TestPage}/>
             <Route exact path={'/'} component={Home}/>
         </Switch>
     );

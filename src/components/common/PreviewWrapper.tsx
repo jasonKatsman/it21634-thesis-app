@@ -1,9 +1,9 @@
 import React, {FC} from 'react';
-import {Box, ButtonBase, ButtonBaseProps, Card, makeStyles} from "@material-ui/core";
+import {Box, ButtonBase, ButtonBaseProps, Card, makeStyles, Theme} from "@material-ui/core";
 import {RadioButtonChecked, RadioButtonUnchecked} from "@material-ui/icons";
 
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme:Theme) => ({
     root: {
         position: 'relative',
     },
@@ -11,7 +11,7 @@ const useStyles = makeStyles(() => ({
         // border: '2px solid black'
     },
     selected: {
-        boxShadow: '0px 0px 5px 1px #3f51b5'
+        boxShadow:`0px 0px 5px 1px ${theme.palette.primary.main}`
     },
     radioButton: {
         position: 'absolute',
@@ -20,7 +20,7 @@ const useStyles = makeStyles(() => ({
         '& svg': {
             width: 30,
             height: 30,
-            color: '#3f51b5',
+            color: theme.palette.primary.main,
         }
 
     }

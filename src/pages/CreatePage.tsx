@@ -61,7 +61,7 @@ const CreatePage: FC = () => {
 
     const prepareTopContainer = () => {
         if (vegaConfigs.length) {
-            return <Grid item xs={12}>
+            return <Grid item xs={12} style={{marginTop:32}}>
                 <Typography variant={'h5'}>
                     Create a Chart
                 </Typography>

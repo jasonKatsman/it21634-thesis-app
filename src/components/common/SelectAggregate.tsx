@@ -31,6 +31,7 @@ const useStyles = makeStyles(() => ({
     },
     formControl: {},
     label:{
+        pointerEvents:'none',
         marginTop:6,
         marginLeft:12,
         zIndex:50,

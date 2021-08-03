@@ -1,18 +1,5 @@
 import React, {ChangeEvent, FC, useEffect, useState} from 'react';
-import {
-    Box,
-    Button,
-    CircularProgress,
-    Divider,
-    FormControl,
-    Grid,
-    InputLabel,
-    makeStyles,
-    Select,
-    Tab,
-    Tabs,
-    Typography
-} from "@material-ui/core";
+import {Box, Button, CircularProgress, Divider, Grid, makeStyles, Tab, Tabs, Typography} from "@material-ui/core";
 import coins from '../../Dummy/coins.json'
 import TextFieldsIcon from '@material-ui/icons/TextFields';
 import SettingsApplicationsIcon from '@material-ui/icons/SettingsApplications';
@@ -23,7 +10,7 @@ import FieldsTab from "./tabs/FieldsTab";
 import DetailsTab from "./tabs/DetailsTab";
 import StylesTab from "./tabs/StylesTab";
 import VegaLitePreview from "../vega/VegaLitePreview";
-import {getCoinById} from "../../http/endpoints/coins";
+import {getCustomCoinById} from "../../http/endpoints/coins";
 import SelectAggregate from "../common/SelectAggregate";
 import RequestOptions from "../common/RequestOptions";
 
@@ -37,7 +24,7 @@ const useStyles = makeStyles(() => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginBottom:8
+        marginBottom: 8
     },
     tabsContainer: {
         maxHeight: 'calc( 80vh - 270px )',
@@ -60,12 +47,12 @@ const useStyles = makeStyles(() => ({
 
         },
     },
-    loading:{
-        color:'gray',
+    loading: {
+        color: 'gray',
 
-        marginTop:180,
-        display:'flex',
-        justifyContent:'center'
+        marginTop: 180,
+        display: 'flex',
+        justifyContent: 'center'
     },
 
     coinBox: {
@@ -181,13 +168,14 @@ type dialogType = {
 
 const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
     const classes = useStyles();
-    const [selectedValue, setSelectedValue] = useState('')
     const [tabValue, setTabValue] = useState('fields')
     const [currentDrag, setCurrentDrag] = useState(false)
     const [coinData, setCoinData] = useState<any[]>([])
     const [yDrag, setYDrag] = useState(false)
     const [xDrag, setXDrag] = useState(false)
     const [loading, setLoading] = useState(false)
+    const [requestValue, setRequestValue] = useState<{ coin: string, time: string }>({coin: '', time: 'weekly'})
+
     const [xAxis, setXAxis] = useState<vegaFieldType>({
         aggregate: '',
         field: '',
@@ -261,24 +249,24 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
 
     }, [coinData, simpleStyles, transform, xAxis, yAxis, mark])
 
-    useEffect(() => {
-        const fetchCoin = async (coin: string) => {
-            setLoading(true)
-            try {
-                const res = await getCoinById({id: coin})
-                setLoading(false)
+    const fetchCustomCoin = async (id: string, frequency: string) => {
+        setLoading(true)
+        try {
+            const res = await getCustomCoinById({id: id, frequency: frequency})
+            setLoading(false)
+            setCoinData(res.data)
+        } catch (e) {
+            setLoading(false)
 
-                setCoinData(res.data)
-            } catch (e) {
-                setLoading(false)
+            console.log(e)
+        }
+    }
 
-                console.log(e)
-            }
+    const makeRequest = () => {
+        if (requestValue.time && requestValue.coin) {
+            fetchCustomCoin(requestValue.coin, requestValue.time)
         }
-        if (selectedValue) {
-            fetchCoin(selectedValue)
-        }
-    }, [selectedValue])
+    }
 
     const prepareSelectOptions = () => {
         return coins.map((coin, i) => {
@@ -286,7 +274,9 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
         })
     }
     const onSelectCoinChange = (e: ChangeEvent<{ name?: string | undefined; value: unknown; }>) => {
-        setSelectedValue(e.target.value as string)
+        setRequestValue({...requestValue, coin: e.target.value as string})
+        fetchCustomCoin(e.target.value as string, requestValue.time)
+
     }
 
     const prepareTabs = () => {
@@ -367,17 +357,21 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
     return (
         <Box className={classes.root}>
             <Box style={{height: '100%'}}>
-                <Typography variant={'h6'}>
+                <Typography variant={'h5'}>
                     Create a custom chart!
                 </Typography>
                 <Box className={classes.inputBox}>
                     <Typography variant={'body1'}>
-                        {!selectedValue ? 'First, select a coin from the input.' : 'Drag fields in the boxes'}
+                        {!coinData.length ? 'First, select a coin from the input.' : 'Drag fields in the boxes'}
                     </Typography>
-                        <SelectAggregate selectTitle={'Select a coin'} value={selectedValue} onChange={onSelectCoinChange} id={'coin-select'}
-                                style={{minWidth: 300}}>
+                    {!coinData.length ? undefined
+                        : <SelectAggregate selectTitle={'Select a coin'} value={requestValue.coin}
+                                           onChange={onSelectCoinChange}
+                                           id={'coin-select'}
+                                           style={{minWidth: 300}}>
                             {prepareSelectOptions()}
                         </SelectAggregate>
+                    }
                 </Box>
                 <Divider/>
 
@@ -387,9 +381,11 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
                         <CircularProgress color={'inherit'} size={60}/>
                     </Box>
                     : <Box className={classes.coinBox}>
-                        {selectedValue && coinData.length ? <Grid container>
+                        {requestValue.coin && requestValue.time && coinData.length ?
+                            (<Grid container>
                                 <Grid item xs={3}>
-                                    <Tabs classes={{indicator: classes.indicator}} variant={'fullWidth'} value={tabValue}
+                                    <Tabs classes={{indicator: classes.indicator}} variant={'fullWidth'}
+                                          value={tabValue}
                                           onChange={(e, val) => setTabValue(val)}>
                                         <Tab label={'Fields'} value={'fields'} className={classes.tab}
                                              icon={<TextFieldsIcon/>}/>
@@ -411,11 +407,10 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
                                     </Box>
                                     {prepareChartArea()}
                                 </Grid>
-                            </Grid> :
-                            <RequestOptions/>
-                            // <Grid container justify={'center'} alignItems={'center'} style={{minHeight: 200}}>
-                            //     <Typography>No coin selected</Typography>
-                            // </Grid>
+                            </Grid>)
+                            :
+                            <RequestOptions onButtonClick={makeRequest} setRequestValue={setRequestValue}
+                                            requestValue={requestValue}/>
                         }
                     </Box>}
                 <Box className={classes.buttons}>

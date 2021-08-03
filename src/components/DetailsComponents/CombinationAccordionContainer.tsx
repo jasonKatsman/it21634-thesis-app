@@ -47,7 +47,7 @@ const CombinationAccordionContainer: FC<CombinationAccordionContainerProps> = ({
         if (newValue === 'layer') {
             let selected = false
             let preparedVega = vegaConfigs.map((item: any, i: number) => {
-                if (!selected && item.selection) {
+                if (!selected && item?.selection) {
                     selected = true
                     return {...item, name: `chart-COMBINED-${i}`}
                 }

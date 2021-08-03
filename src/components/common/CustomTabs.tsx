@@ -14,7 +14,7 @@ const useStyles = makeStyles(() => ({
     indicator: {
         borderTopLeftRadius: 8,
         borderTopRightRadius: 8,
-        height: 7,
+        height: 6,
         background: '#343434'
     },
 }))

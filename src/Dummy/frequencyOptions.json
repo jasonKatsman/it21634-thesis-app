@@ -1,0 +1,22 @@
+[
+  {
+    "value": "daily",
+    "title": "Today"
+  },
+  {
+    "value": "weekly",
+    "title": "This week"
+  },
+  {
+    "value": "monthly",
+    "title": "This Month"
+  },
+  {
+    "value": "6-months",
+    "title": "Last 6 months"
+  },
+  {
+    "value": "yearly",
+    "title": "This year"
+  }
+]

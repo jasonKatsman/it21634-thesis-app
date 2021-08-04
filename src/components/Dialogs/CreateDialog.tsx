@@ -12,6 +12,8 @@ import {
     Typography
 } from "@material-ui/core";
 import coins from '../../Dummy/coins.json'
+import frequencyOptions from '../../Dummy/frequencyOptions.json'
+import SyncIcon from '@material-ui/icons/Sync';
 import TextFieldsIcon from '@material-ui/icons/TextFields';
 import SettingsApplicationsIcon from '@material-ui/icons/SettingsApplications';
 import ColorLensIcon from '@material-ui/icons/ColorLens';
@@ -31,6 +33,16 @@ const useStyles = makeStyles((theme: Theme) => ({
         position: 'relative',
         padding: 32,
         minHeight: 'calc( 100vh - 150px )',
+    },
+    selectSection: {
+        display: 'flex',
+        alignItems: 'center',
+        '& button': {
+            marginTop: 16
+        },
+        '&>:nth-child(n)': {
+            marginLeft: 16
+        }
     },
     inputBox: {
         display: 'flex',
@@ -282,15 +294,20 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
             fetchCustomCoin(requestValue.coin, requestValue.time)
         }
     }
-
     const prepareSelectOptions = () => {
-        return coins.map((coin, i) => {
+        return coins.map((coin) => {
             return <option className={classes.options} value={coin}>{coin}</option>
         })
     }
-    const onSelectCoinChange = (e: ChangeEvent<{ name?: string | undefined; value: unknown; }>) => {
-        setRequestValue({...requestValue, coin: e.target.value as string})
-        fetchCustomCoin(e.target.value as string, requestValue.time)
+
+    const prepareSelectFrequencyOptions = () => {
+        return frequencyOptions.map((freq) => {
+            return <option className={classes.options} value={freq.value}>{freq.title}</option>
+        })
+    }
+    const onSelectCoinChange = (e: ChangeEvent<{ name?: string | undefined; value: unknown; }>, name: string) => {
+        setRequestValue({...requestValue, [name]: e.target.value as string})
+        // fetchCustomCoin(e.target.value as string, requestValue.time)
 
     }
 
@@ -380,18 +397,33 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
                         {!coinData.length ? 'First, select a coin from the input.' : 'Drag fields in the boxes'}
                     </Typography>
                     {!coinData.length ? undefined
-                        : <SelectAggregate selectTitle={'Select a coin'} value={requestValue.coin}
-                                           onChange={onSelectCoinChange}
-                                           id={'coin-select'}
-                                           style={{minWidth: 300}}>
-                            {prepareSelectOptions()}
-                        </SelectAggregate>
+                        : (<Box className={classes.selectSection}>
+                                <SelectAggregate selectTitle={'Select a duration'} value={requestValue.time}
+                                                 onChange={(e) => onSelectCoinChange(e, 'time')}
+                                                 id={'coin-select'}
+                                                 style={{minWidth: 200}}>
+                                    {prepareSelectFrequencyOptions()}
+                                </SelectAggregate>
+                                <SelectAggregate selectTitle={'Select a coin'} value={requestValue.coin}
+                                                 onChange={(e) => onSelectCoinChange(e, 'coin')}
+                                                 id={'coin-select'}
+                                                 style={{minWidth: 200}}>
+                                    {prepareSelectOptions()}
+                                </SelectAggregate>
+                                <Button variant={'contained'} color={'primary'}
+                                        onClick={loading ? undefined : makeRequest}>
+                                    {loading ? <CircularProgress color={'inherit'} size={25}/>
+                                        : <SyncIcon/>}
+                                </Button>
+                            </Box>
+                        )
+
                     }
                 </Box>
                 <Divider/>
 
 
-                {loading ?
+                {loading && !coinData.length ?
                     <Box className={classes.loading}>
                         <CircularProgress color={'inherit'} size={60}/>
                     </Box>
@@ -422,19 +454,20 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
                                     </Box>
                                     {prepareChartArea()}
                                 </Grid>
+                                <Box className={classes.buttons}>
+                                    <Button color={'secondary'} onClick={onClose}>cancel</Button>
+                                    <CustomButtonBig padding={'6px 48px'} variant={'contained'}
+                                                     onClick={() => onSaveClick(vlSpec)} color={'primary'}>
+                                        <Typography>SAVE</Typography>
+                                    </CustomButtonBig>
+                                </Box>
                             </Grid>)
                             :
                             <RequestOptions onButtonClick={makeRequest} setRequestValue={setRequestValue}
                                             requestValue={requestValue}/>
                         }
                     </Box>}
-                <Box className={classes.buttons}>
-                    <Button color={'secondary'} onClick={onClose}>cancel</Button>
-                    <CustomButtonBig variant={'contained'} style={{padding: '6px 48px'}}
-                                     onClick={() => onSaveClick(vlSpec)} color={'primary'}>
-                        <Typography>SAVE</Typography>
-                    </CustomButtonBig>
-                </Box>
+
             </Box>
         </Box>
     );

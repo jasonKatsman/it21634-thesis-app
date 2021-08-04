@@ -2,6 +2,8 @@ import React, {ChangeEvent, FC} from "react";
 import {Button, Divider, Grid, makeStyles, Tab, Typography} from "@material-ui/core";
 import SelectAggregate from "./SelectAggregate";
 import coins from "../../Dummy/coins.json";
+import frequencyOptions from "../../Dummy/frequencyOptions.json";
+
 import CustomTabs from "./CustomTabs";
 import CustomOption from "./CustomOption";
 
@@ -56,11 +58,10 @@ const RequestOptions: FC<RequestOptionsProps> = ({
                 </SelectAggregate>
             </Grid>
             <Grid item container justify={'center'} style={{margin: '24px 0'}} xs={12}>
-                <CustomTabs value={requestValue.time} setValue={(val) => setRequestValue({...requestValue, time: val})}>
-                    <Tab label={'This week'} value={'weekly'}/>
-                    <Tab label={'This month'} value={'monthly'}/>
-                    <Tab label={'Last 6 months'} value={'6-months'}/>
-                    <Tab label={'This Year'} value={'yearly'}/>
+                <CustomTabs variant={'scrollable'} value={requestValue.time} setValue={(val) => setRequestValue({...requestValue, time: val})}>
+                    {frequencyOptions.map(freq=>{
+                        return <Tab label={freq.title} value={freq.value}/>
+                    })}
                 </CustomTabs>
             </Grid>
             <Grid item container justify={'center'} xs={12}>

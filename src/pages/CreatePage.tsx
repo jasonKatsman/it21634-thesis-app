@@ -16,17 +16,18 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 
     button: {
+        margin:12,
         display: 'flex',
         flexDirection: 'column',
         boxShadow: `0px 0px 0px 2px ${theme.palette.primary.main}`,
         padding: 32,
         borderRadius: 12,
-        '&:hover':{
+        '&:hover': {
             boxShadow: `0px 0px 0px 2px ${theme.palette.primary.main}`,
-            background:'white',
-           color:'red !important',
-            '& :nth-child(n)':{
-                color:`${theme.palette.primary.main} !important`,
+            background: 'white',
+            color: 'red !important',
+            '& :nth-child(n)': {
+                color: `${theme.palette.primary.main} !important`,
             }
         }
     },
@@ -145,13 +146,27 @@ const CreatePage: FC = () => {
                                   }}/>
                 </Dialog>
 
-                <Dialog open={combineModal} fullWidth maxWidth={'xl'} onClose={() => setCombineModal(false)}>
+                <Dialog open={combineModal} fullWidth maxWidth={'xl'} onClose={() => {
+                    setSelectedIndex([])
+                    setInteractiveCharts(!interactiveCharts)
+                    setCombineModal(false)
+                }}>
                     <CombineDialog
-                        vegaConfigs={vegaConfigs}
+                        vegaConfigs={vegaConfigs.filter((item, i) => {
+                            if (selectedIndex.includes(i)) {
+                                return item
+                            }
+                        })}
                         selectedIndex={selectedIndex}
-                        onClose={() => setCombineModal(false)}
+                        onClose={() => {
+                            setSelectedIndex([])
+                            setInteractiveCharts(!interactiveCharts)
+                            setCombineModal(false)
+                        }}
                         onSaveClick={(val) => {
                             setVegaConfigs([...vegaConfigs, val])
+                            setSelectedIndex([])
+                            setInteractiveCharts(!interactiveCharts)
                             setCombineModal(false)
                         }}/>
                 </Dialog>

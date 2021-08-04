@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useState} from 'react';
-import {Box, Grid, makeStyles, Typography,} from "@material-ui/core";
+import {Box, Button, Grid, makeStyles, Typography,} from "@material-ui/core";
 import CombinationAccordionContainer from "../DetailsComponents/CombinationAccordionContainer";
 import CombinationSettingsAccordionContainer from "../DetailsComponents/CombinationSettingsAccordionContainer";
 import VegaLitePreview from "../vega/VegaLitePreview";
@@ -63,16 +63,13 @@ const CombineDialog: FC<CombineDialogType> = ({vegaConfigs, selectedIndex, onClo
     })
 
     useEffect(() => {
-        const temp = vegaConfigs.filter((item, i) => {
-            if (selectedIndex.includes(i)) {
-                return item
-            }
-        })
-        setVegaCombination({
-            vconcat: [
-                ...temp
-            ]
-        })
+        if (vegaConfigs) {
+            setVegaCombination({
+                vconcat: [
+                    ...vegaConfigs
+                ]
+            })
+        }
     }, [vegaConfigs])
 
     return (
@@ -97,12 +94,20 @@ const CombineDialog: FC<CombineDialogType> = ({vegaConfigs, selectedIndex, onClo
                             <Grid item xs={12}>
                                 <CombinationSettingsAccordionContainer/>
                             </Grid>
-                            <Grid item xs={12} container justify={'flex-end'}>
-                                <Box marginY={2} marginRight={2}>
-                                    <CustomButtonBig padding={'6px 32px'}
-                                                     onClick={() => onSaveClick(vegaCombination)}>
-                                        SAVE</CustomButtonBig>
-                                </Box>
+                            <Grid item xs={12} container justify={'flex-end'} alignItems={'center'}>
+                                <Grid item>
+                                    <Box>
+                                        <Button onClick={onClose} color={'secondary'}>CANCEL</Button>
+                                    </Box>
+                                </Grid>
+                                <Grid item>
+
+                                    <Box marginY={2} marginX={2}>
+                                        <CustomButtonBig padding={'6px 32px'}
+                                                         onClick={() => onSaveClick(vegaCombination)}>
+                                            SAVE</CustomButtonBig>
+                                    </Box>
+                                </Grid>
                             </Grid>
                         </Grid>
                         <Grid className={classes.vegaLocation} item xs={9} container justify={'center'}

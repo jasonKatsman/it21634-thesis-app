@@ -209,6 +209,7 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
         type: 'nominal',
         title: '',
         bin: false,
+        axis: {grid: true, gridColor: 'lightgray', domainColor: 'gray', labelColor: "black", titleColor: "black"},
         scale: undefined
     })
     const [yAxis, setYAxis] = useState<vegaFieldType>({
@@ -217,6 +218,7 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
         type: 'nominal',
         title: '',
         bin: false,
+        axis: {grid: true, gridColor: 'lightgray', domainColor: 'gray', labelColor: "black", titleColor: "black"},
         scale: undefined
     })
     const [transform, setTransform] = useState<Transform>({})

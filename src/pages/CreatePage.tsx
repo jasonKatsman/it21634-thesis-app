@@ -122,7 +122,6 @@ const CreatePage: FC = () => {
                 {prepareTopContainer()}
                 <Grid item container xs={12} spacing={4} justify={'flex-start'} alignItems={'center'}
                       className={classes.buttonContainer}>
-                    {prepareVegaInstances()}
                     <Grid item>
                         <Button variant={'contained'} color={'primary'} className={classes.button}
                                 onClick={() => setCreateModal(true)}>
@@ -137,6 +136,7 @@ const CreatePage: FC = () => {
                             </Box>
                         </Button>
                     </Grid>
+                    {prepareVegaInstances()}
                 </Grid>
                 <Dialog open={createModal} fullWidth maxWidth={'xl'} onClose={() => setCreateModal(false)}>
                     <CreateDialog onClose={() => setCreateModal(false)}

@@ -1,5 +1,5 @@
 import {Accordion, AccordionDetails, AccordionSummary, Grid, makeStyles, Slider, Typography} from "@material-ui/core";
-import React, {FC} from "react";
+import React, {ChangeEvent, FC} from "react";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 const useStyles = makeStyles(() => ({
@@ -32,6 +32,9 @@ const GeneralStylesAccordionContainer: FC<GeneralStylesAccordionContainerProps> 
 
     const onSlidersChange = (value: number, name: string) => {
         setSimpleStyles({...simpleStyles, [name]: value})
+    }
+    const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setSimpleStyles({...simpleStyles, [e.target.name]: e.target.value})
     }
 
     return (
@@ -67,6 +70,16 @@ const GeneralStylesAccordionContainer: FC<GeneralStylesAccordionContainerProps> 
                                     min={150}
                                     max={1000}
                                     valueLabelDisplay="auto"/>
+                        </Grid>
+                    </Grid>
+                    <Grid container item xs={12}>
+                        <Grid item xs={12}>
+                            <Typography variant={'body1'}>Canvas Background</Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <input type={'color'} name={'background'} defaultValue={'red'}
+                                   value={simpleStyles.background || 'white'}
+                                   onChange={onInputChange}/>
                         </Grid>
                     </Grid>
                 </Grid>

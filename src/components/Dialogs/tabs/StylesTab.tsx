@@ -4,6 +4,7 @@ import {Mark, vegaFieldType} from "../../../Types/VegaFieldType";
 import MarkStylesAccordionContainer from "../../DetailsComponents/MarkStylesAccordionContainer";
 import AxisStylesAccordionContainer from "../../DetailsComponents/AxisStylesAccordionContainer";
 import GeneralStylesAccordionContainer from "../../DetailsComponents/GeneralStylesAccordionContainer";
+import ExtraCanvasAxisStyles from "../../DetailsComponents/ExtraCanvasAxisStyles";
 
 const useStyles = makeStyles(() => ({}))
 type StylesTabProps = {
@@ -35,6 +36,9 @@ const StylesTab: FC<StylesTabProps> = ({simpleStyles,setSimpleStyles,xAxis, yAxi
         </Grid>
         <Grid item xs={12}>
             <AxisStylesAccordionContainer axis={yAxis} setAxis={setYAxis} title={'Y AXIS styles'}/>
+        </Grid>
+        <Grid item xs={12}>
+            <ExtraCanvasAxisStyles axisX={xAxis} setAxisX={setXAxis} axisY={yAxis} setAxisY={setYAxis} title={'Canvas Axis styles'}/>
         </Grid>
     </Grid>)
 }

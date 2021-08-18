@@ -104,7 +104,11 @@ const CombineDialog: FC<CombineDialogType> = ({vegaConfigs, selectedIndex, onClo
 
                                     <Box marginY={2} marginX={2}>
                                         <CustomButtonBig padding={'6px 32px'}
-                                                         onClick={() => onSaveClick(vegaCombination)}>
+                                                         onClick={() => onSaveClick({
+                                                             vega: vegaCombination,
+                                                             coin: 'combination',
+                                                             time: 'combination'
+                                                         })}>
                                             SAVE</CustomButtonBig>
                                     </Box>
                                 </Grid>

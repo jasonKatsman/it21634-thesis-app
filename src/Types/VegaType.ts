@@ -5,7 +5,6 @@ export type VegaType = {
         values: any[]
     },
     transform: Transform,
-    mark: Mark,
     encoding: {
         y: vegaFieldType,
         x: vegaFieldType,
@@ -16,4 +15,4 @@ export type VegaType = {
             bind: string,
         }
     }
-} & vegaSimpleStylesType
+} & vegaSimpleStylesType & Mark

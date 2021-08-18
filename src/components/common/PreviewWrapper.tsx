@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {Box, ButtonBase, ButtonBaseProps, Card, IconButton, makeStyles, Theme} from "@material-ui/core";
+import {Box, ButtonBase, ButtonBaseProps, Card, IconButton, makeStyles, Theme, Tooltip} from "@material-ui/core";
 import {DeleteForeverOutlined, EditOutlined, RadioButtonChecked, RadioButtonUnchecked} from "@material-ui/icons";
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -91,13 +91,21 @@ const PreviewWrapper: FC<previewWrapperProps & ButtonBaseProps> = ({
                 </ButtonBase> :
                 <Box className={classes.childWrapper}>
                     {onDeleteClick ?
-                        <IconButton onClick={onDeleteClick} id={'deleteButton'} className={classes.deleteIcon}>
-                            <DeleteForeverOutlined/>
-                        </IconButton> :
+                        <Tooltip arrow title={'Delete Chart!'} placement={'top-end'}>
+                            <IconButton onClick={onDeleteClick}
+                                        id={'deleteButton'}
+                                        className={classes.deleteIcon}>
+                                <DeleteForeverOutlined/>
+                            </IconButton></Tooltip> :
                         undefined}
-                    {onEditClick ? <IconButton onClick={onEditClick} id={'editButton'} className={classes.editIcon}>
-                        <EditOutlined/>
-                    </IconButton> : undefined}
+
+                    {onEditClick ?
+                        <Tooltip arrow title={'Edit Chart!'} placement={'top-end'}>
+                            <IconButton onClick={onEditClick}
+                                        id={'editButton'}
+                                        className={classes.editIcon}>
+                                <EditOutlined/>
+                            </IconButton></Tooltip> : undefined}
                     {children}
                 </Box>
             }

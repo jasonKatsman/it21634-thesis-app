@@ -17,7 +17,8 @@ const vegaEntitiesSlice = createSlice({
             state.documents = [...state.documents, action.payload]
         },
         removeEntity(state, action) {
-            state.documents = [...state.documents, action.payload]
+            const index = action.payload
+            state.documents = [...state.documents.slice(0, index), ...state.documents.slice(index + 1)]
         },
 
     },

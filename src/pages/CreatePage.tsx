@@ -7,7 +7,7 @@ import VegaLitePreview from "../components/vega/VegaLitePreview";
 import PreviewWrapper from "../components/common/PreviewWrapper";
 import CombineDialog from "../components/Dialogs/CombineDialog";
 import {useAppDispatch, useAppSelector} from "../redux/store";
-import {addEntity} from "../redux/slices/vegaEntitiesSlice";
+import {addEntity, removeEntity} from "../redux/slices/vegaEntitiesSlice";
 
 const useStyles = makeStyles((theme: Theme) => ({
     drawer: {
@@ -66,7 +66,7 @@ const CreatePage: FC = () => {
     const prepareVegaInstances = () => {
         return documents?.map((vega, i) => {
             return <Grid item key={i}>
-                <PreviewWrapper isInteractive={interactiveCharts}
+                <PreviewWrapper onDeleteClick={()=>dispatch(removeEntity(i))} isInteractive={interactiveCharts}
                                 selected={selectedIndex.findIndex(value => value === i) > -1}
                                 onClick={() => setSelectedVega(i)}>
                     <VegaLitePreview vegaConfig={vega} keyId={`preview-${i}`}/>

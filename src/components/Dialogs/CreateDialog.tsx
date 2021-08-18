@@ -17,7 +17,7 @@ import SyncIcon from '@material-ui/icons/Sync';
 import TextFieldsIcon from '@material-ui/icons/TextFields';
 import SettingsApplicationsIcon from '@material-ui/icons/SettingsApplications';
 import ColorLensIcon from '@material-ui/icons/ColorLens';
-import {Mark, Transform, vegaEncodingType, vegaFieldType} from "../../Types/VegaFieldType";
+import {Mark, Transform, vegaEncodingType, vegaFieldType, vegaSimpleStylesType} from "../../Types/VegaFieldType";
 import {findValueType} from "../../utils/findValueType";
 import FieldsTab from "./tabs/FieldsTab";
 import DetailsTab from "./tabs/DetailsTab";
@@ -233,7 +233,7 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
         //     value: 'blue',
         // },
     })
-    const [simpleStyles, setSimpleStyles] = useState({
+    const [simpleStyles, setSimpleStyles] = useState<vegaSimpleStylesType>({
         width: 200,
         height: 200,
         background: 'white',

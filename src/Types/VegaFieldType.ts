@@ -7,7 +7,15 @@ export type vegaFieldType = {
     bandPosition?: number
     bin?: boolean // discretize VALUES (approximate a set of values) prettified set of values
     scale?: { zero?: boolean, domain?: any[], domainMax?: any, domainMin?: any, domainMid?: any } // Scales are functions that transform a domain of data values to a range of visual values
-    axis?: { grid?: boolean, gridColor?: string, domainColor?: string, labelColor?: string, titleColor?:string }
+    axis?: { grid?: boolean, gridColor?: string, domainColor?: string, labelColor?: string, titleColor?: string }
+}
+
+
+export type vegaSimpleStylesType = {
+    background: any
+    width: any
+    height: any
+
 }
 
 export type vegaEncodingType = {

@@ -1,6 +1,7 @@
 import {Accordion, AccordionDetails, AccordionSummary, Grid, makeStyles, Slider, Typography} from "@material-ui/core";
 import React, {ChangeEvent, FC} from "react";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import {vegaSimpleStylesType} from "../../Types/VegaFieldType";
 
 const useStyles = makeStyles(() => ({
     accordionDetails: {
@@ -19,8 +20,8 @@ const useStyles = makeStyles(() => ({
     }
 }))
 type GeneralStylesAccordionContainerProps = {
-    simpleStyles: any
-    setSimpleStyles: (value: any) => void
+    simpleStyles: vegaSimpleStylesType
+    setSimpleStyles: (value: vegaSimpleStylesType) => void
     title?: string
 }
 const GeneralStylesAccordionContainer: FC<GeneralStylesAccordionContainerProps> = ({

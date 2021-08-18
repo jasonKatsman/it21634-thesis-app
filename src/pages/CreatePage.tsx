@@ -6,6 +6,8 @@ import CreateDialog from "../components/Dialogs/CreateDialog";
 import VegaLitePreview from "../components/vega/VegaLitePreview";
 import PreviewWrapper from "../components/common/PreviewWrapper";
 import CombineDialog from "../components/Dialogs/CombineDialog";
+import {useAppDispatch, useAppSelector} from "../redux/store";
+import {addEntity} from "../redux/slices/vegaEntitiesSlice";
 
 const useStyles = makeStyles((theme: Theme) => ({
     drawer: {
@@ -16,7 +18,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 
     button: {
-        margin:12,
+        margin: 12,
         display: 'flex',
         flexDirection: 'column',
         boxShadow: `0px 0px 0px 2px ${theme.palette.primary.main}`,
@@ -45,8 +47,10 @@ const CreatePage: FC = () => {
     const classes = useStyles();
     const [createModal, setCreateModal] = useState(false)
     const [combineModal, setCombineModal] = useState(false)
+    const dispatch = useAppDispatch()
+    const documents = useAppSelector(state => state.vegaEntities.documents)
+    // const [vegaConfigs, setVegaConfigs] = useState<any[]>([])
 
-    const [vegaConfigs, setVegaConfigs] = useState<any[]>([])
     const [interactiveCharts, setInteractiveCharts] = useState<boolean>(false)
     const [selectedIndex, setSelectedIndex] = useState<number[]>([])
 
@@ -60,7 +64,7 @@ const CreatePage: FC = () => {
     }
 
     const prepareVegaInstances = () => {
-        return vegaConfigs?.map((vega, i) => {
+        return documents?.map((vega, i) => {
             return <Grid item key={i}>
                 <PreviewWrapper isInteractive={interactiveCharts}
                                 selected={selectedIndex.findIndex(value => value === i) > -1}
@@ -72,7 +76,7 @@ const CreatePage: FC = () => {
     }
 
     const prepareTopContainer = () => {
-        if (vegaConfigs.length) {
+        if (documents.length) {
             return <Grid item xs={12} className={classes.headerSpace}>
                 <Typography variant={'h4'} color={'secondary'}>
                     Create a Chart
@@ -141,7 +145,7 @@ const CreatePage: FC = () => {
                 <Dialog open={createModal} fullWidth maxWidth={'xl'} onClose={() => setCreateModal(false)}>
                     <CreateDialog onClose={() => setCreateModal(false)}
                                   onSaveClick={(val) => {
-                                      setVegaConfigs([...vegaConfigs, val])
+                                      dispatch(addEntity(val))
                                       setCreateModal(false)
                                   }}/>
                 </Dialog>
@@ -150,9 +154,10 @@ const CreatePage: FC = () => {
                     setSelectedIndex([])
                     setInteractiveCharts(!interactiveCharts)
                     setCombineModal(false)
-                }}>
+                }}
+                >
                     <CombineDialog
-                        vegaConfigs={vegaConfigs.filter((item, i) => {
+                        vegaConfigs={documents.filter((item, i) => {
                             if (selectedIndex.includes(i)) {
                                 return item
                             }
@@ -164,7 +169,7 @@ const CreatePage: FC = () => {
                             setCombineModal(false)
                         }}
                         onSaveClick={(val) => {
-                            setVegaConfigs([...vegaConfigs, val])
+                            dispatch(addEntity(val))
                             setSelectedIndex([])
                             setInteractiveCharts(!interactiveCharts)
                             setCombineModal(false)

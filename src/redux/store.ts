@@ -5,6 +5,7 @@ import {combineReducers} from "redux";
 import {persistReducer} from 'redux-persist'
 import thunk from 'redux-thunk'
 import vegaEntitiesSlice from "./slices/vegaEntitiesSlice";
+import persistStore from "redux-persist/es/persistStore";
 
 const reducers = combineReducers({
     vegaEntities: vegaEntitiesSlice
@@ -21,6 +22,7 @@ const store = configureStore({
     reducer: persistedReducer,
     middleware: [thunk]
 });
+export const persistor = persistStore(store)
 export type RootState = ReturnType<typeof store.getState>
 
 export type AppDispatch = typeof store.dispatch

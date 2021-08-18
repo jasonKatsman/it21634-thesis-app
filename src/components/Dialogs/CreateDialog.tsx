@@ -459,7 +459,11 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
                                 <Box className={classes.buttons}>
                                     <Button color={'secondary'} onClick={onClose}>cancel</Button>
                                     <CustomButtonBig padding={'6px 48px'} variant={'contained'}
-                                                     onClick={() => onSaveClick(vlSpec)} color={'primary'}>
+                                                     onClick={() => onSaveClick({
+                                                         vega: vlSpec,
+                                                         coin: requestValue.coin,
+                                                         time: requestValue.time
+                                                     })} color={'primary'}>
                                         <Typography>SAVE</Typography>
                                     </CustomButtonBig>
                                 </Box>

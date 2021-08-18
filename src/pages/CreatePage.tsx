@@ -50,7 +50,7 @@ const CreatePage: FC = () => {
     const dispatch = useAppDispatch()
     const documents = useAppSelector(state => state.vegaEntities.documents)
     // const [vegaConfigs, setVegaConfigs] = useState<any[]>([])
-
+    console.log(documents)
     const [interactiveCharts, setInteractiveCharts] = useState<boolean>(false)
     const [selectedIndex, setSelectedIndex] = useState<number[]>([])
 
@@ -66,10 +66,10 @@ const CreatePage: FC = () => {
     const prepareVegaInstances = () => {
         return documents?.map((vega, i) => {
             return <Grid item key={i}>
-                <PreviewWrapper onDeleteClick={()=>dispatch(removeEntity(i))} isInteractive={interactiveCharts}
+                <PreviewWrapper onDeleteClick={() => dispatch(removeEntity(i))} isInteractive={interactiveCharts}
                                 selected={selectedIndex.findIndex(value => value === i) > -1}
                                 onClick={() => setSelectedVega(i)}>
-                    <VegaLitePreview vegaConfig={vega} keyId={`preview-${i}`}/>
+                    <VegaLitePreview vegaConfig={vega.vega} keyId={`preview-${i}`}/>
                 </PreviewWrapper>
             </Grid>
         })
@@ -116,8 +116,15 @@ const CreatePage: FC = () => {
                 </Typography>
             </Grid>
         </Grid>
+    }
 
-
+    const prepareSelectedConfigs = () => {
+        return documents.filter((item, i) => {
+            if (selectedIndex.includes(i)) {
+                console.log(item)
+                return item.vega
+            }
+        }).map(item => item.vega)
     }
 
     return (
@@ -157,11 +164,7 @@ const CreatePage: FC = () => {
                 }}
                 >
                     <CombineDialog
-                        vegaConfigs={documents.filter((item, i) => {
-                            if (selectedIndex.includes(i)) {
-                                return item
-                            }
-                        })}
+                        vegaConfigs={prepareSelectedConfigs()}
                         selectedIndex={selectedIndex}
                         onClose={() => {
                             setSelectedIndex([])

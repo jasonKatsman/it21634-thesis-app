@@ -1,5 +1,15 @@
 import React, {FC} from 'react';
-import {Box, ButtonBase, ButtonBaseProps, Card, IconButton, makeStyles, Theme, Tooltip} from "@material-ui/core";
+import {
+    Box,
+    ButtonBase,
+    ButtonBaseProps,
+    Card,
+    IconButton,
+    makeStyles,
+    Theme,
+    Tooltip,
+    Typography
+} from "@material-ui/core";
 import {DeleteForeverOutlined, EditOutlined, RadioButtonChecked, RadioButtonUnchecked} from "@material-ui/icons";
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -29,9 +39,10 @@ const useStyles = makeStyles((theme: Theme) => ({
         },
     },
     deleteIcon: {
+        boxShadow: `0 0 2px 1px ${theme.palette.error.light}`,
         color: theme.palette.error.light,
         position: 'absolute',
-        padding: 6,
+        padding: 4,
         right: 4,
         bottom: 4,
         zIndex: 10,
@@ -40,11 +51,12 @@ const useStyles = makeStyles((theme: Theme) => ({
         }
     },
     editIcon: {
+        boxShadow: `0 0 2px 1px ${theme.palette.primary.main}`,
         color: theme.palette.primary.main,
         position: 'absolute',
         right: 4,
-        padding: 6,
-        bottom: 40,
+        padding: 4,
+        bottom: 42,
         zIndex: 10,
         "&:hover": {
             display: 'block'
@@ -67,10 +79,11 @@ type previewWrapperProps = {
     selected: boolean,
     onDeleteClick?: () => void
     onEditClick?: () => void
-
+    title?: string
 }
 
 const PreviewWrapper: FC<previewWrapperProps & ButtonBaseProps> = ({
+                                                                       title,
                                                                        onDeleteClick,
                                                                        onEditClick,
                                                                        isInteractive = false,
@@ -82,6 +95,7 @@ const PreviewWrapper: FC<previewWrapperProps & ButtonBaseProps> = ({
     return (
         <Card elevation={isInteractive ? 6 : 2}
               className={`${classes.root}  ${isInteractive && classes.interactive} ${selected && isInteractive && classes.selected}`}>
+            <Typography variant={'subtitle2'} style={{margin: '0 0 4px 8px'}} color={'secondary'}>{title}</Typography>
             {isInteractive ?
                 <ButtonBase {...props}>
                     {children}
@@ -109,7 +123,6 @@ const PreviewWrapper: FC<previewWrapperProps & ButtonBaseProps> = ({
                     {children}
                 </Box>
             }
-            {/*{children}*/}
         </Card>
     );
 }

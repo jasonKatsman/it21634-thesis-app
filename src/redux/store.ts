@@ -6,9 +6,11 @@ import {persistReducer} from 'redux-persist'
 import thunk from 'redux-thunk'
 import vegaEntitiesSlice from "./slices/vegaEntitiesSlice";
 import persistStore from "redux-persist/es/persistStore";
+import vegaCombinedEntitiesSlice from "./slices/vegaCombinedEntitiesSlice";
 
 const reducers = combineReducers({
-    vegaEntities: vegaEntitiesSlice
+    vegaEntities: vegaEntitiesSlice,
+    vegaCombinedEntities:vegaCombinedEntitiesSlice
 });
 
 const persistConfig = {

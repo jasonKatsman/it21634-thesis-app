@@ -1,5 +1,5 @@
 import React, {FC, useState} from 'react';
-import {Box, Button, Dialog, Grid, makeStyles, Theme, Typography} from "@material-ui/core";
+import {Box, Button, Dialog, Divider, Grid, makeStyles, Theme, Typography} from "@material-ui/core";
 import AddIcon from '@material-ui/icons/Add';
 import InsertChartIcon from '@material-ui/icons/InsertChart';
 import CreateDialog from "../components/Dialogs/CreateDialog";
@@ -10,13 +10,14 @@ import {useAppDispatch, useAppSelector} from "../redux/store";
 import {addEntity, removeEntity} from "../redux/slices/vegaEntitiesSlice";
 import EditDialog from "../components/Dialogs/EditDialog";
 import {VegaType} from "../Types/VegaType";
+import {addCombinedEntity, removeCombinedEntity} from "../redux/slices/vegaCombinedEntitiesSlice";
 
 const useStyles = makeStyles((theme: Theme) => ({
     drawer: {
         'z-index': '-1 !important'
     },
     buttonContainer: {
-        marginTop: 32
+        marginTop: 16
     },
 
     button: {
@@ -52,8 +53,8 @@ const CreatePage: FC = () => {
     const [combineModal, setCombineModal] = useState(false)
     const dispatch = useAppDispatch()
     const documents = useAppSelector(state => state.vegaEntities.documents)
-    // const [vegaConfigs, setVegaConfigs] = useState<any[]>([])
-    console.log(documents)
+    const combinedDocuments = useAppSelector(state => state.vegaCombinedEntities.documents)
+    console.log(documents, combinedDocuments)
     const [interactiveCharts, setInteractiveCharts] = useState<boolean>(false)
     const [selectedIndex, setSelectedIndex] = useState<number[]>([])
 
@@ -65,15 +66,29 @@ const CreatePage: FC = () => {
         }
         setSelectedIndex([...selectedIndex, i])
     }
-    console.log(editModal)
+
     const prepareVegaInstances = () => {
         return documents?.map((vega, i) => {
             return <Grid item key={i}>
-                <PreviewWrapper onEditClick={() => setEditModal({index: i, ...vega})}
+                <PreviewWrapper title={`${vega.coin} - ${vega.time}`}
+                                onEditClick={() => setEditModal({index: i, ...vega})}
                                 onDeleteClick={() => dispatch(removeEntity(i))} isInteractive={interactiveCharts}
                                 selected={selectedIndex.findIndex(value => value === i) > -1}
                                 onClick={() => setSelectedVega(i)}>
                     <VegaLitePreview vegaConfig={vega.vega} keyId={`preview-${i}`}/>
+                </PreviewWrapper>
+            </Grid>
+        })
+    }
+
+    const prepareCombinedVegaInstances = () => {
+        return combinedDocuments?.map((vega, i) => {
+            return <Grid item key={i}>
+                <PreviewWrapper
+                    onDeleteClick={() => dispatch(removeCombinedEntity(i))} isInteractive={false}
+                    selected={selectedIndex.findIndex(value => value === i) > -1}
+                    onClick={() => setSelectedVega(i)}>
+                    <VegaLitePreview vegaConfig={vega.vega} keyId={`preview-${i}-COMBINED`}/>
                 </PreviewWrapper>
             </Grid>
         })
@@ -131,7 +146,7 @@ const CreatePage: FC = () => {
     }
 
     return (
-        <Box>
+        <Box style={{marginBottom:32}}>
             <Grid container>
                 {prepareTopContainer()}
                 <Grid item container xs={12} spacing={4} justify={'flex-start'} alignItems={'center'}
@@ -152,6 +167,15 @@ const CreatePage: FC = () => {
                     </Grid>
                     {prepareVegaInstances()}
                 </Grid>
+                {combinedDocuments.length ?
+                    <Grid item container xs={12} spacing={4} justify={'flex-start'} alignItems={'center'}
+                          className={classes.buttonContainer}>
+                        <Grid item xs={12}>
+                            <Typography variant={'h6'} color={'secondary'}>Combined Charts!</Typography>
+                            <Divider/>
+                        </Grid>
+                        {prepareCombinedVegaInstances()}
+                    </Grid> : undefined}
                 <Dialog open={createModal} fullWidth maxWidth={'xl'} onClose={() => setCreateModal(false)}>
                     <CreateDialog onClose={() => setCreateModal(false)}
                                   onSaveClick={(val) => {
@@ -175,8 +199,11 @@ const CreatePage: FC = () => {
                             setCombineModal(false)
                         }}
                         onSaveClick={(val) => {
-                            console.log(val)
-                            dispatch(addEntity(val))
+                            dispatch(addCombinedEntity({
+                                vega: val,
+                                coin: 'combination',
+                                time: 'combination'
+                            }))
                             setSelectedIndex([])
                             setInteractiveCharts(!interactiveCharts)
                             setCombineModal(false)
@@ -185,7 +212,6 @@ const CreatePage: FC = () => {
                 <Dialog open={!!editModal} fullWidth maxWidth={'xl'} onClose={() => setEditModal(undefined)}>
                     {editModal ? <EditDialog vegaInstance={editModal} onClose={() => setEditModal(undefined)}
                                              onEditClick={(val, index) => {
-                                                 console.log(index)
                                                  dispatch(removeEntity(index))
                                                  dispatch(addEntity(val))
                                                  setEditModal(undefined)

@@ -1,12 +1,4 @@
-import {
-    Accordion,
-    AccordionDetails,
-    AccordionSummary, Divider, FormControlLabel,
-    Grid,
-    makeStyles, Radio,
-    RadioGroup, Slider,
-    Typography
-} from "@material-ui/core";
+import {Accordion, AccordionDetails, AccordionSummary, Grid, makeStyles, Typography} from "@material-ui/core";
 import React, {FC} from "react";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
@@ -23,9 +15,13 @@ const useStyles = makeStyles(() => ({
     }
 }))
 type CombinationAccordionContainerProps = {
-
+    vegaCombination: any
+    setVegaCombination: (value: any) => void
 }
-const CombinationSettingsAccordionContainer: FC<CombinationAccordionContainerProps> = () => {
+const CombinationSettingsAccordionContainer: FC<CombinationAccordionContainerProps> = ({
+                                                                                           vegaCombination,
+                                                                                           setVegaCombination
+                                                                                       }) => {
     const classes = useStyles()
 
     return (
@@ -41,17 +37,14 @@ const CombinationSettingsAccordionContainer: FC<CombinationAccordionContainerPro
                 <Grid container className={classes.inputs}>
                     <Grid container item xs={12}>
                         <Grid item xs={12}>
-                            <Typography variant={'body1'}>Width</Typography>
+                            <Typography variant={'body1'}>background color</Typography>
                         </Grid>
                         <Grid item xs={12}>
-                            <Slider min={200} max={1200} valueLabelDisplay="auto" />
-                        </Grid>
-
-                        <Grid item xs={12}>
-                            <Typography variant={'body1'}>Height</Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Slider min={200} max={1200} valueLabelDisplay="auto" />
+                            <input value={vegaCombination.background} type={'color'}
+                                   onChange={(e) => setVegaCombination({
+                                       ...vegaCombination,
+                                       background: e.target.value
+                                   })}/>
                         </Grid>
                     </Grid>
                 </Grid>

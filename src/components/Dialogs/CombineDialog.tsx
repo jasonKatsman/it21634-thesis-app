@@ -57,6 +57,7 @@ type CombineDialogType = {
 const CombineDialog: FC<CombineDialogType> = ({vegaConfigs, selectedIndex, onClose, onSaveClick}) => {
     const classes = useStyles()
     const [vegaCombination, setVegaCombination] = useState<any>({
+        background: 'white',
         vconcat: [
             ...vegaConfigs
         ]
@@ -65,6 +66,7 @@ const CombineDialog: FC<CombineDialogType> = ({vegaConfigs, selectedIndex, onClo
     useEffect(() => {
         if (vegaConfigs) {
             setVegaCombination({
+                ...vegaCombination,
                 vconcat: [
                     ...vegaConfigs
                 ]
@@ -92,7 +94,8 @@ const CombineDialog: FC<CombineDialogType> = ({vegaConfigs, selectedIndex, onClo
                                                                setVegaCombination={setVegaCombination}/>
                             </Grid>
                             <Grid item xs={12}>
-                                <CombinationSettingsAccordionContainer/>
+                                <CombinationSettingsAccordionContainer vegaCombination={vegaCombination}
+                                                                       setVegaCombination={setVegaCombination}/>
                             </Grid>
                             <Grid item xs={12} container justify={'flex-end'} alignItems={'center'}>
                                 <Grid item>

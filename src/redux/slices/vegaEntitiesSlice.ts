@@ -1,8 +1,8 @@
 import {createSlice} from '@reduxjs/toolkit'
-import {VegaType} from "../../Types/VegaType";
+import {VegaEntityType} from "../../Types/VegaEntityType";
 
 interface vegaEntitiesType {
-    documents: { vega: VegaType, coin: string, time: string, description: string }[]
+    documents: VegaEntityType[]
 }
 
 const initialState: vegaEntitiesType = {

@@ -53,10 +53,10 @@ const CombinationAccordionContainer: FC<CombinationAccordionContainerProps> = ({
                 }
                 return {...item, selection: undefined, name: `chart-COMBINED-${i}`}
             })
-            setVegaCombination({[e.target.value]: [...preparedVega]})
+            setVegaCombination({...vegaCombination,[e.target.value]: [...preparedVega]})
             return
         }
-        setVegaCombination({[e.target.value]: [...vegaCombination[key[0]]]})
+        setVegaCombination({...vegaCombination,[e.target.value]: [...vegaCombination[key[0]]]})
     }
 
     return (

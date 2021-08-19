@@ -85,6 +85,7 @@ const CreatePage: FC = () => {
         return combinedDocuments?.map((vega, i) => {
             return <Grid item key={i}>
                 <PreviewWrapper
+                    title={vega.description}
                     onDeleteClick={() => dispatch(removeCombinedEntity(i))} isInteractive={false}
                     selected={selectedIndex.findIndex(value => value === i) > -1}
                     onClick={() => setSelectedVega(i)}>
@@ -202,7 +203,8 @@ const CreatePage: FC = () => {
                             dispatch(addCombinedEntity({
                                 vega: val,
                                 coin: 'combination',
-                                time: 'combination'
+                                time: 'combination',
+                                description: 'combination'
                             }))
                             setSelectedIndex([])
                             setInteractiveCharts(!interactiveCharts)

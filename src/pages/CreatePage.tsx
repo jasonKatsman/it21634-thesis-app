@@ -193,7 +193,6 @@ const CreatePage: FC = () => {
                 >
                     <CombineDialog
                         vegaConfigs={prepareSelectedConfigs()}
-                        selectedIndex={selectedIndex}
                         onClose={() => {
                             setSelectedIndex([])
                             setInteractiveCharts(!interactiveCharts)

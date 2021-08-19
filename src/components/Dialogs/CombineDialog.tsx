@@ -51,10 +51,9 @@ type CombineDialogType = {
     onSaveClick: (vega: any) => void
     onClose: () => void
     vegaConfigs: any[]
-    selectedIndex: number[]
 }
 
-const CombineDialog: FC<CombineDialogType> = ({vegaConfigs, selectedIndex, onClose, onSaveClick}) => {
+const CombineDialog: FC<CombineDialogType> = ({vegaConfigs, onClose, onSaveClick}) => {
     const classes = useStyles()
     const [vegaCombination, setVegaCombination] = useState<any>({
         background: 'white',

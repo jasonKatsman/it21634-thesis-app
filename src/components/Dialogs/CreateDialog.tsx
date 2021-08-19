@@ -27,6 +27,7 @@ import {getCustomCoinById} from "../../http/endpoints/coins";
 import SelectAggregate from "../common/SelectAggregate";
 import RequestOptions from "../common/RequestOptions";
 import CustomButtonBig from "../common/CustomButtonBig";
+import {prepareDate} from "../../utils/prepareDate";
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -445,7 +446,6 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
                                              className={classes.tab} icon={<ColorLensIcon/>}/>
                                     </Tabs>
                                     <Box className={classes.tabsContainer}>
-
                                         {prepareTabs()}
                                     </Box>
                                 </Grid>
@@ -462,7 +462,8 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
                                                      onClick={() => onSaveClick({
                                                          vega: vlSpec,
                                                          coin: requestValue.coin,
-                                                         time: requestValue.time
+                                                         time: requestValue.time,
+                                                         description: prepareDate(requestValue.time)
                                                      })} color={'primary'}>
                                         <Typography>SAVE</Typography>
                                     </CustomButtonBig>

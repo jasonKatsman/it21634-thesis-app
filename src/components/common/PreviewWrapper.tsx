@@ -79,7 +79,7 @@ type previewWrapperProps = {
     selected: boolean,
     onDeleteClick?: () => void
     onEditClick?: () => void
-    title?: string
+    title?: any
 }
 
 const PreviewWrapper: FC<previewWrapperProps & ButtonBaseProps> = ({
@@ -95,7 +95,7 @@ const PreviewWrapper: FC<previewWrapperProps & ButtonBaseProps> = ({
     return (
         <Card elevation={isInteractive ? 6 : 2}
               className={`${classes.root}  ${isInteractive && classes.interactive} ${selected && isInteractive && classes.selected}`}>
-            <Typography variant={'subtitle2'} style={{margin: '0 0 4px 8px'}} color={'secondary'}>{title}</Typography>
+            <Typography variant={'caption'} style={{margin: '0 0 4px 8px'}} color={'secondary'}>{title}</Typography>
             {isInteractive ?
                 <ButtonBase {...props}>
                     {children}

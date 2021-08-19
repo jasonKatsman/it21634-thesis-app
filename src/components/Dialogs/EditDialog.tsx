@@ -28,6 +28,7 @@ import SelectAggregate from "../common/SelectAggregate";
 import RequestOptions from "../common/RequestOptions";
 import CustomButtonBig from "../common/CustomButtonBig";
 import {VegaType} from "../../Types/VegaType";
+import {prepareDate} from "../../utils/prepareDate";
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -192,7 +193,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 type dialogType = {
     onEditClick: (vega: any, index: number) => void
     onClose: () => void
-    vegaInstance: { vega: VegaType, coin: string, time: string, index: number }
+    vegaInstance: { vega: VegaType, coin: string, time: string, description: string, index: number }
 }
 
 const EditDialog: FC<dialogType> = ({vegaInstance, onClose, onEditClick}) => {
@@ -204,7 +205,7 @@ const EditDialog: FC<dialogType> = ({vegaInstance, onClose, onEditClick}) => {
     const [xDrag, setXDrag] = useState(false)
     const [loading, setLoading] = useState(false)
     const [requestValue, setRequestValue] = useState<{ coin: string, time: string }>({coin: '', time: 'weekly'})
-
+    const [hasRefreshed, setHasRefreshed] = useState(false)
     const [xAxis, setXAxis] = useState<vegaFieldType>({
         aggregate: '',
         field: '',
@@ -298,6 +299,7 @@ const EditDialog: FC<dialogType> = ({vegaInstance, onClose, onEditClick}) => {
 
     const makeRequest = () => {
         if (requestValue.time && requestValue.coin) {
+            setHasRefreshed(true)
             fetchCustomCoin(requestValue.coin, requestValue.time)
         }
     }
@@ -466,8 +468,9 @@ const EditDialog: FC<dialogType> = ({vegaInstance, onClose, onEditClick}) => {
                                     <CustomButtonBig padding={'6px 48px'} variant={'contained'}
                                                      onClick={() => onEditClick({
                                                          vega: vlSpec,
-                                                         coin: requestValue.coin,
-                                                         time: requestValue.time
+                                                         coin: hasRefreshed ? requestValue.coin : vegaInstance.coin,
+                                                         time: hasRefreshed ? requestValue.time : vegaInstance.time,
+                                                         description: hasRefreshed ? prepareDate(requestValue.time) : vegaInstance.description
                                                      }, vegaInstance.index)} color={'primary'}>
                                         <Typography>SAVE</Typography>
                                     </CustomButtonBig>

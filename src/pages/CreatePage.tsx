@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const CreatePage: FC = () => {
     const classes = useStyles();
     const [createModal, setCreateModal] = useState(false)
-    const [editModal, setEditModal] = useState<{ vega: VegaType, coin: string, time: string, index: number } | undefined>(undefined)
+    const [editModal, setEditModal] = useState<{ vega: VegaType, coin: string, time: string, description: string, index: number } | undefined>(undefined)
     const [combineModal, setCombineModal] = useState(false)
     const dispatch = useAppDispatch()
     const documents = useAppSelector(state => state.vegaEntities.documents)
@@ -70,7 +70,7 @@ const CreatePage: FC = () => {
     const prepareVegaInstances = () => {
         return documents?.map((vega, i) => {
             return <Grid item key={i}>
-                <PreviewWrapper title={`${vega.coin} - ${vega.time}`}
+                <PreviewWrapper title={`${vega.coin}: ${vega.description}`}
                                 onEditClick={() => setEditModal({index: i, ...vega})}
                                 onDeleteClick={() => dispatch(removeEntity(i))} isInteractive={interactiveCharts}
                                 selected={selectedIndex.findIndex(value => value === i) > -1}
@@ -146,7 +146,7 @@ const CreatePage: FC = () => {
     }
 
     return (
-        <Box style={{marginBottom:32}}>
+        <Box style={{marginBottom: 32}}>
             <Grid container>
                 {prepareTopContainer()}
                 <Grid item container xs={12} spacing={4} justify={'flex-start'} alignItems={'center'}

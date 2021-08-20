@@ -1,0 +1,42 @@
+[
+  {
+    "name": "BINANCECOIN",
+    "abr": "BNB"
+  },
+  {
+    "name": "BITCOIN",
+    "abr": "BTC"
+  },
+  {
+    "name": "CARDANO",
+    "abr": "ADA"
+  },
+  {
+    "name": "DOGECOIN",
+    "abr": "DOGE"
+  },
+  {
+    "name": "ETHEREUM",
+    "abr": "ETH"
+  },
+  {
+    "name": "LITECOIN",
+    "abr": "LT"
+  },
+  {
+    "name": "POLKADOT",
+    "abr": "DOT"
+  },
+  {
+    "name": "RIPPLE",
+    "abr": "XRP"
+  },
+  {
+    "name": "TETHER",
+    "abr": "USDT"
+  },
+  {
+    "name": "USD-COIN",
+    "abr": "USDC"
+  }
+]

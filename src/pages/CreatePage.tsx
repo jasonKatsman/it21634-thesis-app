@@ -105,6 +105,7 @@ const CreatePage: FC = () => {
                     <Typography variant={'body1'}>
                         You can combine charts by pressing the following buttons, and then picking your charts.
                     </Typography>
+                    <Divider/>
                 </Grid>
                 <Grid xs={12} style={{marginTop: 16}} item container>
                     <Button variant={"contained"} color={interactiveCharts ? "secondary" : 'primary'}

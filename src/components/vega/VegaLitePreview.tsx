@@ -1,7 +1,6 @@
-import React, {FC, useEffect, useState} from 'react';
-import {makeStyles} from "@material-ui/core";
+import React, {FC, useEffect} from 'react';
+import {BoxProps, makeStyles} from "@material-ui/core";
 import vegaEmbed from "vega-embed"
-import {Mark, Transform, vegaEncodingType, vegaFieldType} from "../../Types/VegaFieldType";
 
 const useStyles = makeStyles(() => ({
     list: {
@@ -16,10 +15,10 @@ const useStyles = makeStyles(() => ({
     }
 }))
 type VegaComponentProps = {
-vegaConfig:any
-    keyId:string
+    vegaConfig: any
+    keyId: string
 }
-const VegaLitePreview: FC<VegaComponentProps> = ({vegaConfig,keyId='idkey'}) => {
+const VegaLitePreview: FC<VegaComponentProps & BoxProps> = ({vegaConfig, keyId = 'idkey', ...props}) => {
     const classes = useStyles();
 
     useEffect(() => {
@@ -28,7 +27,7 @@ const VegaLitePreview: FC<VegaComponentProps> = ({vegaConfig,keyId='idkey'}) => 
 
 
     return (
-        <div id={keyId}/>
+        <div id={keyId} {...props}/>
     );
 }
 

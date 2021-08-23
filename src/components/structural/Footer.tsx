@@ -22,7 +22,7 @@ const Footer: FC<FooterProps> = ({height = 60}) => {
     return (
         <Box className={classes.root}>
             <Grid container justify={'center'} alignItems={'center'}>
-                <Typography>Test. Made by JASON KATS.</Typography>
+                <Typography>Page made by Jason Katsoutas</Typography>
             </Grid>
         </Box>
     );

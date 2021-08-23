@@ -1,14 +1,22 @@
 import React, {FC, useState} from 'react';
-import {Box, Button, Divider, Grid, makeStyles, Tab, Theme, Typography} from "@material-ui/core";
+import {Box, Button, CircularProgress, Divider, Grid, makeStyles, Tab, Theme, Typography} from "@material-ui/core";
 import CustomButtonBig from "../components/common/CustomButtonBig";
 import CustomButtonPill from "../components/common/CustomButtonPill";
 import CustomTabs from "../components/common/CustomTabs";
 import frequencyOptions from "../Dummy/frequencyOptions.json";
 import CoinNamesWithDetails from '../Dummy/coinNamesWithDetails.json'
 import CoinDialog from "../components/Dialogs/CoinDialog";
+import {multipleCoinFetch} from "../http/endpoints/multipleCoinFetch";
+import CoinComparisonChart from "../components/common/CoinComparisonChart";
 
 const useStyles = makeStyles((theme: Theme) => ({
     headerSpace: {
+        marginTop: 32
+    },
+    page: {
+        marginBottom: 32
+    },
+    chart: {
         marginTop: 32
     },
     pillSpace: {
@@ -32,7 +40,18 @@ const CompareCoinPage: FC = () => {
         time: 'weekly'
     })
     const [coinModal, setCoinModal] = useState(false)
-
+    const [loading, setLoading] = useState(false)
+    const [coinData, setCoinData] = useState<any[]>([])
+    const onFetchClick = async () => {
+        setLoading(true)
+        try {
+            const res = await multipleCoinFetch(requestValue.coins, requestValue.time)
+            setCoinData(res)
+            setLoading(false)
+        } catch (e) {
+            setLoading(false)
+        }
+    }
     const onDeleteCoin = (index: number) => {
         const newArray = [...requestValue.coins.slice(0, index), ...requestValue.coins.slice(index + 1)]
         setRequestValue({...requestValue, coins: newArray})
@@ -57,8 +76,13 @@ const CompareCoinPage: FC = () => {
         }
     }
 
+    const prepareCoinCharts = () => {
+        if (coinData.length)
+            return <CoinComparisonChart coinValue={requestValue.coins} data={coinData}/>
+    }
+
     return (
-        <Box>
+        <Box className={classes.page}>
             <Grid container>
                 <Grid item xs={12} className={classes.headerSpace}>
                     <Typography variant={'h4'} color={'secondary'}>
@@ -75,7 +99,8 @@ const CompareCoinPage: FC = () => {
                 </Grid>
                 <Grid item xs={12} className={classes.pillSpace}>
                     <CustomButtonBig onClick={() => setCoinModal(true)}>ADD COIN</CustomButtonBig>
-                    <Button disabled={!requestValue.coins.length} className={classes.buttonPosition}
+                    <Button disabled={!requestValue.coins.length} onClick={onFetchClick}
+                            className={classes.buttonPosition}
                             variant={'contained'}
                             color={'secondary'}>GET DATA</Button>
 
@@ -92,6 +117,9 @@ const CompareCoinPage: FC = () => {
                         })}
                     </CustomTabs>
                     <Divider/>
+                </Grid>
+                <Grid item xs={12} container justify={'center'}>
+                    {loading ? <CircularProgress className={classes.chart}/> : prepareCoinCharts()}
                 </Grid>
             </Grid>
             <CoinDialog open={coinModal} handleClose={() => setCoinModal(false)}

@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useState} from 'react';
-import {Grid, makeStyles, Theme} from "@material-ui/core";
+import {Grid, makeStyles, Slider, Switch, Theme, Typography} from "@material-ui/core";
 import VegaLitePreview from "../vega/VegaLitePreview";
 
 const useStyles = makeStyles((theme: Theme) => ({}))
@@ -12,6 +12,8 @@ interface coinProps {
 const VegaFieldsComparison: FC<coinProps> = ({data, field}) => {
 
     const [vega, setVega] = useState<any>()
+    const [bar, setBar] = useState(false)
+    const [barWidth, setBarWidth] = useState(15)
 
     useEffect(() => {
         let dataArray: any[] = []
@@ -28,10 +30,11 @@ const VegaFieldsComparison: FC<coinProps> = ({data, field}) => {
             background: '#f0f0f0',
             "data": {"values": dataArray},
             "mark": {
-                "type": "area",
+                "type": bar ? "bar" : "area",
+                width: barWidth,
                 "line": true, "point": true,
                 "tooltip": true,
-                opacity: 0.4
+                opacity: bar ? 0.6 : 0.4
             },
             "encoding": {
                 "x": {
@@ -60,10 +63,23 @@ const VegaFieldsComparison: FC<coinProps> = ({data, field}) => {
             }
         })
         console.log(dataArray)
-    }, [data])
+    }, [data, bar, barWidth])
 
     return (
         <Grid item container xs={12}>
+            <Grid item xs={12}>
+                <Switch
+                    checked={bar}
+                    onChange={() => setBar(!bar)}
+                    color="primary"
+                    name="bar"
+                    inputProps={{'aria-label': 'bar'}}
+                />
+                <Typography variant={'caption'} color={'primary'}
+                            style={{fontSize: 14, fontWeight: 800}}>Bar</Typography>
+                {bar ? <Slider min={5} valueLabelDisplay="auto" max={60} value={barWidth}
+                               onChange={(e, val) => setBarWidth(val as number)}/> : undefined}
+            </Grid>
             <Grid item xs={12}>
                 <VegaLitePreview
                     style={{width: '100%', background: '#f0f0f0', boxShadow: '0 0 0 2px #72621d', borderRadius: 4}}

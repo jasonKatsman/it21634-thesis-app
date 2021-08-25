@@ -18,7 +18,7 @@ const VegaPerformanceComparison: FC<coinProps> = ({data}) => {
             coin.forEach((item: any) => {
                 const initialPrice = coin[0].current_price
                 const pricePercentage = ((initialPrice * 100 / item.current_price) - 100).toFixed(3)
-                dataArray = [...dataArray, {pricePerformance: pricePercentage, date: item.date, name: item.name}]
+                dataArray = [...dataArray, {percentage: pricePercentage, date: item.date, name: item.name, price:item.current_price}]
             })
         })
         setVega({
@@ -37,18 +37,24 @@ const VegaPerformanceComparison: FC<coinProps> = ({data}) => {
                 "tooltip": true
             },
             "encoding": {
+                "tooltip": [
+                    {"field": "name", "type": "nominal"},
+                    {"field": "percentage", "type": "quantitative"},
+                    {"field": "price", "type": "quantitative"},
+                    {"timeUnit": "yearmonthdate", "field": "date","title":"date"}
+                ],
                 "x": {
                     title: "",
                     "field": "date",
                     "type": "temporal",
                     "axis": {
-                        "gridDash":[5,5],
+                        "gridDash": [5, 5],
                         "labelColor": "#02254b",
                         "titleColor": "#02254b"
                     }
                 },
                 "y": {
-                    "field": "pricePerformance", "title": "percentage %", "type": "quantitative", "axis": {
+                    "field": "percentage", "title": "percentage %", "type": "quantitative", "axis": {
                         "gridColor": "lightgray",
                         "labelColor": "#02254b",
                         "titleColor": "#02254b"
@@ -63,8 +69,9 @@ const VegaPerformanceComparison: FC<coinProps> = ({data}) => {
     return (
         <Grid item container xs={12}>
             <Grid item xs={12}>
-                <VegaLitePreview style={{width: '100%', background:'#f0f0f0', boxShadow: '0 0 0 2px #72621d', borderRadius: 4}}
-                                 vegaConfig={vega} keyId={'vega-comp-performance'}/>
+                <VegaLitePreview
+                    style={{width: '100%', background: '#f0f0f0', boxShadow: '0 0 0 2px #72621d', borderRadius: 4}}
+                    vegaConfig={vega} keyId={'vega-comp-performance'}/>
             </Grid>
         </Grid>
     )

@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const URL = 'http://localhost:8080/api/';
+const URL = 'https://it21634-nodejs-coin-api-diz68qj3s-jasonkatsman.vercel.app/api/';
 
 const axiosInstance = axios.create({
     baseURL: URL

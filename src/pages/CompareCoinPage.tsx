@@ -8,6 +8,7 @@ import CoinNamesWithDetails from '../Dummy/coinNamesWithDetails.json'
 import CoinDialog from "../components/Dialogs/CoinDialog";
 import {multipleCoinFetch} from "../http/endpoints/multipleCoinFetch";
 import CoinComparisonChart from "../components/common/CoinComparisonChart";
+import Calendar from "react-calendar"
 
 const useStyles = makeStyles((theme: Theme) => ({
     headerSpace: {

@@ -8,7 +8,8 @@ import CoinNamesWithDetails from '../Dummy/coinNamesWithDetails.json'
 import CoinDialog from "../components/Dialogs/CoinDialog";
 import {multipleCoinFetch} from "../http/endpoints/multipleCoinFetch";
 import CoinComparisonChart from "../components/common/CoinComparisonChart";
-import Calendar from "react-calendar"
+import CustomCalendar from "../components/common/CustomCalendar";
+import moment from "moment";
 
 const useStyles = makeStyles((theme: Theme) => ({
     headerSpace: {
@@ -42,11 +43,14 @@ const CompareCoinPage: FC = () => {
     })
     const [coinModal, setCoinModal] = useState(false)
     const [loading, setLoading] = useState(false)
+    const [dateValue, setDateValue] = useState(new Date());
+    console.log(dateValue)
     const [coinData, setCoinData] = useState<any[]>([])
     const onFetchClick = async () => {
         setLoading(true)
         try {
-            const res = await multipleCoinFetch(requestValue.coins, requestValue.time)
+            const dateParam = moment(dateValue).isSame(new Date(), "day") ? moment().toDate() : moment(dateValue).toDate()
+            const res = await multipleCoinFetch(requestValue.coins, requestValue.time, dateParam)
             setCoinData(res)
             setLoading(false)
         } catch (e) {
@@ -111,12 +115,19 @@ const CompareCoinPage: FC = () => {
                 </Grid>
                 <Grid item className={classes.tabGrid} xs={12}>
                     <Divider/>
-                    <CustomTabs variant={'scrollable'} value={requestValue.time}
-                                setValue={(val) => setRequestValue({...requestValue, time: val})}>
-                        {frequencyOptions.map(freq => {
-                            return <Tab label={freq.title} value={freq.value}/>
-                        })}
-                    </CustomTabs>
+                    <Grid item container wrap={'nowrap'} alignItems={'center'} xs={12}>
+                        <Grid item style={{margin: '0 16px'}}>
+                            <CustomCalendar dateValue={dateValue} setDateValue={setDateValue}/>
+                        </Grid>
+                        <Grid item>
+                            <CustomTabs variant={'scrollable'} value={requestValue.time}
+                                        setValue={(val) => setRequestValue({...requestValue, time: val})}>
+                                {frequencyOptions.map(freq => {
+                                    return <Tab label={freq.title} value={freq.value}/>
+                                })}
+                            </CustomTabs>
+                        </Grid>
+                    </Grid>
                     <Divider/>
                 </Grid>
                 <Grid item xs={12} container justify={'center'}>

@@ -1,22 +1,22 @@
 [
   {
     "value": "daily",
-    "title": "Today"
+    "title": "1 Day"
   },
   {
     "value": "weekly",
-    "title": "This week"
+    "title": "1 week"
   },
   {
     "value": "monthly",
-    "title": "This Month"
+    "title": "1 Month"
   },
   {
     "value": "6-months",
-    "title": "Last 6 months"
+    "title": "6 Months"
   },
   {
     "value": "yearly",
-    "title": "This year"
+    "title": "1 Year"
   }
 ]

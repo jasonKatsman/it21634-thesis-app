@@ -28,6 +28,7 @@ import SelectAggregate from "../common/SelectAggregate";
 import RequestOptions from "../common/RequestOptions";
 import CustomButtonBig from "../common/CustomButtonBig";
 import {prepareDate} from "../../utils/prepareDate";
+import CustomCalendar from "../common/CustomCalendar";
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -202,7 +203,11 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
     const [yDrag, setYDrag] = useState(false)
     const [xDrag, setXDrag] = useState(false)
     const [loading, setLoading] = useState(false)
-    const [requestValue, setRequestValue] = useState<{ coin: string, time: string }>({coin: '', time: 'weekly'})
+    const [requestValue, setRequestValue] = useState<{ coin: string, time: string, date: Date }>({
+        coin: '',
+        time: 'weekly',
+        date: new Date()
+    })
 
     const [xAxis, setXAxis] = useState<vegaFieldType>({
         aggregate: '',
@@ -279,10 +284,10 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
 
     }, [coinData, simpleStyles, transform, xAxis, yAxis, mark])
 
-    const fetchCustomCoin = async (id: string, frequency: string) => {
+    const fetchCustomCoin = async (id: string, frequency: string, date:Date) => {
         setLoading(true)
         try {
-            const res = await getCustomCoinById({id: id, frequency: frequency})
+            const res = await getCustomCoinById({id: id, frequency: frequency, date})
             setLoading(false)
             setCoinData(res.data)
         } catch (e) {
@@ -294,7 +299,7 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
 
     const makeRequest = () => {
         if (requestValue.time && requestValue.coin) {
-            fetchCustomCoin(requestValue.coin, requestValue.time)
+            fetchCustomCoin(requestValue.coin, requestValue.time, requestValue.date)
         }
     }
     const prepareSelectOptions = () => {
@@ -401,6 +406,8 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
                     </Typography>
                     {!coinData.length ? undefined
                         : (<Box className={classes.selectSection}>
+                                <CustomCalendar dateValue={requestValue.date}
+                                                setDateValue={(date:any) => setRequestValue({...requestValue, date})}/>
                                 <SelectAggregate selectTitle={'Select a duration'} value={requestValue.time}
                                                  onChange={(e) => onSelectCoinChange(e, 'time')}
                                                  id={'coin-select'}
@@ -463,7 +470,8 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
                                                          vega: vlSpec,
                                                          coin: requestValue.coin,
                                                          time: requestValue.time,
-                                                         description: prepareDate(requestValue.time)
+                                                         date: requestValue.date,
+                                                         description: prepareDate(requestValue.time,requestValue.date)
                                                      })} color={'primary'}>
                                         <Typography>SAVE</Typography>
                                     </CustomButtonBig>

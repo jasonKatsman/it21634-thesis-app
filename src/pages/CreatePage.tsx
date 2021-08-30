@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const CreatePage: FC = () => {
     const classes = useStyles();
     const [createModal, setCreateModal] = useState(false)
-    const [editModal, setEditModal] = useState<{ vega: VegaType, coin: string, time: string, description: string, index: number } | undefined>(undefined)
+    const [editModal, setEditModal] = useState<{ vega: VegaType, coin: string, time: string, date:Date, description: string, index: number } | undefined>(undefined)
     const [combineModal, setCombineModal] = useState(false)
     const dispatch = useAppDispatch()
     const documents = useAppSelector(state => state.vegaEntities.documents)

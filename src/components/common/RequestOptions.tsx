@@ -6,6 +6,7 @@ import frequencyOptions from "../../Dummy/frequencyOptions.json";
 
 import CustomTabs from "./CustomTabs";
 import CustomOption from "./CustomOption";
+import CustomCalendar from "./CustomCalendar";
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -17,8 +18,8 @@ const useStyles = makeStyles(() => ({
     }
 }))
 type RequestOptionsProps = {
-    requestValue: { time: string, coin: string }
-    setRequestValue: (val: { time: string, coin: string }) => void
+    requestValue: { time: string, coin: string, date: Date }
+    setRequestValue: (val: { time: string, coin: string, date: Date }) => void
     onButtonClick: () => void
 
 }
@@ -44,7 +45,8 @@ const RequestOptions: FC<RequestOptionsProps> = ({
     return (
         <Grid container item className={classes.root} xs={12} justify={'center'} alignItems={'center'}>
             <Grid item container justify={'center'} xs={12}>
-                <Typography variant={'h5'} color={'secondary'} style={{fontWeight: 'bold'}}>Please pick a coin and the desired duration!</Typography>
+                <Typography variant={'h5'} color={'secondary'} style={{fontWeight: 'bold'}}>Please pick a coin and the
+                    desired duration!</Typography>
             </Grid>
             <Grid item xs={6} style={{margin: '10px'}}>
                 <Divider/>
@@ -58,11 +60,18 @@ const RequestOptions: FC<RequestOptionsProps> = ({
                 </SelectAggregate>
             </Grid>
             <Grid item container justify={'center'} style={{margin: '24px 0'}} xs={12}>
-                <CustomTabs variant={'scrollable'} value={requestValue.time} setValue={(val) => setRequestValue({...requestValue, time: val})}>
-                    {frequencyOptions.map(freq=>{
-                        return <Tab label={freq.title} value={freq.value}/>
-                    })}
-                </CustomTabs>
+                <Grid item style={{margin: '0 16px'}}>
+                    <CustomCalendar dateValue={requestValue.date}
+                                    setDateValue={(date:any) => setRequestValue({...requestValue, date})}/>
+                </Grid>
+                <Grid item>
+                    <CustomTabs variant={'scrollable'} value={requestValue.time}
+                                setValue={(val) => setRequestValue({...requestValue, time: val})}>
+                        {frequencyOptions.map(freq => {
+                            return <Tab label={freq.title} value={freq.value}/>
+                        })}
+                    </CustomTabs>
+                </Grid>
             </Grid>
             <Grid item container justify={'center'} xs={12}>
                 <Button onClick={onButtonClick} disabled={!requestValue.coin} variant={'contained'} color={'primary'}

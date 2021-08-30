@@ -29,6 +29,7 @@ import RequestOptions from "../common/RequestOptions";
 import CustomButtonBig from "../common/CustomButtonBig";
 import {VegaType} from "../../Types/VegaType";
 import {prepareDate} from "../../utils/prepareDate";
+import CustomCalendar from "../common/CustomCalendar";
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -193,7 +194,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 type dialogType = {
     onEditClick: (vega: any, index: number) => void
     onClose: () => void
-    vegaInstance: { vega: VegaType, coin: string, time: string, description: string, index: number }
+    vegaInstance: { vega: VegaType, coin: string, time: string, date: Date, description: string, index: number }
 }
 
 const EditDialog: FC<dialogType> = ({vegaInstance, onClose, onEditClick}) => {
@@ -204,7 +205,11 @@ const EditDialog: FC<dialogType> = ({vegaInstance, onClose, onEditClick}) => {
     const [yDrag, setYDrag] = useState(false)
     const [xDrag, setXDrag] = useState(false)
     const [loading, setLoading] = useState(false)
-    const [requestValue, setRequestValue] = useState<{ coin: string, time: string }>({coin: '', time: 'weekly'})
+    const [requestValue, setRequestValue] = useState<{ coin: string, time: string, date: Date }>({
+        coin: '',
+        time: 'weekly',
+        date: new Date()
+    })
     const [hasRefreshed, setHasRefreshed] = useState(false)
     const [xAxis, setXAxis] = useState<vegaFieldType>({
         aggregate: '',
@@ -250,7 +255,7 @@ const EditDialog: FC<dialogType> = ({vegaInstance, onClose, onEditClick}) => {
         setXAxis(vegaInstance.vega.encoding.x)
         setYAxis(vegaInstance.vega.encoding.y)
         setVlSpec(vegaInstance.vega)
-        setRequestValue({coin: vegaInstance.coin, time: vegaInstance.time})
+        setRequestValue({coin: vegaInstance.coin, time: vegaInstance.time, date: vegaInstance.date})
         setCoinData(vegaInstance.vega.data.values)
     }, [])
 
@@ -284,10 +289,10 @@ const EditDialog: FC<dialogType> = ({vegaInstance, onClose, onEditClick}) => {
 
     }, [coinData, simpleStyles, transform, xAxis, yAxis, mark])
 
-    const fetchCustomCoin = async (id: string, frequency: string) => {
+    const fetchCustomCoin = async (id: string, frequency: string, date: Date) => {
         setLoading(true)
         try {
-            const res = await getCustomCoinById({id: id, frequency: frequency})
+            const res = await getCustomCoinById({id: id, frequency: frequency, date})
             setLoading(false)
             setCoinData(res.data)
         } catch (e) {
@@ -300,7 +305,7 @@ const EditDialog: FC<dialogType> = ({vegaInstance, onClose, onEditClick}) => {
     const makeRequest = () => {
         if (requestValue.time && requestValue.coin) {
             setHasRefreshed(true)
-            fetchCustomCoin(requestValue.coin, requestValue.time)
+            fetchCustomCoin(requestValue.coin, requestValue.time, requestValue.date)
         }
     }
     const prepareSelectOptions = () => {
@@ -407,6 +412,8 @@ const EditDialog: FC<dialogType> = ({vegaInstance, onClose, onEditClick}) => {
                     </Typography>
                     {!coinData.length ? undefined
                         : (<Box className={classes.selectSection}>
+                                <CustomCalendar dateValue={new Date(requestValue.date)}
+                                                setDateValue={(date: any) => setRequestValue({...requestValue, date})}/>
                                 <SelectAggregate selectTitle={'Select a duration'} value={requestValue.time}
                                                  onChange={(e) => onSelectCoinChange(e, 'time')}
                                                  id={'coin-select'}
@@ -470,7 +477,8 @@ const EditDialog: FC<dialogType> = ({vegaInstance, onClose, onEditClick}) => {
                                                          vega: vlSpec,
                                                          coin: hasRefreshed ? requestValue.coin : vegaInstance.coin,
                                                          time: hasRefreshed ? requestValue.time : vegaInstance.time,
-                                                         description: hasRefreshed ? prepareDate(requestValue.time) : vegaInstance.description
+                                                         date: requestValue.date,
+                                                         description: hasRefreshed ? prepareDate(requestValue.time, requestValue.date) : vegaInstance.description
                                                      }, vegaInstance.index)} color={'primary'}>
                                         <Typography>SAVE</Typography>
                                     </CustomButtonBig>

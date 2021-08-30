@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 interface coinProps {
     data: any[],
-    coinValue: { name: string, abr: string }[],
+    coinValue: { coins: { name: string, abr: string }[], time: string },
 }
 
 const CoinComparisonChart: FC<coinProps> = ({data, coinValue}) => {
@@ -32,7 +32,7 @@ const CoinComparisonChart: FC<coinProps> = ({data, coinValue}) => {
                 </Typography>
             </Grid>
             <Grid item xs={12}>
-                <VegaFieldsComparison data={data} field={'current_price'}/>
+                <VegaFieldsComparison time={coinValue.time} data={data} field={'current_price'}/>
             </Grid>
             <Grid item xs={12} className={classes.headerTitle}>
                 <Typography variant={'body1'} style={{fontWeight: "bold"}} color={'primary'}>
@@ -40,7 +40,7 @@ const CoinComparisonChart: FC<coinProps> = ({data, coinValue}) => {
                 </Typography>
             </Grid>
             <Grid item xs={12}>
-                <VegaFieldsComparison data={data} field={'market_cap'}/>
+                <VegaFieldsComparison time={coinValue.time} data={data} field={'market_cap'}/>
             </Grid>
             <Grid item xs={12} className={classes.headerTitle}>
                 <Typography variant={'body1'} style={{fontWeight: "bold"}} color={'primary'}>
@@ -48,7 +48,7 @@ const CoinComparisonChart: FC<coinProps> = ({data, coinValue}) => {
                 </Typography>
             </Grid>
             <Grid item xs={12}>
-                <VegaFieldsComparison data={data} field={'total_volume'}/>
+                <VegaFieldsComparison time={coinValue.time} data={data} field={'total_volume'}/>
             </Grid>
         </Grid>
     )

@@ -83,7 +83,7 @@ const CompareCoinPage: FC = () => {
 
     const prepareCoinCharts = () => {
         if (coinData.length)
-            return <CoinComparisonChart coinValue={requestValue.coins} data={coinData}/>
+            return <CoinComparisonChart coinValue={requestValue}  data={coinData}/>
     }
 
     return (

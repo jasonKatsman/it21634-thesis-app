@@ -38,7 +38,7 @@ const VegaFieldsComparison: FC<coinProps> = ({time, data, field}) => {
                 } : '',
                 "line": true, "point": true,
                 "tooltip": true,
-                opacity: bar ? 0.9 : 0.4
+                opacity: bar ? 0.9 : 0.2
             },
             "encoding": {
                 "x": {

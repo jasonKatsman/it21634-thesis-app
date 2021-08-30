@@ -17,7 +17,7 @@ const VegaPerformanceComparison: FC<coinProps> = ({data}) => {
         data.forEach((coin) => {
             coin.forEach((item: any) => {
                 const initialPrice = coin[0].current_price
-                const pricePercentage = ((initialPrice * 100 / item.current_price) - 100).toFixed(3)
+                const pricePercentage = (100 - (initialPrice * 100 / item.current_price)).toFixed(3)
                 dataArray = [...dataArray, {percentage: pricePercentage, date: item.date, name: item.name, price:item.current_price}]
             })
         })

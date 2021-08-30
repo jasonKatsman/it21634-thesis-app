@@ -61,14 +61,16 @@ const Header: FC<headerProps> = ({height = 60}) => {
         <Box className={classes.root}>
             {smUp && <Grid container justify={'space-between'} alignItems={'center'}>
                 <NavLink to={'/'} exact={true} className={classes.link}
-                         activeClassName={classes.activeLink}><Home style={{margin:'0 6px'}}/>HOME</NavLink>
+                         activeClassName={classes.activeLink}><Home style={{margin: '0 6px'}}/>HOME</NavLink>
                 <Box className={classes.rightLinks}>
+                    <NavLink to={'/compare'} className={classes.link} activeClassName={classes.activeLink}>
+                        Compare
+                    </NavLink>
                     <NavLink to={'/create'} className={classes.extra}
                              activeClassName={classes.extra}>
                         <CustomButtonBig>Create a chart </CustomButtonBig>
                     </NavLink>
-                    <NavLink to={'/help'} className={classes.link} activeClassName={classes.activeLink}>
-                        Help</NavLink>
+
                 </Box>
             </Grid>}
             <Drawer open={isOpen && !smUp} anchor={'right'} onClose={() => setIsOpen(false)}>

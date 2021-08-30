@@ -15,6 +15,7 @@ const VegaFieldsComparison: FC<coinProps> = ({time, data, field}) => {
 
     const [vega, setVega] = useState<any>()
     const [bar, setBar] = useState(false)
+    const [stack, setStack] = useState(true)
     const [barWidth, setBarWidth] = useState(0.8)
 
     useEffect(() => {
@@ -38,7 +39,7 @@ const VegaFieldsComparison: FC<coinProps> = ({time, data, field}) => {
                 } : '',
                 "line": true, "point": true,
                 "tooltip": true,
-                opacity: bar ? 0.9 : 0.2
+                opacity: bar ? 0.8 : 0.2
             },
             "encoding": {
                 "x": {
@@ -54,7 +55,7 @@ const VegaFieldsComparison: FC<coinProps> = ({time, data, field}) => {
                 },
                 "y": {
                     "aggregate": bar ? "average" : "",
-                    "stack": "none",
+                    "stack": bar && stack ? "zero" : "none",
                     "scale": {"zero": false},
                     "field": "customField",
                     "title": `${field}`,
@@ -68,23 +69,46 @@ const VegaFieldsComparison: FC<coinProps> = ({time, data, field}) => {
                 "color": {"field": "name", "type": "nominal"}
             }
         })
-    }, [data, bar, barWidth])
+    }, [data, bar, barWidth, stack])
+
+    const prepareBarSection = () => {
+        return <Grid container>
+            <Grid item xs={12}>
+                <Typography variant={'caption'} color={'secondary'}
+                            style={{fontSize: 14, fontWeight: 800}}>bar width</Typography><Slider min={0}
+                                                                                                  valueLabelDisplay="auto"
+                                                                                                  max={100}
+                                                                                                  value={barWidth * 100}
+                                                                                                  onChange={(e, val) => setBarWidth((val as number) * 0.01)}/>
+            </Grid>
+        </Grid>
+    }
 
     return (
         <Grid item container xs={12}>
-            <Grid item xs={12}>
-                <Switch
-                    checked={bar}
-                    onChange={() => setBar(!bar)}
-                    color="primary"
-                    name="bar"
-                    inputProps={{'aria-label': 'bar'}}
-                />
-                <Typography variant={'caption'} color={'primary'}
-                            style={{fontSize: 14, fontWeight: 800}}>Bar</Typography>
-                {bar ? <Slider min={0} valueLabelDisplay="auto" max={100} value={barWidth*100}
-                               onChange={(e, val) => setBarWidth((val as number) * 0.01)}/> : undefined}
+            <Grid item container xs={12}>
+                <Grid item>
+                    <Switch
+                        checked={bar}
+                        onChange={() => setBar(!bar)}
+                        color="primary"
+                        name="bar"
+                        inputProps={{'aria-label': 'bar'}}
+                    />
+                    <Typography variant={'caption'} color={'primary'}
+                                style={{fontSize: 14, fontWeight: 800}}>Bar</Typography></Grid>
+                {bar ? <Grid item>
+                    <Switch
+                        checked={stack}
+                        onChange={() => setStack(!stack)}
+                        color="primary"
+                        name="stack"
+                        inputProps={{'aria-label': 'bar'}}
+                    /><Typography variant={'caption'} color={'primary'}
+                                  style={{fontSize: 14, fontWeight: 800}}>Stacked bars</Typography>
+                </Grid> : undefined}
             </Grid>
+            {bar ? prepareBarSection() : undefined}
             <Grid item xs={12}>
                 <VegaLitePreview
                     style={{width: '100%', background: '#f0f0f0', boxShadow: '0 0 0 2px #72621d', borderRadius: 4}}

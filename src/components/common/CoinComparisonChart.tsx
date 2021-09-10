@@ -1,7 +1,8 @@
-import React, {FC} from 'react';
-import {Grid, makeStyles, Theme, Typography} from "@material-ui/core";
+import React, {FC, useState} from 'react';
+import {Grid, makeStyles, Switch, Theme, Typography} from "@material-ui/core";
 import VegaPerformanceComparison from "../compareCharts/VegaPerformanceComparison";
 import VegaFieldsComparison from "../compareCharts/VegaFieldsComparison";
+import GroupedChartsVega from "../compareCharts/GroupedChartsVega";
 
 const useStyles = makeStyles((theme: Theme) => ({
     headerTitle: {
@@ -15,7 +16,11 @@ interface coinProps {
 }
 
 const CoinComparisonChart: FC<coinProps> = ({data, coinValue}) => {
-    const classes = useStyles()
+    const classes = useStyles();
+    const [priceGrouped, setPriceGrouped] = useState(false)
+    const [capGrouped, setCapGrouped] = useState(false)
+    const [volumeGrouped, setVolumeGrouped] = useState(false)
+
     return (
         <Grid item container xs={12}>
             <Grid item xs={12} className={classes.headerTitle}>
@@ -32,7 +37,18 @@ const CoinComparisonChart: FC<coinProps> = ({data, coinValue}) => {
                 </Typography>
             </Grid>
             <Grid item xs={12}>
-                <VegaFieldsComparison time={coinValue.time} data={data} field={'current_price'}/>
+                <Typography variant={'caption'}>Grouped Bar</Typography>
+                <Switch
+                    checked={priceGrouped}
+                    onChange={() => setPriceGrouped(!priceGrouped)}
+                    color="primary"
+                    name="bar"
+                    inputProps={{'aria-label': 'bar'}}
+                />
+                {priceGrouped ?
+                    <GroupedChartsVega time={coinValue.time} data={data} field={'current_price'}/> :
+                    <VegaFieldsComparison time={coinValue.time} data={data} field={'current_price'}/>}
+
             </Grid>
             <Grid item xs={12} className={classes.headerTitle}>
                 <Typography variant={'body1'} style={{fontWeight: "bold"}} color={'primary'}>
@@ -40,7 +56,18 @@ const CoinComparisonChart: FC<coinProps> = ({data, coinValue}) => {
                 </Typography>
             </Grid>
             <Grid item xs={12}>
-                <VegaFieldsComparison time={coinValue.time} data={data} field={'market_cap'}/>
+                <Typography variant={'caption'}>Grouped Bar</Typography>
+                <Switch
+                    checked={capGrouped}
+                    onChange={() => setCapGrouped(!capGrouped)}
+                    color="primary"
+                    name="bar"
+                    inputProps={{'aria-label': 'bar'}}
+                />
+                {capGrouped ?
+                    <GroupedChartsVega time={coinValue.time} data={data} field={'market_cap'}/> :
+                    <VegaFieldsComparison time={coinValue.time} data={data} field={'market_cap'}/>
+                }
             </Grid>
             <Grid item xs={12} className={classes.headerTitle}>
                 <Typography variant={'body1'} style={{fontWeight: "bold"}} color={'primary'}>
@@ -48,7 +75,18 @@ const CoinComparisonChart: FC<coinProps> = ({data, coinValue}) => {
                 </Typography>
             </Grid>
             <Grid item xs={12}>
-                <VegaFieldsComparison time={coinValue.time} data={data} field={'total_volume'}/>
+                <Typography variant={'caption'}>Grouped Bar</Typography>
+                <Switch
+                    checked={volumeGrouped}
+                    onChange={() => setVolumeGrouped(!volumeGrouped)}
+                    color="primary"
+                    name="bar"
+                    inputProps={{'aria-label': 'bar'}}
+                />
+                {volumeGrouped ?
+                    <GroupedChartsVega time={coinValue.time} data={data} field={'total_volume'}/> :
+                    <VegaFieldsComparison time={coinValue.time} data={data} field={'total_volume'}/>
+                }
             </Grid>
         </Grid>
     )

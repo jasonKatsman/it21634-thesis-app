@@ -18,6 +18,12 @@ const VegaFieldsComparison: FC<coinProps> = ({time, data, field}) => {
     const [stack, setStack] = useState(true)
     const [barWidth, setBarWidth] = useState(0.8)
 
+    const prepareOpacity = () =>{
+        if(bar && stack)return 0.9
+        if(bar) return 0.5
+        return 0.1
+    }
+
     useEffect(() => {
         let dataArray: any[] = []
         data.forEach((coin) => {
@@ -39,7 +45,7 @@ const VegaFieldsComparison: FC<coinProps> = ({time, data, field}) => {
                 } : '',
                 "line": true, "point": true,
                 "tooltip": true,
-                opacity: bar ? 0.8 : 0.2
+                opacity: prepareOpacity()
             },
             "encoding": {
                 "x": {
@@ -56,7 +62,7 @@ const VegaFieldsComparison: FC<coinProps> = ({time, data, field}) => {
                 "y": {
                     "aggregate": bar ? "average" : "",
                     "stack": bar && stack ? "zero" : "none",
-                    "scale": {"zero": false},
+                    "scale": {"zero": bar },
                     "field": "customField",
                     "title": `${field}`,
                     "type": "quantitative",
@@ -96,7 +102,7 @@ const VegaFieldsComparison: FC<coinProps> = ({time, data, field}) => {
                         inputProps={{'aria-label': 'bar'}}
                     />
                     <Typography variant={'caption'} color={'primary'}
-                                style={{fontSize: 14, fontWeight: 800}}>Bar</Typography></Grid>
+                                style={{fontSize: 14, fontWeight: 800}}>Bar chart</Typography></Grid>
                 {bar ? <Grid item>
                     <Switch
                         checked={stack}

@@ -3,6 +3,7 @@ import {Grid, makeStyles, Switch, Theme, Typography} from "@material-ui/core";
 import VegaPerformanceComparison from "../compareCharts/VegaPerformanceComparison";
 import VegaFieldsComparison from "../compareCharts/VegaFieldsComparison";
 import GroupedChartsVega from "../compareCharts/GroupedChartsVega";
+import WaterFallChart from "../compareCharts/WaterFallChart";
 
 const useStyles = makeStyles((theme: Theme) => ({
     headerTitle: {
@@ -87,6 +88,11 @@ const CoinComparisonChart: FC<coinProps> = ({data, coinValue}) => {
                     <GroupedChartsVega time={coinValue.time} data={data} field={'total_volume'}/> :
                     <VegaFieldsComparison time={coinValue.time} data={data} field={'total_volume'}/>
                 }
+            </Grid>
+
+            <Grid item xs={12}>
+                <Typography variant={'caption'}>WATERFALL PRICE</Typography>
+                <WaterFallChart time={coinValue.time} data={data} field={'current_price'}/>
             </Grid>
         </Grid>
     )

@@ -17,13 +17,13 @@ const WaterFallChart: FC<coinProps> = ({data, field}) => {
 
     useEffect(() => {
         let dataArray: any[] = []
-        data.forEach((coin) => {
-            coin.forEach((item: any, i: number) => {
+        // data.forEach((coin) => {
+        data.forEach((item: any, i: number) => {
                 const price = item[field]
-                const diff = i > 0 ? price - coin[i - 1][field] : 0;
-                const prev = i > 0 ? coin[i - 1][field] : null;
+                const diff = i > 0 ? price - data[i - 1][field] : 0;
+                const prev = i > 0 ? data[i - 1][field] : null;
                 dataArray = [...dataArray, {price: price, diff, prev, date: item.date, name: item.name}]
-            })
+            // })
         })
 
         setVega({

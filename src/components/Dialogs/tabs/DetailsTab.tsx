@@ -31,7 +31,7 @@ const DetailsTab: FC<DetailsTabProps> = ({
 
         {/*</Grid>*/}
         <Grid item xs={12}>
-            <MarkAccordionContainer mark={mark} setMark={setMark}/>
+            <MarkAccordionContainer mark={mark} setMark={setMark} axisX={xAxis} setAxisX={setXAxis} axisY={yAxis} setAxisY={setYAxis}/>
             {/*mark*/}
         </Grid>
         <Grid item xs={12}>

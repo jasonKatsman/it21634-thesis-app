@@ -5,7 +5,7 @@ import SelectAggregate from "../common/SelectAggregate";
 import interpolateOptions from "../../Dummy/interpolateOptions.json";
 import CustomOption from "../common/CustomOption";
 import markOptions from "../../Dummy/markOptions.json";
-import {Mark} from "../../Types/VegaFieldType";
+import {Mark, vegaFieldType} from "../../Types/VegaFieldType";
 
 const useStyles = makeStyles(() => ({
     accordionDetails: {
@@ -26,8 +26,12 @@ const useStyles = makeStyles(() => ({
 type DetailsTabProps = {
     mark: Mark
     setMark: (value: Mark) => void
+    axisX: vegaFieldType
+    setAxisX: (value: vegaFieldType) => void
+    axisY: vegaFieldType
+    setAxisY: (value: vegaFieldType) => void
 }
-const MarkAccordionContainer: FC<DetailsTabProps> = ({mark, setMark}) => {
+const MarkAccordionContainer: FC<DetailsTabProps> = ({axisX, setAxisX, setAxisY, axisY, mark, setMark}) => {
     const classes = useStyles()
     const prepareMarkOptions = () => {
         return markOptions.map((option) => <CustomOption
@@ -37,7 +41,19 @@ const MarkAccordionContainer: FC<DetailsTabProps> = ({mark, setMark}) => {
         return interpolateOptions.map((option) => <CustomOption
             value={option.value}>{option.title}</CustomOption>)
     }
-    console.log(mark.mark)
+    const onMarkChange = (e: any) => {
+        if (e.target.value === 'bar') {
+            if (axisX.type !== 'temporal') {
+                setAxisX({...axisX, aggregate: 'average'})
+            }
+            if (axisY.type !== 'temporal') {
+                setAxisY({...axisY, aggregate: 'average'})
+            }
+        }
+        setMark({
+            mark: {...mark.mark, type: e.target.value as string}
+        })
+    }
     return (
         <Accordion>
             <AccordionSummary
@@ -55,15 +71,13 @@ const MarkAccordionContainer: FC<DetailsTabProps> = ({mark, setMark}) => {
                         </Grid>
                         <Grid item xs={12}>
                             <SelectAggregate selectTitle={'Mark type'} value={mark.mark.type}
-                                             onChange={(e => setMark({
-                                                 mark: {...mark.mark, type: e.target.value as string}
-                                             }))}>
+                                             onChange={onMarkChange}>
                                 {prepareMarkOptions()}
                             </SelectAggregate> </Grid>
                     </Grid>
 
                     {/*interpolate is for line & area marks. It finds the middle value between two data points*/}
-                    {mark.mark.type==='line'?<Grid container item xs={12}>
+                    {mark.mark.type === 'line' ? <Grid container item xs={12}>
                         <Grid item xs={12}>
                             <Typography variant={'body1'}>Interpolate</Typography>
                         </Grid>
@@ -75,7 +89,7 @@ const MarkAccordionContainer: FC<DetailsTabProps> = ({mark, setMark}) => {
                                              }))}>
                                 {prepareInterpolateOptions()}
                             </SelectAggregate> </Grid>
-                    </Grid>:undefined}
+                    </Grid> : undefined}
                 </Grid>
 
             </AccordionDetails>

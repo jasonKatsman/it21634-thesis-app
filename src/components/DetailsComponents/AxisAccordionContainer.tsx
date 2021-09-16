@@ -87,7 +87,7 @@ const AxisAccordionContainer: FC<AxisAccordionContainerProps> = ({axis, setAxis,
                             <TextField value={axis.title} name={'title'} onChange={onInputChange}/>
                         </Grid>
                     </Grid>
-                    <Grid container item xs={12}>
+                    {axis.type !== 'temporal' ? <Grid container item xs={12}>
                         <Grid item xs={12}>
                             <Typography variant={'body1'}>Aggregation</Typography>
                         </Grid>
@@ -95,21 +95,21 @@ const AxisAccordionContainer: FC<AxisAccordionContainerProps> = ({axis, setAxis,
                             <SelectAggregate value={axis.aggregate} name={'aggregate'}
                                              onChange={(e: any) => onInputChange(e)}>{prepareOptions()}</SelectAggregate>
                         </Grid>
-                    </Grid>
-
-                    {axis.type !== 'temporal' ? <Grid container item xs={12}>
-                        <Grid item xs={12}>
-                            <Typography variant={'body1'}>Bin Data</Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <RadioGroup aria-label="quiz" name="bin" value={axis.bin ?? false}
-                                        onChange={(event => setAxis({...axis, bin: event.target.value === 'true'}))}
-                                        className={classes.radios}>
-                                <FormControlLabel value={true} control={<Radio color={'primary'}/>} label="yes"/>
-                                <FormControlLabel value={false} control={<Radio/>} label="no"/>
-                            </RadioGroup>
-                        </Grid>
                     </Grid> : undefined}
+
+                    {/*{axis.type !== 'temporal' ? <Grid container item xs={12}>*/}
+                    {/*    <Grid item xs={12}>*/}
+                    {/*        <Typography variant={'body1'}>Bin Data</Typography>*/}
+                    {/*    </Grid>*/}
+                    {/*    <Grid item xs={12}>*/}
+                    {/*        <RadioGroup aria-label="quiz" name="bin" value={axis.bin ?? false}*/}
+                    {/*                    onChange={(event => setAxis({...axis, bin: event.target.value === 'true'}))}*/}
+                    {/*                    className={classes.radios}>*/}
+                    {/*            <FormControlLabel value={true} control={<Radio color={'primary'}/>} label="yes"/>*/}
+                    {/*            <FormControlLabel value={false} control={<Radio/>} label="no"/>*/}
+                    {/*        </RadioGroup>*/}
+                    {/*    </Grid>*/}
+                    {/*</Grid> : undefined}*/}
 
                     {axis.type === 'temporal' ? <Grid container item xs={12}>
                         <Grid item xs={12}>

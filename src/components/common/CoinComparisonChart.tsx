@@ -13,10 +13,11 @@ const useStyles = makeStyles((theme: Theme) => ({
         margin: '32px 0 8px 0'
     },
     coinWarning: {
+        width: '100%',
         fontWeight: 'bold',
-        fontSize: 22,
+        fontSize: 18,
         textAlign: 'center',
-        padding: '30px 0px 60px'
+        margin: '50px 0px 80px'
     },
     checkboxText: {
         fontWeight: 'bold'
@@ -48,7 +49,8 @@ const CoinComparisonChart: FC<coinProps> = ({data, coinValue}) => {
             </Grid>
             {priceWaterFall.value ? <WaterFallChart time={coinValue.time} data={data[priceWaterFall.index]}
                                                     field={'current_price'}/> :
-                <Typography color={'primary'} className={classes.coinWarning}>PICK A COIN</Typography>}
+                <Typography color={'secondary'} className={classes.coinWarning}>No coin selected! Please pick a
+                    coin!</Typography>}
         </Grid>
     }
 

@@ -228,17 +228,7 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
         scale: undefined
     })
     const [transform, setTransform] = useState<Transform>({})
-    const [encodingContent, setEncodingContent] = useState<vegaEncodingType>({
-        // size: {
-        //     value: '10',
-        // },
-        // opacity: {
-        //     value: '0.4',
-        // },
-        // color: {
-        //     value: 'blue',
-        // },
-    })
+
     const [simpleStyles, setSimpleStyles] = useState<vegaSimpleStylesType>({
         width: 200,
         height: 200,
@@ -271,7 +261,6 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
                 ...transform,
                 ...mark,
                 encoding: {
-                    ...encodingContent,
                     y: {
                         ...yAxis
                     },

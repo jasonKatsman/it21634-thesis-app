@@ -6,6 +6,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         color: 'rgba(0,0,0,0.9)',
 
         '& button': {
+            margin:'0 12px',
             padding:6,
             textTransform:'none',
             minHeight:0,

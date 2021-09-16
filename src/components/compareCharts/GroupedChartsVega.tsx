@@ -3,6 +3,7 @@ import {Grid, makeStyles, Slider, Switch, Theme, Typography} from "@material-ui/
 import VegaLitePreview from "../vega/VegaLitePreview";
 import {prepareTimeUnits} from "../../utils/prepareTimeUnits";
 import {prepareTimeNumber} from "../../utils/prepareTimeNumber";
+import ButtonNumberAdder from "../common/ButtonNumberAdder";
 
 const useStyles = makeStyles((theme: Theme) => ({}))
 
@@ -16,7 +17,7 @@ const GroupedChartsVega: FC<coinProps> = ({time, data, field}) => {
 
     const [vega, setVega] = useState<any>()
     const widthRef = useRef<any>()
-
+    const [step, setStep] = useState(1)
     useEffect(() => {
         let dataArray: any[] = []
         data.forEach((coin) => {
@@ -45,7 +46,10 @@ const GroupedChartsVega: FC<coinProps> = ({time, data, field}) => {
                     title:"",
                     "field": "date",
                     "type": "temporal",
-                    "timeUnit": prepareTimeUnits(time),
+                    "timeUnit": {
+                        unit: prepareTimeUnits(time),
+                        step: step
+                    },
                     spacing: 10
                 },
                 "x": {
@@ -76,12 +80,17 @@ const GroupedChartsVega: FC<coinProps> = ({time, data, field}) => {
                 }
             }
         })
-    }, [data])
+    }, [data,step])
 
 
 
     return (
         <Grid item container xs={12}>
+            <Grid style={{margin:'0 12px 8px'}} item container alignItems={'center'} xs={12}>
+                <Typography color={'primary'}
+                             style={{marginRight:12,fontSize: 14, fontWeight: 800}}>Time step</Typography>
+                <ButtonNumberAdder step={step} setStep={setStep}/>
+            </Grid>
                         <Grid item xs={12} ref={widthRef}>
                 <VegaLitePreview
                     style={{

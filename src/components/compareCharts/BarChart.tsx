@@ -2,15 +2,17 @@ import React, {FC, useEffect, useState} from 'react';
 import {Box, Grid, makeStyles, Slider, Switch, Theme, Typography} from "@material-ui/core";
 import VegaLitePreview from "../vega/VegaLitePreview";
 import {prepareTimeUnits} from "../../utils/prepareTimeUnits";
+import ButtonNumberAdder from "../common/ButtonNumberAdder";
 
 const useStyles = makeStyles((theme: Theme) => ({
     barSection: {
+        textAlign:'center',
         display: 'flex',
         alignItems: 'center',
         flexWrap: "nowrap",
         width: '100%',
         '& p': {
-            width: 120
+            width: 100
         }
     }
 }))
@@ -26,7 +28,7 @@ const BarChart: FC<coinProps> = ({time, data, field}) => {
     const [vega, setVega] = useState<any>()
     const [stack, setStack] = useState(true)
     const [barWidth, setBarWidth] = useState(0.8)
-
+    const [step, setStep] = useState(1)
     const prepareOpacity = () => {
         if (stack) return 0.9
         return 0.5
@@ -60,7 +62,10 @@ const BarChart: FC<coinProps> = ({time, data, field}) => {
                     title: "",
                     "field": "date",
                     "type": "temporal",
-                    "timeUnit": prepareTimeUnits(time),
+                    "timeUnit": {
+                        unit: prepareTimeUnits(time),
+                        step: step
+                    },
                     "axis": {
                         "gridDash": [5, 5],
                         "labelColor": "#02254b",
@@ -83,12 +88,18 @@ const BarChart: FC<coinProps> = ({time, data, field}) => {
                 "color": {"field": "name", "type": "nominal"}
             }
         })
-    }, [data, barWidth, stack])
+    }, [data, barWidth,step, stack])
 
     return (
         <Grid item container xs={12}>
             <Box className={classes.barSection}>
-                <Typography noWrap color={'primary'}
+                <Box style={{marginRight:40,marginBottom:8}}>
+                <Typography  color={'primary'}
+                            style={{fontSize: 14, fontWeight: 800}}>Time step</Typography>
+                <ButtonNumberAdder step={step} setStep={setStep}/>
+                </Box>
+                <Box style={{marginRight:40}}>
+                <Typography  color={'primary'}
                             style={{fontSize: 14, fontWeight: 800}}>Stacked bars</Typography><Switch
                 checked={stack}
                 onChange={() => setStack(!stack)}
@@ -96,6 +107,8 @@ const BarChart: FC<coinProps> = ({time, data, field}) => {
                 name="stack"
                 inputProps={{'aria-label': 'bar'}}
             />
+                </Box>
+                <Box style={{width:'25%'}}>
                 <Typography noWrap color={'secondary'} style={{fontSize: 14, fontWeight: 800}}>bar
                     width</Typography>
                 <Slider min={0}
@@ -104,6 +117,7 @@ const BarChart: FC<coinProps> = ({time, data, field}) => {
                         value={barWidth * 100}
                         onChange={(e, val) => setBarWidth((val as number) * 0.01)}/>
 
+            </Box>
             </Box>
 
             <Grid item xs={12}>

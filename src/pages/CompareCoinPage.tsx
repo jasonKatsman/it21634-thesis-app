@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {Box, Button, CircularProgress, Divider, Grid, makeStyles, Tab, Theme, Typography} from "@material-ui/core";
 import CustomButtonBig from "../components/common/CustomButtonBig";
 import CustomButtonPill from "../components/common/CustomButtonPill";
@@ -10,6 +10,7 @@ import {multipleCoinFetch} from "../http/endpoints/multipleCoinFetch";
 import CoinComparisonChart from "../components/common/CoinComparisonChart";
 import CustomCalendar from "../components/common/CustomCalendar";
 import moment from "moment";
+import CustomTable from "../components/common/CustomTable";
 
 const useStyles = makeStyles((theme: Theme) => ({
     headerSpace: {
@@ -31,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     buttonPosition: {
         marginLeft: 32,
         fontWeight: 'bold',
-        padding: '8px 80px'
+        padding: '8px 40px'
     }
 }))
 
@@ -44,8 +45,12 @@ const CompareCoinPage: FC = () => {
     const [coinModal, setCoinModal] = useState(false)
     const [loading, setLoading] = useState(false)
     const [dateValue, setDateValue] = useState(new Date());
-    console.log(dateValue)
     const [coinData, setCoinData] = useState<any[]>([])
+
+    useEffect(() => {
+        if (requestValue.coins.length) onFetchClick()
+    }, [requestValue, dateValue])
+
     const onFetchClick = async () => {
         setLoading(true)
         try {
@@ -83,7 +88,7 @@ const CompareCoinPage: FC = () => {
 
     const prepareCoinCharts = () => {
         if (coinData.length)
-            return <CoinComparisonChart coinValue={requestValue}  data={coinData}/>
+            return <CoinComparisonChart coinValue={requestValue} data={coinData}/>
     }
 
     return (
@@ -107,7 +112,7 @@ const CompareCoinPage: FC = () => {
                     <Button disabled={!requestValue.coins.length} onClick={onFetchClick}
                             className={classes.buttonPosition}
                             variant={'contained'}
-                            color={'secondary'}>GET DATA</Button>
+                            color={'secondary'}>REFRESH</Button>
 
                 </Grid>
                 <Grid item container spacing={2} className={classes.pillSpace} xs={12}>
@@ -130,6 +135,10 @@ const CompareCoinPage: FC = () => {
                     </Grid>
                     <Divider/>
                 </Grid>
+                {coinData.length && !loading ?
+                    <Grid item xs={12}>
+                        <CustomTable coins={coinData} time={requestValue.time}/>
+                    </Grid> : undefined}
                 <Grid item xs={12} container justify={'center'}>
                     {loading ? <CircularProgress className={classes.chart}/> : prepareCoinCharts()}
                 </Grid>

@@ -41,7 +41,7 @@ const VegaPerformanceComparison: FC<coinProps> = ({data}) => {
                     {"field": "name", "type": "nominal"},
                     {"field": "percentage", "type": "quantitative"},
                     {"field": "price", "type": "quantitative"},
-                    {"timeUnit": "yearmonthdate", "field": "date","title":"date"}
+                    {"timeUnit": "yearmonthdatehours", "field": "date","title":"date"}
                 ],
                 "x": {
                     title: "",

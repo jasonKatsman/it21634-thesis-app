@@ -59,7 +59,9 @@ const VegaFieldsComparison: FC<coinProps> = ({time, data, field}) => {
                         "titleColor": "#02254b"
                     }
                 },
-                "color": {"field": "name", "type": "nominal"}
+                "color": {"field": "name", "type": "nominal", legend: {
+                        orient: "bottom"
+                    }}
             }
         })
     }, [data])

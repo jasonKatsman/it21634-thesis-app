@@ -57,8 +57,8 @@ const CandleStickChart: FC<coinProps> = ({data}) => {
                     }
                 },
                 "layer": [
-                    {
 
+                    {
                         "mark": {
                             "tooltip": true, "type": "bar",
                             "width": {
@@ -79,6 +79,7 @@ const CandleStickChart: FC<coinProps> = ({data}) => {
                         }
                     },
                     {
+                        "selection": {"grid": {"type": "interval", "bind": "scales"}},
                         "mark": {
                             "tooltip": true,
                             "type": "bar",

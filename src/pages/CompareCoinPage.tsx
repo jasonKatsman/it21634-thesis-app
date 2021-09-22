@@ -122,12 +122,13 @@ const CompareCoinPage: FC = () => {
                 </Grid>
                 <Grid item className={classes.tabGrid} xs={12}>
                     <Divider/>
-                    <Grid item container wrap={'nowrap'} alignItems={'center'} xs={12}>
+                    <Grid item container style={{margin: '4px 16px'}}  alignItems={'center'} xs={12}>
                         <Grid item style={{margin: '0 16px'}}>
                             <CustomCalendar dateValue={dateValue} setDateValue={setDateValue}/>
                         </Grid>
                         <Grid item>
-                            <CustomTabs variant={'scrollable'} value={requestValue.time}
+                            <CustomTabs variant="scrollable"
+                                        scrollButtons="auto" value={requestValue.time}
                                         setValue={(val) => setRequestValue({...requestValue, time: val})}>
                                 {frequencyOptions.map(freq => {
                                     return <Tab label={freq.title} value={freq.value}/>
@@ -139,7 +140,7 @@ const CompareCoinPage: FC = () => {
                 </Grid>
                 {coinData.length && !loading ?
                     <Grid item xs={12}>
-                        <CustomTable coins={coinData} time={requestValue.time}/>
+                        <CustomTable  coins={coinData} time={requestValue.time}/>
                     </Grid> : undefined}
                 <Grid item xs={12} container justify={'center'}>
                     {loading ? <CircularProgress className={classes.chart}/> : prepareCoinCharts()}

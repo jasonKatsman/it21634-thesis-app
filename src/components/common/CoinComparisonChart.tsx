@@ -1,13 +1,11 @@
 import React, {FC, useState} from 'react';
-import {Checkbox, FormControlLabel, Grid, makeStyles, Tab, Theme, Tooltip, Typography} from "@material-ui/core";
+import {Grid, makeStyles, Tab, Theme, Typography} from "@material-ui/core";
 import VegaPerformanceComparison from "../compareCharts/VegaPerformanceComparison";
 import VegaFieldsComparison from "../compareCharts/VegaFieldsComparison";
 import GroupedChartsVega from "../compareCharts/GroupedChartsVega";
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import CustomButtonTabs from "./CustomButtonTab";
 import BarChart from "../compareCharts/BarChart";
-import CandleStickChart from "../compareCharts/CandleStickChart";
-import {prepareCoinSeparation} from "../../utils/prepareCoinSeparation";
+import CandleStickContainer from "./CandleStickContainer";
 
 const useStyles = makeStyles((theme: Theme) => ({
     headerTitle: {
@@ -36,32 +34,6 @@ const CoinComparisonChart: FC<coinProps> = ({data, coinValue}) => {
     const [chartTabs, setChartTabs] = useState({priceTab: 'line', marketCap: 'line', volume: 'line'})
     const [priceWaterFall, setPriceWaterFall] = useState({value: '', index: 0})
 
-    const waterFallChart = () => {
-        return <Grid container>
-            <Grid item container alignItems={'center'} xs={12}>
-                {coinValue.coins.map((coin, i) => {
-                    return <FormControlLabel
-                        control={<Checkbox color={'primary'} checked={coin.name === priceWaterFall.value}/>}
-                        onClick={() => setPriceWaterFall({value: coin.name, index: i})}
-                        label={<Typography className={classes.checkboxText}
-                                           variant={'subtitle2'}>{coin.abr}</Typography>}
-                        labelPlacement="end"
-                    />
-                })}
-                <Tooltip title={<Typography align={'center'}>Low and high values not accurate, since they are calculated by data taken every 10 minutes.</Typography>}>
-                    <ErrorOutlineIcon style={{color:'red'}}/>
-                </Tooltip>
-            </Grid>
-            {priceWaterFall.value ? <CandleStickChart  data={prepareCoinSeparation(data[priceWaterFall.index])}/> :
-                <Typography color={'secondary'} className={classes.coinWarning}>No coin selected! Please pick a
-                    coin!</Typography>}
-            {/*{priceWaterFall.value ? <WaterFallChart time={coinValue.time} data={data[priceWaterFall.index]}*/}
-            {/*                                        field={'current_price'}/> :*/}
-            {/*    <Typography color={'secondary'} className={classes.coinWarning}>No coin selected! Please pick a*/}
-            {/*        coin!</Typography>}*/}
-        </Grid>
-    }
-
     const preparePriceCharts = () => {
         switch (chartTabs.priceTab) {
             case "line":
@@ -71,7 +43,7 @@ const CoinComparisonChart: FC<coinProps> = ({data, coinValue}) => {
             case "grouped":
                 return <GroupedChartsVega time={coinValue.time} data={data} field={'current_price'}/>
             case "fall":
-                return waterFallChart();
+                return <CandleStickContainer coinValue={coinValue} data={data}/>
 
             default:
                 return <VegaFieldsComparison time={coinValue.time} data={data} field={'current_price'}/>
@@ -120,12 +92,13 @@ const CoinComparisonChart: FC<coinProps> = ({data, coinValue}) => {
                 </Typography>
             </Grid>
             <Grid item xs={12}>
-                <CustomButtonTabs value={chartTabs.priceTab}
+                <CustomButtonTabs variant={"scrollable"} scrollButtons={"auto"} value={chartTabs.priceTab}
                                   setValue={(priceTab) => setChartTabs({...chartTabs, priceTab})}>
                     <Tab label={'Line chart'} value={'line'}/>
+                    <Tab label={'CandleStick chart'} value={'fall'}/>
                     <Tab label={'Bar chart'} value={'bar'}/>
                     <Tab label={'Grouped Bar chart'} value={'grouped'}/>
-                    <Tab label={'Water fall chart'} value={'fall'}/>
+
                 </CustomButtonTabs>
                 {preparePriceCharts()}
             </Grid>
@@ -136,7 +109,7 @@ const CoinComparisonChart: FC<coinProps> = ({data, coinValue}) => {
                 </Typography>
             </Grid>
             <Grid item xs={12}>
-                <CustomButtonTabs value={chartTabs.marketCap}
+                <CustomButtonTabs variant={"scrollable"} scrollButtons={"auto"} value={chartTabs.marketCap}
                                   setValue={(marketCap) => setChartTabs({...chartTabs, marketCap})}>
                     <Tab label={'Line chart'} value={'line'}/>
                     <Tab label={'Bar chart'} value={'bar'}/>
@@ -151,7 +124,7 @@ const CoinComparisonChart: FC<coinProps> = ({data, coinValue}) => {
                 </Typography>
             </Grid>
             <Grid item xs={12}>
-                <CustomButtonTabs value={chartTabs.volume}
+                <CustomButtonTabs variant={"scrollable"} scrollButtons={"auto"} value={chartTabs.volume}
                                   setValue={(volume) => setChartTabs({...chartTabs, volume})}>
                     <Tab label={'Line chart'} value={'line'}/>
                     <Tab label={'Bar chart'} value={'bar'}/>

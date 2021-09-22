@@ -60,7 +60,9 @@ const VegaPerformanceComparison: FC<coinProps> = ({data}) => {
                         "titleColor": "#02254b"
                     }
                 },
-                "color": {"field": "name", "type": "nominal"}
+                "color": {"field": "name", "type": "nominal", legend: {
+                        orient: "bottom"
+                    }}
             }
         })
         console.log(dataArray)

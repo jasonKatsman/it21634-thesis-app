@@ -76,7 +76,7 @@ const StatisticRow: FC<BoxProps & extraProps> = ({
                 <Grid container justify={'center'}>
                     {prepareIcon()}
                     <Typography style={{color: preparePercentageClass()}}>
-                        {preparePercentage().toFixed(2)}
+                        {preparePercentage().toFixed(2)}%
                     </Typography>
                 </Grid>
             </TableCell>

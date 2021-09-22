@@ -17,3 +17,12 @@ export const getCustomCoinById = (params: { id: string, frequency: string, date?
         }
     })
 }
+
+export const getCandleStickData = (params: { id: string, frequency: string, date?: any }) => {
+    console.log(params)
+    return get('getCandleStickDataById', {
+        params: {
+            ...params
+        }
+    })
+}

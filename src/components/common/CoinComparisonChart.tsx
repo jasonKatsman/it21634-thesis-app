@@ -1,11 +1,13 @@
 import React, {FC, useState} from 'react';
-import {Checkbox, FormControlLabel, Grid, makeStyles, Tab, Theme, Typography} from "@material-ui/core";
+import {Checkbox, FormControlLabel, Grid, makeStyles, Tab, Theme, Tooltip, Typography} from "@material-ui/core";
 import VegaPerformanceComparison from "../compareCharts/VegaPerformanceComparison";
 import VegaFieldsComparison from "../compareCharts/VegaFieldsComparison";
 import GroupedChartsVega from "../compareCharts/GroupedChartsVega";
-import WaterFallChart from "../compareCharts/WaterFallChart";
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import CustomButtonTabs from "./CustomButtonTab";
 import BarChart from "../compareCharts/BarChart";
+import CandleStickChart from "../compareCharts/CandleStickChart";
+import {prepareCoinSeparation} from "../../utils/prepareCoinSeparation";
 
 const useStyles = makeStyles((theme: Theme) => ({
     headerTitle: {
@@ -36,7 +38,7 @@ const CoinComparisonChart: FC<coinProps> = ({data, coinValue}) => {
 
     const waterFallChart = () => {
         return <Grid container>
-            <Grid item xs={12}>
+            <Grid item container alignItems={'center'} xs={12}>
                 {coinValue.coins.map((coin, i) => {
                     return <FormControlLabel
                         control={<Checkbox color={'primary'} checked={coin.name === priceWaterFall.value}/>}
@@ -46,11 +48,17 @@ const CoinComparisonChart: FC<coinProps> = ({data, coinValue}) => {
                         labelPlacement="end"
                     />
                 })}
+                <Tooltip title={<Typography align={'center'}>Low and high values not accurate, since they are calculated by data taken every 10 minutes.</Typography>}>
+                    <ErrorOutlineIcon style={{color:'red'}}/>
+                </Tooltip>
             </Grid>
-            {priceWaterFall.value ? <WaterFallChart time={coinValue.time} data={data[priceWaterFall.index]}
-                                                    field={'current_price'}/> :
+            {priceWaterFall.value ? <CandleStickChart  data={prepareCoinSeparation(data[priceWaterFall.index])}/> :
                 <Typography color={'secondary'} className={classes.coinWarning}>No coin selected! Please pick a
                     coin!</Typography>}
+            {/*{priceWaterFall.value ? <WaterFallChart time={coinValue.time} data={data[priceWaterFall.index]}*/}
+            {/*                                        field={'current_price'}/> :*/}
+            {/*    <Typography color={'secondary'} className={classes.coinWarning}>No coin selected! Please pick a*/}
+            {/*        coin!</Typography>}*/}
         </Grid>
     }
 

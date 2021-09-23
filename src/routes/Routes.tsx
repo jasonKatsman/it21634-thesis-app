@@ -5,6 +5,7 @@ import DataPage from "../pages/DataPage";
 import CreatePage from "../pages/CreatePage";
 import TestPage from "../pages/TestPage";
 import CompareCoinPage from "../pages/CompareCoinPage";
+import CoinPreviewPage from "../pages/CoinPreviewPage";
 
 const Routes: FC = () => {
     return (
@@ -13,7 +14,8 @@ const Routes: FC = () => {
             <Route exact path={'/create'} component={CreatePage}/>
             <Route exact path={'/compare'} component={CompareCoinPage}/>
             <Route exact path={'/help'} component={TestPage}/>
-            <Route exact path={'/'} component={Home}/>
+            <Route exact path={'/'} component={CoinPreviewPage}/>
+            <Route exact path={'/preview'} component={CoinPreviewPage}/>
         </Switch>
     );
 }

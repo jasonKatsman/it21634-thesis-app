@@ -6,6 +6,7 @@ import CreatePage from "../pages/CreatePage";
 import TestPage from "../pages/TestPage";
 import CompareCoinPage from "../pages/CompareCoinPage";
 import CoinPreviewPage from "../pages/CoinPreviewPage";
+import CoinSelectedPage from "../pages/CoinSelectedPage";
 
 const Routes: FC = () => {
     return (
@@ -16,6 +17,7 @@ const Routes: FC = () => {
             <Route exact path={'/help'} component={TestPage}/>
             <Route exact path={'/'} component={CoinPreviewPage}/>
             <Route exact path={'/preview'} component={CoinPreviewPage}/>
+            <Route exact path={'/preview/:id?'} component={CoinSelectedPage}/>
         </Switch>
     );
 }

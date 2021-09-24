@@ -69,7 +69,7 @@ const CoinPreviewPage: FC = () => {
             const colorDay = preparePercentageClass(coin?.price_day_percentage)
             const colorWeek = preparePercentageClass(coin?.price_week_percentage)
 
-            return <CoinRow>
+            return <CoinRow onClick={()=>history.push(`/preview/${coin?.id}`)}>
                 <TableCell align={'left'}>
                     <Typography>{coin?.name}</Typography>
                 </TableCell>

@@ -11,6 +11,10 @@ export const preparePercentage = (prevPrice: number, currentPrice: number): numb
     return 0
 }
 
+export const prepareDiffPercentage = (maxPrice: number, currentPrice: number): number => {
+    return (currentPrice / maxPrice) * 100
+}
+
 export const preparePercentageClass = (percentage: number) => {
     if (percentage === 0) {
         return 'gray'

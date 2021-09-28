@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useState} from 'react';
-import {Box, CircularProgress, Grid, makeStyles, Theme, Typography} from "@material-ui/core";
+import {Box, CircularProgress, Fade, Grid, makeStyles, Theme, Typography} from "@material-ui/core";
 
 import {useHistory, useParams} from "react-router";
 import {getOverviewStats} from "../http/endpoints/overviewCoins";
@@ -9,7 +9,7 @@ import CoinCard from "../components/common/CoinCard";
 const useStyles = makeStyles((theme: Theme) => ({
     page: {
         marginBottom: 32,
-        marginTop: 16,
+        marginTop: 24,
         //padding: 24,
         borderRadius: 8
     },
@@ -39,24 +39,34 @@ const CoinSelectedPage: FC = () => {
     useEffect(() => {
         getStats()
     }, [id])
+
+    const prepareOverview = () => {
+        if (loading) {
+            return <Grid item xs={12} className={classes.loading} container justify={'center'}>
+                <CircularProgress size={64}/>
+            </Grid>
+        }
+        if (overviewData) {
+            return <Fade in={true} timeout={250}>
+                <Grid container justify={'flex-start'} alignItems={'center'}>
+                    <Grid item xs={12} container alignItems={'center'} wrap={'nowrap'}>
+                        <Typography style={{marginRight: 12}} variant={'h2'} color={'primary'}>
+                            <strong>{overviewData?.name}</strong>
+                        </Typography>
+                        <img height={50} width={50} src={overviewData?.image}/>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <CoinCard data={overviewData}/>
+                    </Grid>
+                </Grid>
+            </Fade>
+        }
+    }
+
     return (
         <Box>
             <Grid container className={classes.page}>
-                {loading ?
-                    <Grid item xs={12} className={classes.loading} container justify={'center'}>
-                        <CircularProgress size={64}/>
-                    </Grid> :
-                    <Grid container justify={'flex-start'} alignItems={'center'}>
-                        <Grid item xs={12} container alignItems={'center'} wrap={'nowrap'}>
-                            <Typography style={{marginRight: 16}} variant={'h2'} color={'primary'}>
-                                <strong>{overviewData?.name}</strong>
-                            </Typography>
-                            <img height={55} width={55} src={overviewData?.image}/>
-                        </Grid>
-                        <Grid item xs={12}>
-                            {overviewData ? <CoinCard data={overviewData}/> : undefined}
-                        </Grid>
-                    </Grid>}
+                {prepareOverview()}
             </Grid>
         </Box>
     );

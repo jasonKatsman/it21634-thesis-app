@@ -2,17 +2,24 @@ import React, {FC, useEffect, useState} from 'react';
 import {Grid, makeStyles, Theme} from "@material-ui/core";
 import VegaLitePreview from "../vega/VegaLitePreview";
 
-const useStyles = makeStyles((theme: Theme) => ({}))
+const useStyles = makeStyles((theme: Theme) => ({
+    chart: {
+        width: '100%',
+    }
+}))
 
 interface coinProps {
     data: any[],
     field: string,
-    time: string,
+    time?: string,
+    height?: number,
+    hasPoints?: boolean,
+    extraStyle?: any
 }
 
-const VegaFieldsComparison: FC<coinProps> = ({time, data, field}) => {
+const VegaFieldsComparison: FC<coinProps> = ({hasPoints = true, extraStyle, height = 300, time, data, field}) => {
     const [vega, setVega] = useState<any>()
-
+    const classes = useStyles()
     useEffect(() => {
         let dataArray: any[] = []
         data.forEach((coin) => {
@@ -24,13 +31,13 @@ const VegaFieldsComparison: FC<coinProps> = ({time, data, field}) => {
         setVega({
             "selection": {"grid": {"type": "interval", "bind": "scales"}},
             "width": "container",
-            "height": "300",
+            "height": height,
             background: '#f0f0f0',
             "data": {"values": dataArray},
             "mark": {
                 "type": "area",
                 width: '',
-                "line": true, "point": true,
+                "line": true, "point": hasPoints,
                 "tooltip": true,
                 opacity: 0.1
             },
@@ -59,18 +66,25 @@ const VegaFieldsComparison: FC<coinProps> = ({time, data, field}) => {
                         "titleColor": "#02254b"
                     }
                 },
-                "color": {"field": "name", "type": "nominal", legend: {
+                "color": {
+                    "field": "name", "type": "nominal", legend: {
                         orient: "bottom"
-                    }}
+                    }
+                }
             }
         })
-    }, [data])
+    }, [data, hasPoints])
 
     return (
         <Grid item container xs={12}>
             <Grid item xs={12}>
                 <VegaLitePreview
-                    style={{width: '100%', background: '#f0f0f0', boxShadow: '0 0 0 2px #72621d', borderRadius: 4}}
+                    className={classes.chart}
+                    style={extraStyle ? extraStyle : {
+                        background: '#f0f0f0',
+                        boxShadow: '0 0 0 2px #72621d',
+                        borderRadius: 4
+                    }}
                     vegaConfig={vega} keyId={`vega-comp-${field}`}/>
             </Grid>
         </Grid>

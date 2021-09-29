@@ -4,7 +4,7 @@ import {Box, CircularProgress, Fade, Grid, makeStyles, Theme, Typography} from "
 import {useHistory, useParams} from "react-router";
 import {getOverviewStats} from "../http/endpoints/overviewCoins";
 import CoinCard from "../components/common/CoinCard";
-// import background from '../images/equalizer.jpg'
+import SelectedCoinChartsContainer from "../components/common/SelectedCoinChartsContainer";
 
 const useStyles = makeStyles((theme: Theme) => ({
     page: {
@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         borderRadius: 8
     },
     loading: {
-        marginTop: 64
+        marginTop: 140
     }
 }))
 
@@ -42,24 +42,31 @@ const CoinSelectedPage: FC = () => {
 
     const prepareOverview = () => {
         if (loading) {
-            return <Grid item xs={12} className={classes.loading} container justify={'center'}>
-                <CircularProgress size={64}/>
-            </Grid>
+            return (
+                <Grid item xs={12} className={classes.loading} container justify={'center'}>
+                    <CircularProgress size={64}/>
+                </Grid>
+            )
         }
         if (overviewData) {
-            return <Fade in={true} timeout={250}>
-                <Grid container justify={'flex-start'} alignItems={'center'}>
-                    <Grid item xs={12} container alignItems={'center'} wrap={'nowrap'}>
-                        <Typography style={{marginRight: 12}} variant={'h2'} color={'primary'}>
-                            <strong>{overviewData?.name}</strong>
-                        </Typography>
-                        <img height={50} width={50} src={overviewData?.image}/>
+            return (
+                <Fade in={true} timeout={250}>
+                    <Grid container justify={'flex-start'} alignItems={'center'}>
+                        <Grid item xs={12} container alignItems={'center'} wrap={'nowrap'}>
+                            <Typography style={{marginRight: 12}} variant={'h2'} color={'primary'}>
+                                <strong>{overviewData?.name}</strong>
+                            </Typography>
+                            <img height={45} width={45} src={overviewData?.image}/>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <CoinCard data={overviewData}/>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <SelectedCoinChartsContainer coinId={overviewData.id}/>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={12}>
-                        <CoinCard data={overviewData}/>
-                    </Grid>
-                </Grid>
-            </Fade>
+                </Fade>
+            )
         }
     }
 

@@ -75,6 +75,26 @@ const CoinCard: FC<BoxProps & extraProps> = ({
                 </Grid>
 
                 <Grid item container className={classes.gridItems} justify={'space-around'}>
+
+
+
+                    <Grid item xs={12} md={4}>
+                        <CryptoInfoBox isPercentage={false} title={'24h High Price'} value={data.high_24h}
+                                       extraTitle={'24h low Price'}
+                                       extraValue={data.low_24h}/>
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                        <CryptoInfoBox title={'Market Cap'} value={data.market_cap}
+                                       extraTitle={'24h Change'}
+                                       extraValue={data.market_cap_change_percentage_24h}/>
+                    </Grid>
+
+                    <Grid item xs={12} md={4}>
+                        <CryptoInfoBox title={'All Time High'} value={data.ath}
+                                       extraTitle={'All Time High Change'}
+                                       extraValue={data.ath_change_percentage}/>
+                    </Grid>
+
                     <Grid item xs={12} md={12} className={classes.gridInfo}>
                         <Typography color='primary' variant={'h6'}><strong>Circulating Supply</strong></Typography>
                         <Typography align={'right'} variant={'body1'}>
@@ -94,24 +114,6 @@ const CoinCard: FC<BoxProps & extraProps> = ({
                             supply: <strong>{data.circulating_supply}</strong></Typography>
                         <Typography color='primary' variant={'h6'}>Total
                             supply: <strong>{data.total_supply}</strong></Typography>
-                    </Grid>
-
-
-                    <Grid item xs={12} md={4}>
-                        <CryptoInfoBox isPercentage={false} title={'24h High Price'} value={data.high_24h}
-                                       extraTitle={'24h low Price'}
-                                       extraValue={data.low_24h}/>
-                    </Grid>
-                    <Grid item xs={12} md={4}>
-                        <CryptoInfoBox title={'Market Cap'} value={data.market_cap}
-                                       extraTitle={'24h Change'}
-                                       extraValue={data.market_cap_change_percentage_24h}/>
-                    </Grid>
-
-                    <Grid item xs={12} md={4}>
-                        <CryptoInfoBox title={'All Time High'} value={data.ath}
-                                       extraTitle={'All Time High Change'}
-                                       extraValue={data.ath_change_percentage}/>
                     </Grid>
 
                 </Grid>

@@ -2,14 +2,20 @@ import React, {FC, useEffect, useState} from 'react';
 import {Grid, makeStyles, Theme} from "@material-ui/core";
 import VegaLitePreview from "../vega/VegaLitePreview";
 
-const useStyles = makeStyles((theme: Theme) => ({}))
+const useStyles = makeStyles((theme: Theme) => ({
+    chart: {
+        width: '100%',
+    }
+}))
 
 interface coinProps {
     data: any[],
+    height?: number
+    extraStyle?: any
 }
 
-const VegaPerformanceComparison: FC<coinProps> = ({data}) => {
-
+const VegaPerformanceComparison: FC<coinProps> = ({extraStyle, height = 200, data}) => {
+    const classes = useStyles()
     const [vega, setVega] = useState<any>()
 
     useEffect(() => {
@@ -18,13 +24,18 @@ const VegaPerformanceComparison: FC<coinProps> = ({data}) => {
             coin.forEach((item: any) => {
                 const initialPrice = coin[0].current_price
                 const pricePercentage = (100 - (initialPrice * 100 / item.current_price)).toFixed(3)
-                dataArray = [...dataArray, {percentage: pricePercentage, date: item.date, name: item.name, price:item.current_price}]
+                dataArray = [...dataArray, {
+                    percentage: pricePercentage,
+                    date: item.date,
+                    name: item.name,
+                    price: item.current_price
+                }]
             })
         })
         setVega({
             "selection": {"grid": {"type": "interval", "bind": "scales"}},
             "width": "container",
-            "height": "200",
+            "height": height,
             background: '#f0f0f0',
             "data": {"values": dataArray},
             "mark": {
@@ -41,7 +52,7 @@ const VegaPerformanceComparison: FC<coinProps> = ({data}) => {
                     {"field": "name", "type": "nominal"},
                     {"field": "percentage", "type": "quantitative"},
                     {"field": "price", "type": "quantitative"},
-                    {"timeUnit": "yearmonthdatehours", "field": "date","title":"date"}
+                    {"timeUnit": "yearmonthdatehours", "field": "date", "title": "date"}
                 ],
                 "x": {
                     title: "",
@@ -60,9 +71,11 @@ const VegaPerformanceComparison: FC<coinProps> = ({data}) => {
                         "titleColor": "#02254b"
                     }
                 },
-                "color": {"field": "name", "type": "nominal", legend: {
+                "color": {
+                    "field": "name", "type": "nominal", legend: {
                         orient: "bottom"
-                    }}
+                    }
+                }
             }
         })
         console.log(dataArray)
@@ -72,7 +85,12 @@ const VegaPerformanceComparison: FC<coinProps> = ({data}) => {
         <Grid item container xs={12}>
             <Grid item xs={12}>
                 <VegaLitePreview
-                    style={{width: '100%', background: '#f0f0f0', boxShadow: '0 0 0 2px #72621d', borderRadius: 4}}
+                    className={classes.chart}
+                    style={extraStyle ? extraStyle : {
+                        background: '#f0f0f0',
+                        boxShadow: '0 0 0 2px #72621d',
+                        borderRadius: 4
+                    }}
                     vegaConfig={vega} keyId={'vega-comp-performance'}/>
             </Grid>
         </Grid>

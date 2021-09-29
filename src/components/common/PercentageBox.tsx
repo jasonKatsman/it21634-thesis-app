@@ -24,7 +24,8 @@ const PercentageBox: FC<BoxProps & extraProps> = ({
     const classes = useStyles();
 
     const prepareBackground = () => {
-        return percentage && percentage > 0 ? 'green' : 'red'
+        if(percentage && percentage > 0 ) return "green"
+        if(percentage && percentage < 0 ) return "red"
     }
 
     return (

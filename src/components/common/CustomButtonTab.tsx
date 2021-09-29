@@ -6,25 +6,26 @@ const useStyles = makeStyles((theme: Theme) => ({
         color: 'rgba(0,0,0,0.9)',
 
         '& button': {
-            margin:'0 12px',
-            padding:6,
-            textTransform:'none',
-            minHeight:0,
-            color:'#02254b',
-            fontSize:16,
-            fontWeight:'bold',
+            minWidth: (props: any) => props.mini ? 0 : undefined,
+            margin: (props: any) => props.mini ? '0 6px' : '0 12px',
+            padding: (props: any) => props.mini ? '6px 10px' : 6,
+            fontSize: (props: any) => props.mini ? 12 : 16,
+            textTransform: 'none',
+            minHeight: 0,
+            color: '#02254b',
+            fontWeight: 'bold',
             '&:hover': {
                 borderRadius: 6,
                 background: 'rgba(0,0,0,0.05)'
             }
         },
-        '& .Mui-selected':{
-            background:"#02254b",
-            borderRadius:6,
+        '& .Mui-selected': {
+            background: "#02254b",
+            borderRadius: 6,
             color: 'white',
-            transition:'0.2s',
-            '&:hover':{
-                background:"#02254b",
+            transition: '0.2s',
+            '&:hover': {
+                background: "#02254b",
             }
 
         }
@@ -36,11 +37,18 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 type CustomButtonTabsProps = {
     value: string
-    setValue: (val: string) => void
+    setValue: (val: string) => void,
+    mini?: boolean
 }
 
-const CustomButtonTabs: FC<TabsProps & CustomButtonTabsProps> = ({children, value, setValue, ...props}) => {
-    const classes = useStyles()
+const CustomButtonTabs: FC<TabsProps & CustomButtonTabsProps> = ({
+                                                                     mini = false,
+                                                                     children,
+                                                                     value,
+                                                                     setValue,
+                                                                     ...props
+                                                                 }) => {
+    const classes = useStyles({mini})
 
     return (
         <Tabs className={classes.tabs} classes={{indicator: classes.indicator}} value={value}

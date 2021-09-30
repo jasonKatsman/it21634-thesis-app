@@ -1,9 +1,21 @@
 import React, {FC, useState} from 'react';
-import {Box, Drawer, Grid, IconButton, makeStyles, Theme, useMediaQuery, useTheme} from "@material-ui/core";
+import {
+    Box,
+    Drawer,
+    Grid,
+    IconButton,
+    makeStyles,
+    TextField,
+    Theme,
+    useMediaQuery,
+    useTheme
+} from "@material-ui/core";
 import {NavLink} from 'react-router-dom';
 import MenuIcon from '@material-ui/icons/Menu';
 import CustomButtonBig from "../common/CustomButtonBig";
 import {Home} from "@material-ui/icons";
+import coins from '../../Dummy/coinNamesWithDetails.json'
+import SearchComponent from "../common/SearchComponent";
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -63,6 +75,7 @@ const Header: FC<headerProps> = ({height = 60}) => {
                 <NavLink to={'/'} exact={true} className={classes.link}
                          activeClassName={classes.activeLink}><Home style={{margin: '0 6px'}}/>HOME</NavLink>
                 <Box className={classes.rightLinks}>
+                    <SearchComponent/>
                     <NavLink to={'/compare'} className={classes.link} activeClassName={classes.activeLink}>
                         Compare
                     </NavLink>

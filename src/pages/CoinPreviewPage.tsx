@@ -66,7 +66,7 @@ const CoinPreviewPage: FC = () => {
         }) : data
 
         return sortedData.map((coin: any) => {
-            const colorDay = preparePercentageClass(coin?.price_day_percentage)
+            const colorDay = preparePercentageClass(coin?.price_change_percentage_24h)
             const colorWeek = preparePercentageClass(coin?.price_week_percentage)
 
             return <CoinRow onClick={()=>history.push(`/preview/${coin?.id}`)}>
@@ -76,9 +76,9 @@ const CoinPreviewPage: FC = () => {
                 <TableCell align="center"> <Typography>{coin?.current_price} €</Typography></TableCell>
                 <TableCell align="center">
                     <Grid container justify={'center'}>
-                        {prepareIcon(coin?.price_day_percentage)}
+                        {prepareIcon(coin?.price_change_percentage_24h)}
                         <Typography style={{color: colorDay}}>
-                            {coin?.price_day_percentage.toFixed(2)}%
+                            {coin?.price_change_percentage_24h.toFixed(2)}%
                         </Typography>
                     </Grid>
                 </TableCell>

@@ -71,7 +71,7 @@ const CoinCard: FC<BoxProps & extraProps> = ({
                     <Typography color={'primary'} variant={'h4'} className={classes.textSpace}>
                         Price <strong>€{data.current_price}</strong>
                     </Typography>
-                    <PercentageBox percentage={data.price_day_percentage}/>
+                    <PercentageBox percentage={data.price_change_percentage_24h}/>
                 </Grid>
 
                 <Grid item container className={classes.gridItems} justify={'space-around'}>

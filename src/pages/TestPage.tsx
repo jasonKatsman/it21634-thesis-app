@@ -1,6 +1,9 @@
-import React, {FC, useState} from 'react';
-import {Box, Grid, makeStyles} from "@material-ui/core";
+import React, {FC, useEffect, useState} from 'react';
+import {Box, CircularProgress, Grid, makeStyles, Tab} from "@material-ui/core";
 import background from '../images/equalizer.jpg'
+import PureCandleStickChart from "../components/compareCharts/PureCandleStickChart";
+import {getCandleStickData} from "../http/endpoints/coins";
+import CustomButtonTabs from "../components/common/CustomButtonTab";
 
 const useStyles = makeStyles(() => ({
 
@@ -33,66 +36,55 @@ const useStyles = makeStyles(() => ({
 }))
 
 const TestPage: FC = () => {
-    const classes = useStyles();
-    const [yAxis, setYAxis] = useState({
-        aggregate: '',
-        field: 'current_price',
-        type: 'quantitative',
-        title: 'title',
-        bin: false,
-        timeUnit: '',
-        scale: {domain:[20000,40000]},
-        axis: {}
-    })
-    const [xAxis, setXAxis] = useState({
-        aggregate: '',
-        field: 'date',
-        type: 'temporal',
-        title: 'title',
-        bin: false,
-        timeUnit: 'day',
-        scale: {},
-        axis: {}
-    })
+    const [data, setData] = useState([])
+    const [loading, setLoading] = useState(false)
+    const [timeValue, setTimeValue] = useState('daily')
+    const [intervalValue, setIntervalValue] = useState('1')
 
-    const [basicStyling, setBasicStyling] = useState({
-        width: 200,
-        height: 200,
-        background: 'white',
-        mark: 'line',
-    })
-    const [encoding, setEncoding] = useState({
-        size: {
-            value: '1',
-        },
-        opacity: {
-            value: '1',
-        },
-        color: {
-            value: 'orange',
-        },
-    })
-    const [encodingColor, setEncodingColor] = useState({
-        color: {
-            value: 'orange',
-            field: '',
-            type: '',
-            scale: {
-                domain: [],
-                range: []
-            }
-        },
-    })
+
+    const fetchCandleStickData = async () => {
+        setLoading(true)
+        try {
+            const res = await getCandleStickData({
+                id: 'bitcoin',
+                frequency: timeValue,
+                interval: parseInt(intervalValue),
+                date: new Date()
+            })
+            setData(res.data)
+            setLoading(false)
+        } catch (e) {
+            setLoading(false)
+        }
+    }
+
+    useEffect(() => {
+        fetchCandleStickData()
+    }, [intervalValue, timeValue])
     return (
         <Box mt={2}>
+            <Grid item xs={12}>
+                <CustomButtonTabs variant={'scrollable'} value={timeValue} setValue={(val) => setTimeValue(val)}>
+                    <Tab label={'1d'} value={'daily'}/>
+                    <Tab label={'7d'} value={'weekly'}/>
+                    <Tab label={'1m'} value={'monthly'}/>
+                    <Tab label={'6m'} value={'6-months'}/>
+                    <Tab label={'1y'} value={'yearly'}/>
+                </CustomButtonTabs>
+            </Grid>
+            <Grid item xs={12}>
+                <CustomButtonTabs mini variant={'scrollable'} value={intervalValue}
+                                  setValue={(val) => setIntervalValue(val)}>
+                    <Tab label={'1h'} value={'1'}/>
+                    <Tab label={'3h'} value={'3'}/>
+                    <Tab label={'6h'} value={'6'}/>
+                    <Tab label={'12h'} value={'12'}/>
+                    <Tab label={'1d'} value={'24'}/>
+                    <Tab label={'2d'} value={'48'}/>
+                </CustomButtonTabs>
+            </Grid>
             <Grid container justify={'center'}>
-                {/*<VegaLiteComponent*/}
-                {/*    data={dummy}*/}
-                {/*    basicStyling={basicStyling}*/}
-                {/*    yAxis={yAxis}*/}
-                {/*    xAxis={xAxis}*/}
-                {/*    encoding={encoding}*/}
-                {/*/>*/}
+                {loading ? <CircularProgress/> : <PureCandleStickChart data={data}/>}
             </Grid>
         </Box>
     );

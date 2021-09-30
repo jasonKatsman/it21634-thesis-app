@@ -56,8 +56,6 @@ const CompareCoinPage: FC = () => {
         try {
             const dateParam = moment(dateValue).isSame(new Date(), "day") ? moment().toDate() : moment(dateValue).toDate()
             const res = await multipleCoinFetch(requestValue.coins, requestValue.time, dateParam)
-            // const resres = await singleCoinCandleStickData(requestValue.coins, requestValue.time, dateParam)
-            // console.log(resres)
             setCoinData(res)
             setLoading(false)
         } catch (e) {

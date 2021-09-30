@@ -27,12 +27,12 @@ export const preparePercentageClass = (percentage: number) => {
     }
 }
 
-export const prepareIcon = (percentage: number) => {
+export const prepareIcon = (percentage: number, isWhite = false) => {
     if (percentage < 0) {
-        return <ArrowDropDownRounded style={{color: 'red'}}/>
+        return <ArrowDropDownRounded style={isWhite ? {color: 'white'} : {color: 'red'}}/>
     }
     if (percentage > 0) {
-        return <ArrowDropUpRoundedIcon style={{color: 'green'}}/>
+        return <ArrowDropUpRoundedIcon style={isWhite ? {color: 'white'} : {color: 'green'}}/>
     }
 
 }

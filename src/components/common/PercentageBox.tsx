@@ -1,10 +1,13 @@
 import React, {FC} from 'react';
 import {Box, BoxProps, makeStyles, Theme, Typography} from "@material-ui/core";
+import {prepareIcon, preparePercentageClass} from "../../utils/rowPercentageColorFunctions";
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
+        display: 'flex',
+        alignItems: 'center',
         color: 'white',
-        padding: '8px 12px',
+        padding: '8px 12px 8px 6px',
         background: 'gray',
         opacity: 0.8,
         borderRadius: 8
@@ -23,14 +26,10 @@ const PercentageBox: FC<BoxProps & extraProps> = ({
                                                   }) => {
     const classes = useStyles();
 
-    const prepareBackground = () => {
-        if(percentage && percentage > 0 ) return "green"
-        if(percentage && percentage < 0 ) return "red"
-    }
-
     return (
-        <Box style={{background: prepareBackground()}} className={`${classes.root} ${className}`} {...props}>
-            <Typography variant={'h6'}><strong>{percentage?.toFixed(2)}%</strong></Typography>
+        <Box style={{background: preparePercentageClass(percentage??0)}} className={`${classes.root} ${className}`} {...props}>
+            {percentage && prepareIcon(percentage, true)}<Typography
+            variant={'h6'}><strong>{percentage?.toFixed(2)}%</strong></Typography>
         </Box>
     );
 }

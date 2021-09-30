@@ -5,6 +5,7 @@ import CustomButtonTabs from "./CustomButtonTab";
 import SelectedPriceChartContainer from "../SelectedCoins/SelectedPriceChartContainer";
 import SelectedPerformanceChartContainer from "../SelectedCoins/SelectedPerformanceChartContainer";
 import SelectedMarketCapChartContainer from "../SelectedCoins/SelectedMarketCapChartContainer";
+import SelectedCandleStickChartContainer from "../SelectedCoins/SelectedCandleStickChartContainer";
 
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -45,6 +46,12 @@ const SelectedCoinChartsContainer: FC<selectedCpomChartsContainerType> = ({coinI
                         <SelectedMarketCapChartContainer coinId={coinId}/>
                     </Grid>
                 )
+            case 'candle':
+                return (
+                    <Grid item xs={12}>
+                        <SelectedCandleStickChartContainer coinId={coinId}/>
+                    </Grid>
+                )
         }
     }
 
@@ -56,6 +63,7 @@ const SelectedCoinChartsContainer: FC<selectedCpomChartsContainerType> = ({coinI
                         <Tab label={'Price'} value={'price'}/>
                         <Tab label={'Performance'} value={'performance'}/>
                         <Tab label={'Market Cap'} value={'cap'}/>
+                        <Tab label={'Candle Stick Chart'} value={'candle'}/>
                     </CustomButtonTabs>
                 </Grid>
                 {prepareTabContent()}

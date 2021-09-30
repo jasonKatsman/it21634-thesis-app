@@ -1,8 +1,9 @@
 import React, {FC, useEffect, useState} from 'react';
-import {Button, Checkbox, Grid, makeStyles, Slider, TextField, Theme} from "@material-ui/core";
+import {Button, Checkbox, Grid, makeStyles, Slider, TextField, Theme, Tooltip, Typography} from "@material-ui/core";
 import VegaLitePreview from "../vega/VegaLitePreview";
 import SettingsIcon from "@material-ui/icons/Settings";
 import CancelIcon from "@material-ui/icons/Cancel";
+import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -21,15 +22,20 @@ const useStyles = makeStyles((theme: Theme) => ({
             padding: '6px 4px 6px 12px'
 
         }
+    },
+    vega: {
+        width: '100%',
     }
 
 }))
 
 interface coinProps {
     data: any[],
+    height?: number,
+    extraStyle?: any
 }
 
-const PureCandleStickChart: FC<coinProps> = ({data}) => {
+const PureCandleStickChart: FC<coinProps> = ({height = 500, extraStyle, data}) => {
     const classes = useStyles()
     const [customWidth, setCustomWidth] = useState()
     const [customCheck, setCustomCheck] = useState(false)
@@ -42,7 +48,7 @@ const PureCandleStickChart: FC<coinProps> = ({data}) => {
         setVega({
                 "selection": {"grid": {"type": "interval", "bind": "scales"}},
                 "width": "container",
-                "height": "450",
+                "height": height,
                 background: '#f0f0f0',
                 "description": "A candlestick chart",
                 "data": {
@@ -154,10 +160,20 @@ const PureCandleStickChart: FC<coinProps> = ({data}) => {
                                     onChange={(e, val) => setInnerWidth((val as number) * 0.01)}/>
                         </Grid>
                     </> : undefined}
+                <Tooltip
+                    title={<Typography align={'center'}>Low and high values not accurate, since they are calculated by
+                        data taken every 10 minutes.</Typography>}>
+                    <ErrorOutlineIcon style={{color: 'red'}}/>
+                </Tooltip>
             </Grid>
             <Grid item xs={12}>
                 <VegaLitePreview
-                    style={{width: '100%', background: '#f0f0f0', boxShadow: '0 0 0 2px #72621d', borderRadius: 4}}
+                    className={classes.vega}
+                    style={extraStyle ? extraStyle : {
+                        background: '#f0f0f0',
+                        boxShadow: '0 0 0 2px #72621d',
+                        borderRadius: 4
+                    }}
                     vegaConfig={vega} keyId={'vega-comp-candlestick'}/>
             </Grid>
         </Grid>

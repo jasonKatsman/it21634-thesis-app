@@ -1,9 +1,10 @@
 import React, {FC, useEffect, useState} from 'react';
-import {Box, CircularProgress, Fade, Grid, makeStyles, Tab, Theme} from "@material-ui/core";
+import {Box, Button, CircularProgress, Fade, Grid, makeStyles, Tab, Theme, Typography} from "@material-ui/core";
 import {getCandleStickData} from "../../http/endpoints/coins";
 import CustomButtonTabs from "../common/CustomButtonTab";
 import PureCandleStickChart from "../compareCharts/PureCandleStickChart";
-
+import {KeyboardArrowLeft, KeyboardArrowRight} from "@material-ui/icons";
+import moment from "moment";
 
 const useStyles = makeStyles((theme: Theme) => ({
     tabs: {
@@ -11,6 +12,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     loading: {
         margin: '290px 0'
+    },
+    arrowButton: {
+        padding: '0px 4px',
+        minWidth: 0,
+        border: `2px solid ${theme.palette.primary.main}`,
+        '&.Mui-disabled': {
+            border: `2px solid lightgray`,
+        }
+    },
+    arrowText: {
+        margin: '0 12px'
     }
 }))
 
@@ -23,8 +35,9 @@ const SelectedCandleStickChartContainer: FC<singlePriceChartType> = ({coinId}) =
     const classes = useStyles();
     const [chartData, setChartData] = useState<any[]>([])
     const [loading, setLoading] = useState(false)
-    const [timeValue, setTimeValue] = useState('daily')
+    const [timeValue, setTimeValue] = useState('weekly')
     const [intervalValue, setIntervalValue] = useState('1')
+    const [selectedDate, setSelectedDate] = useState(new Date())
     const getStats = async () => {
         setLoading(true)
         try {
@@ -32,7 +45,7 @@ const SelectedCandleStickChartContainer: FC<singlePriceChartType> = ({coinId}) =
                 id: coinId,
                 frequency: timeValue,
                 interval: parseInt(intervalValue),
-                date: new Date()
+                date: selectedDate
             })
             if (res.data) setChartData(res.data)
             setLoading(false)
@@ -43,7 +56,7 @@ const SelectedCandleStickChartContainer: FC<singlePriceChartType> = ({coinId}) =
 
     useEffect(() => {
         getStats()
-    }, [coinId, timeValue, intervalValue])
+    }, [coinId, timeValue, intervalValue, selectedDate])
 
     const prepareChart = () => {
         if (loading) {
@@ -69,7 +82,8 @@ const SelectedCandleStickChartContainer: FC<singlePriceChartType> = ({coinId}) =
                             </CustomButtonTabs>
                         </Grid>
                         <Grid item xs={12}>
-                            <PureCandleStickChart height={500}
+                            <PureCandleStickChart height={400}
+                                                  timeUnit={intervalValue === '24' ? 'monthdate' : undefined}
                                                   extraStyle={{
                                                       borderRadius: 4,
                                                       boxShadow: '2px 2px 6px 3px lightgray',
@@ -82,14 +96,37 @@ const SelectedCandleStickChartContainer: FC<singlePriceChartType> = ({coinId}) =
         }
     }
 
+    const onAddDate = () => {
+        setSelectedDate(moment(selectedDate).add(7, "days").toDate())
+    }
+
+    const onSubDate = () => {
+        setSelectedDate(moment(selectedDate).subtract(7, "days").toDate())
+    }
+
+    const checkIfDisabled = () => {
+        if (moment(selectedDate).add(7, "days").isAfter(moment())) {
+            return true
+        }
+    }
     return (
         <Box>
-            <Grid item xs={12}>
-                <CustomButtonTabs variant={'scrollable'} value={timeValue} setValue={(val) => setTimeValue(val)}>
-                    <Tab label={'1d'} value={'daily'}/>
-                    <Tab label={'7d'} value={'weekly'}/>
-                    <Tab label={'1m'} value={'monthly'}/>
-                </CustomButtonTabs>
+            <Grid item container style={{marginBottom: 12}} alignItems={'center'} xs={12}>
+                {/*<CustomButtonTabs variant={'scrollable'} value={timeValue} setValue={(val) => setTimeValue(val)}>*/}
+                {/*    <Tab label={'1d'} value={'daily'}/>*/}
+                {/*    <Tab label={'7d'} value={'weekly'}/>*/}
+                {/*    <Tab label={'1m'} value={'monthly'}/>*/}
+                {/*</CustomButtonTabs>*/}
+                <Button onClick={onSubDate} className={classes.arrowButton}>
+                    <KeyboardArrowLeft/>
+                </Button>
+                <Typography color={'secondary'} variant={'subtitle2'} className={classes.arrowText}>
+                    {moment(selectedDate).subtract(7, 'days').format('DD/MM/YYYY')} - {moment(selectedDate).format('DD/MM/YYYY')}
+                </Typography>
+                <Button onClick={onAddDate} disabled={checkIfDisabled()} className={classes.arrowButton}>
+                    <KeyboardArrowRight/>
+                </Button>
+
             </Grid>
             {prepareChart()}
         </Box>

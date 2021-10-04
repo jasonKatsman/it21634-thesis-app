@@ -32,10 +32,11 @@ const useStyles = makeStyles((theme: Theme) => ({
 interface coinProps {
     data: any[],
     height?: number,
-    extraStyle?: any
+    extraStyle?: any,
+    timeUnit?: any
 }
 
-const PureCandleStickChart: FC<coinProps> = ({height = 500, extraStyle, data}) => {
+const PureCandleStickChart: FC<coinProps> = ({timeUnit = 'monthdatehours', height = 400, extraStyle, data}) => {
     const classes = useStyles()
     const [customWidth, setCustomWidth] = useState()
     const [customCheck, setCustomCheck] = useState(false)
@@ -46,83 +47,115 @@ const PureCandleStickChart: FC<coinProps> = ({height = 500, extraStyle, data}) =
     const [innerWidth, setInnerWidth] = useState(0.01)
     useEffect(() => {
         setVega({
-                "selection": {"grid": {"type": "interval", "bind": "scales"}},
-                "width": "container",
-                "height": height,
+
                 background: '#f0f0f0',
                 "description": "A candlestick chart",
                 "data": {
                     "values": data
                 },
-                "encoding": {
-                    "x": {
-                        "field": "date",
-                        "type": "temporal",
-                        "timeUnit": "monthdatehours",
-                        "axis": {
-                            "format": "%m/%d %H:%M",
-                            "labelAngle": -45,
-                        }
-                    },
-                    "y": {
-                        "type": "quantitative",
-                        "scale": {"zero": false},
-                        "axis": {"title": "Price"}
-                    },
-                    "color": {
-                        "condition": {
-                            "test": "datum.open < datum.close",
-                            "value": "#06982d"
-                        },
-                        "value": "#ae1325"
-                    }
-                },
-                "layer": [
-
-                    {
-                        "mark": {
-                            "tooltip": true, "type": "bar",
-                            "width": {
-                                "band": innerWidth
+                vconcat: [{
+                    "width": "container",
+                    "height": height,
+                    "encoding": {
+                        "x": {
+                            "field": "date",
+                            "type": "temporal",
+                            "timeUnit": timeUnit,
+                            "scale": {"domain": {"param": "brush"}},
+                            "axis": {
+                                "format": "%m/%d %H:%M",
+                                "labelAngle": -45,
                             }
                         },
-                        "encoding": {
-                            "tooltip": [
-                                {"field": "open", "type": "quantitative"},
-                                {"field": "close", "type": "quantitative"},
-                                {"field": "low", "type": "quantitative"},
-                                {"field": "high", "type": "quantitative"},
-                                {"timeUnit": "yearmonthdatehours", "field": "date", "title": "date"}
-                            ],
-                            // "size": {"value": 1.8},
-                            "y": {"field": "low"},
-                            "y2": {"field": "high"}
+                        "y": {
+                            "type": "quantitative",
+                            "scale": {"zero": false},
+                            "axis": {"title": "Price"}
+                        },
+                        "color": {
+                            "condition": {
+                                "test": "datum.open < datum.close",
+                                "value": "#06982d"
+                            },
+                            "value": "#ae1325"
                         }
                     },
-                    {
-                        "selection": {"grid": {"type": "interval", "bind": "scales"}},
-                        "mark": {
-                            "tooltip": true,
-                            "type": "bar",
-                            "width": customCheck ? customWidth :
-                                {
-                                    "band": barWidth
-                                }
+                    "layer": [
 
+                        {
+                            "mark": {
+                                "tooltip": true, "type": "bar",
+                                "width": {
+                                    "band": innerWidth
+                                }
+                            },
+                            "encoding": {
+                                "tooltip": [
+                                    {"field": "open", "type": "quantitative"},
+                                    {"field": "close", "type": "quantitative"},
+                                    {"field": "low", "type": "quantitative"},
+                                    {"field": "high", "type": "quantitative"},
+                                    {"timeUnit": "yearmonthdatehours", "field": "date", "title": "date"}
+                                ],
+                                // "size": {"value": 1.8},
+                                "y": {"field": "low"},
+                                "y2": {"field": "high"}
+                            }
                         },
-                        "encoding": {
-                            "tooltip": [
-                                {"field": "open", "type": "quantitative"},
-                                {"field": "close", "type": "quantitative"},
-                                {"field": "low", "type": "quantitative"},
-                                {"field": "high", "type": "quantitative"},
-                                {"timeUnit": "yearmonthdatehours", "field": "date", "title": "date"}
-                            ],
-                            "y": {"field": "open"},
-                            "y2": {"field": "close"}
+                        {
+                            "mark": {
+                                "tooltip": true,
+                                "type": "bar",
+                                "width": customCheck ? customWidth :
+                                    {
+                                        "band": barWidth
+                                    }
+
+                            },
+                            "encoding": {
+                                "tooltip": [
+                                    {"field": "open", "type": "quantitative"},
+                                    {"field": "close", "type": "quantitative"},
+                                    {"field": "low", "type": "quantitative"},
+                                    {"field": "high", "type": "quantitative"},
+                                    {"timeUnit": "yearmonthdatehours", "field": "date", "title": "date"}
+                                ],
+                                "y": {"field": "open"},
+                                "y2": {"field": "close"}
+                            }
+                        }
+                    ]
+                }, {
+                    "width": "container",
+                    "height": 50,
+                    "mark": {
+                        "type": "area",
+                        width: '',
+                        "line": true,
+                        opacity: 0.1
+                    },
+                    "params": [{
+                        "name": "brush",
+                        "select": {"type": "interval", "encodings": ["x"]}
+                    }],
+                    "encoding": {
+
+                        "x": {
+                            "timeUnit": timeUnit,
+                            "field": "date",
+                            "type": "temporal",
+                            "axis": {"format": "%m/%d", "labelAngle": -45}
+                        },
+                        "y": {
+                            "type": "quantitative",
+                            "field": "close",
+                            "stack": "none",
+                            "scale": {"zero": false}
+
                         }
                     }
-                ]
+                }]
+
             }
         )
     }, [data, barWidth, innerWidth, customCheck, customWidth])
@@ -147,7 +180,7 @@ const PureCandleStickChart: FC<coinProps> = ({height = 500, extraStyle, data}) =
                             <Slider min={10}
                                     disabled={customCheck}
                                     valueLabelDisplay="auto"
-                                    max={100}
+                                    max={99}
                                     value={barWidth * 100}
                                     onChange={(e, val) => setBarWidth((val as number) * 0.01)}/>
                         </Grid>

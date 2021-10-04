@@ -25,9 +25,29 @@ const Footer: FC<FooterProps> = ({height = 60}) => {
                 <Grid item xs={12}>
                     <Typography align={'center'}>Page made by Jason Katsoutas</Typography>
                 </Grid>
-                <Grid item container justify={'center'} wrap={'nowrap'}>
-                    <Typography align={'center'} style={{marginRight:32}}>tools used: ReactJS - Material UI - VEGA LITE</Typography>
-                    <Typography align={'center'}>Cryptocurrency data by coingecko</Typography>
+                <Grid item xs={12} container justify={'space-evenly'} wrap={'nowrap'}>
+                    <a href={'https://reactjs.org/'} target="_blank">
+                        <Typography align={'center'}>
+                            <strong>ReactJS</strong>
+                        </Typography>
+                    </a>
+                    <a href={'https://vega.github.io/vega-lite/'} target="_blank">
+                        <Typography align={'center'}>
+                            <strong>VEGA LITE</strong>
+                        </Typography>
+                    </a>
+                    <a href={'https://mui.com/'} target="_blank">
+                        <Typography align={'center'}>
+                            <strong>MATERIAL UI</strong>
+                        </Typography>
+                    </a>
+                </Grid>
+                <Grid item xs={12} container justify={'space-evenly'} wrap={'nowrap'}>
+                    <a href={'https://www.coingecko.com/api/documentations/v3'} target="_blank">
+                        <Typography
+                            align={'center'}>Api used: <strong>COINGECKO</strong>
+                        </Typography>
+                    </a>
                 </Grid>
 
             </Grid>

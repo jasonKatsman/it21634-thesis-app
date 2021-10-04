@@ -20,7 +20,7 @@ const useStyles = makeStyles(() => ({
 
 }))
 const headerHeight = 80
-const footerHeight = 80
+const footerHeight = 100
 const Layout: FC = ({children}) => {
     const classes = useStyles({headerHeight, footerHeight});
     return (

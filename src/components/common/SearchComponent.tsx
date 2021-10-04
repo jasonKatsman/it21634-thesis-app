@@ -1,6 +1,6 @@
 import React, {FC, useState} from 'react';
 import {Box, InputAdornment, List, ListItem, makeStyles, TextField, Theme, Typography} from "@material-ui/core";
-import {SearchOutlined} from "@material-ui/icons";
+import {CloseOutlined, SearchOutlined} from "@material-ui/icons";
 import coins from "../../Dummy/coinNamesWithDetails.json";
 import {useHistory} from "react-router";
 
@@ -12,16 +12,32 @@ const useStyles = makeStyles((theme: Theme) => ({
         padding: 8,
         borderRadius: 8,
         width: 300,
+        [theme.breakpoints.down('sm')]: {
+            marginLeft: 32
+        },
+        [theme.breakpoints.down('xs')]: {
+            width: 200,
+            minWidth: 100,
+            marginLeft: 16,
+            padding: 4,
+        },
         '&:hover': {
             boxShadow: `0 0 0 1px ${theme.palette.secondary.main}`,
         }
     },
     list: {
         position: 'absolute',
-        top: 68,
+        top: 66,
         borderBottomRightRadius: 8,
         borderBottomLeftRadius: 8,
-        width: 300,
+        width: 315,
+        [theme.breakpoints.down('sm')]: {
+            marginLeft: 32
+        },
+        [theme.breakpoints.down('xs')]: {
+            marginLeft: 0,
+            width: 250
+        },
         boxShadow: '3px 0px 6px 3px lightgray',
         background: 'white',
         '&>:nth-child(n)': {
@@ -32,7 +48,11 @@ const useStyles = makeStyles((theme: Theme) => ({
                 background: 'whitesmoke',
             }
         }
+    },
+    cursor: {
+        cursor: 'pointer'
     }
+
 }))
 
 const SearchComponent: FC = () => {
@@ -45,7 +65,7 @@ const SearchComponent: FC = () => {
         const filtered = coins.filter((item) => item.name.toLowerCase().includes(inputValue.toLowerCase()))
         if (filtered.length) {
             return filtered.map((item) => <ListItem onClick={(e: any) => {
-                console.log('haha')
+                setInputValue(item.name.toLowerCase())
                 history.push('/preview/' + item.name.toLowerCase())
             }}>
                 <Typography
@@ -73,6 +93,11 @@ const SearchComponent: FC = () => {
         </Typography></ListItem>
 
     }
+
+    const clearInput = () => {
+        setInputValue('')
+    }
+
     return (
         <Box>
             <TextField
@@ -86,7 +111,8 @@ const SearchComponent: FC = () => {
                     disableUnderline: true,
                     endAdornment: (
                         <InputAdornment position="end">
-                            <SearchOutlined/>
+                            {inputValue ? <CloseOutlined className={classes.cursor} onClick={clearInput}/> :
+                                <SearchOutlined/>}
                         </InputAdornment>
                     ),
                 }}

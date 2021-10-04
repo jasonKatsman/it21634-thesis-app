@@ -11,6 +11,7 @@ import CoinComparisonChart from "../components/common/CoinComparisonChart";
 import CustomCalendar from "../components/common/CustomCalendar";
 import moment from "moment";
 import CustomTable from "../components/common/CustomTable";
+import {useHistory} from "react-router";
 
 const useStyles = makeStyles((theme: Theme) => ({
     headerSpace: {
@@ -38,6 +39,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const CompareCoinPage: FC = () => {
     const classes = useStyles();
+    const history = useHistory()
     const [requestValue, setRequestValue] = useState<{ coins: { name: string, abr: string }[], time: string }>({
         coins: [],
         time: 'weekly'
@@ -71,7 +73,11 @@ const CompareCoinPage: FC = () => {
     const prepareCoinPills = () => {
         return requestValue.coins.map((item, i) => {
             return <Grid item>
-                <CustomButtonPill onDeleteClick={() => onDeleteCoin(i)} title={item.name} subtitle={item.abr}/>
+                <CustomButtonPill onClick={() => history.push('/preview/' + item.name.toLowerCase())}
+                                  onDeleteClick={(e) => {
+                                      e.stopPropagation()
+                                      onDeleteCoin(i)
+                                  }} title={item.name} subtitle={item.abr}/>
             </Grid>
 
         })
@@ -120,7 +126,7 @@ const CompareCoinPage: FC = () => {
                 </Grid>
                 <Grid item className={classes.tabGrid} xs={12}>
                     <Divider/>
-                    <Grid item container style={{margin: '4px 16px'}}  alignItems={'center'} xs={12}>
+                    <Grid item container style={{margin: '4px 16px'}} alignItems={'center'} xs={12}>
                         <Grid item style={{margin: '0 16px'}}>
                             <CustomCalendar dateValue={dateValue} setDateValue={setDateValue}/>
                         </Grid>
@@ -136,9 +142,9 @@ const CompareCoinPage: FC = () => {
                     </Grid>
                     <Divider/>
                 </Grid>
-                {coinData.length && !loading ?
+                {coinData.length ?
                     <Grid item xs={12}>
-                        <CustomTable   coins={requestValue.coins}/>
+                        <CustomTable coins={requestValue.coins}/>
                     </Grid> : undefined}
                 <Grid item xs={12} container justify={'center'}>
                     {loading ? <CircularProgress className={classes.chart}/> : prepareCoinCharts()}

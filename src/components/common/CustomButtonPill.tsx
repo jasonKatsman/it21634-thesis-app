@@ -4,6 +4,7 @@ import {CancelSharp as CancelIcon} from '@material-ui/icons';
 
 const useStyles = makeStyles((theme: Theme) => ({
     button: {
+        cursor: 'pointer',
         display: 'flex',
         alignItems: 'flex-end',
         textTransform: 'none',
@@ -14,12 +15,20 @@ const useStyles = makeStyles((theme: Theme) => ({
         borderTopLeftRadius: 0,
         padding: (props: any) => props.padding ? props.padding : '10px 8px 10px 28px',
         border: `2px solid ${theme.palette.primary.main}`,
+        transition: '0.2s',
+        '&:hover': {
+            background: 'whitesmoke',
+        }
     },
     deleteButton: {
         marginLeft: 24,
         borderRadius: 8,
         transform: 'scale(1.2)',
-        color: theme.palette.error.light
+        color: theme.palette.error.light,
+        transition: '0.2s',
+        '&:hover': {
+            color: theme.palette.error.dark,
+        }
     }
 }))
 
@@ -28,7 +37,7 @@ type extraProps = {
     padding?: string,
     title: string,
     subtitle: string
-    onDeleteClick: () => void
+    onDeleteClick: (e: any) => void
 }
 
 const CustomButtonPill: FC<BoxProps & extraProps> = ({

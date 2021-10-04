@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useState} from 'react';
-import {Button, Checkbox, Grid, makeStyles, Slider, TextField, Theme, Tooltip, Typography} from "@material-ui/core";
+import {Button, Grid, makeStyles, Slider, Theme, Tooltip, Typography} from "@material-ui/core";
 import VegaLitePreview from "../vega/VegaLitePreview";
 import SettingsIcon from "@material-ui/icons/Settings";
 import CancelIcon from "@material-ui/icons/Cancel";
@@ -38,8 +38,6 @@ interface coinProps {
 
 const PureCandleStickChart: FC<coinProps> = ({timeUnit = 'monthdatehours', height = 400, extraStyle, data}) => {
     const classes = useStyles()
-    const [customWidth, setCustomWidth] = useState()
-    const [customCheck, setCustomCheck] = useState(false)
     const [customSettings, setCustomSettings] = useState(false)
 
     const [vega, setVega] = useState<any>()
@@ -106,11 +104,9 @@ const PureCandleStickChart: FC<coinProps> = ({timeUnit = 'monthdatehours', heigh
                             "mark": {
                                 "tooltip": true,
                                 "type": "bar",
-                                "width": customCheck ? customWidth :
-                                    {
-                                        "band": barWidth
-                                    }
-
+                                "width": {
+                                    "band": barWidth
+                                }
                             },
                             "encoding": {
                                 "tooltip": [
@@ -158,7 +154,7 @@ const PureCandleStickChart: FC<coinProps> = ({timeUnit = 'monthdatehours', heigh
 
             }
         )
-    }, [data, barWidth, innerWidth, customCheck, customWidth])
+    }, [data, barWidth, innerWidth])
     return (
         <Grid container>
             <Grid container alignItems={'center'} className={classes.sliderSpacing} item xs={12}>
@@ -168,17 +164,8 @@ const PureCandleStickChart: FC<coinProps> = ({timeUnit = 'monthdatehours', heigh
                 </Button>
                 {customSettings ?
                     <>
-                        <Grid item container alignItems={'center'} wrap={'nowrap'} xs={1}>
-                            <Checkbox checked={customCheck} onClick={() => setCustomCheck(!customCheck)}/>
-                            <TextField placeholder={'custom width'} className={classes.input} type={'number'}
-                                       disabled={!customCheck}
-                                       value={customWidth}
-                                       onChange={(e: any) => setCustomWidth(e.target.value)}
-                                       variant={'outlined'}/>
-                        </Grid>
                         <Grid item xs={2}>
                             <Slider min={10}
-                                    disabled={customCheck}
                                     valueLabelDisplay="auto"
                                     max={99}
                                     value={barWidth * 100}
@@ -186,7 +173,6 @@ const PureCandleStickChart: FC<coinProps> = ({timeUnit = 'monthdatehours', heigh
                         </Grid>
                         <Grid item xs={2}>
                             <Slider min={0}
-                                    disabled={customCheck}
                                     valueLabelDisplay="auto"
                                     max={40}
                                     value={innerWidth * 100}

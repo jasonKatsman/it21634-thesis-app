@@ -40,7 +40,10 @@ const CustomTable: FC<customTableProps> = ({coins}) => {
     const getStats = async () => {
         setLoading(true)
         try {
-            const res = await getOverviewStats({coins: coins.map(item => item.name.toLowerCase()).toString(), date: new Date()})
+            const res = await getOverviewStats({
+                coins: coins.map(item => item.name.toLowerCase()).toString(),
+                date: new Date()
+            })
             setData(res.data)
             setLoading(false)
         } catch (e) {
@@ -50,7 +53,7 @@ const CustomTable: FC<customTableProps> = ({coins}) => {
 
     useEffect(() => {
         getStats()
-    }, [])
+    }, [coins.length])
 
     const prepareTableRows = () => {
 

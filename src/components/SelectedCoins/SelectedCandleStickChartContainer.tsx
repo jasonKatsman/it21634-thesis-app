@@ -83,7 +83,10 @@ const SelectedCandleStickChartContainer: FC<singlePriceChartType> = ({coinId}) =
                         </Grid>
                         <Grid item xs={12}>
                             <PureCandleStickChart height={400}
-                                                  timeUnit={intervalValue === '24' || intervalValue === '48' ? 'monthdate' : undefined}
+                                                  timeUnit={intervalValue === '24' || intervalValue === '48' ? 'monthdate' : {
+                                                      unit: 'monthdatehours',
+                                                      step: parseInt(intervalValue)
+                                                  }}
                                                   extraStyle={{
                                                       borderRadius: 4,
                                                       boxShadow: '2px 2px 6px 3px lightgray',

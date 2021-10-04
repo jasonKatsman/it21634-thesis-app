@@ -37,7 +37,7 @@ const CoinDialog: FC<BoxProps & extraProps> = ({
                 <SelectAggregate selectTitle={'Select a coin'}
                                  value={selectValue} onChange={(event => setSelectValue(event.target.value as string))}
                                  id={'coin-select-267'}
-                                 style={{minWidth: 300}}>
+                                 style={{minWidth: 200}}>
                     {prepareSelectOptions()}
                 </SelectAggregate>
             </DialogContent>

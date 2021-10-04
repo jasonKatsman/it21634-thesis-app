@@ -15,7 +15,7 @@ import {useHistory} from "react-router";
 
 const useStyles = makeStyles((theme: Theme) => ({
     headerSpace: {
-        marginTop: 32
+        margin: '32px 0 8px 0'
     },
     page: {
         marginBottom: 32
@@ -92,9 +92,13 @@ const CompareCoinPage: FC = () => {
         }
     }
 
-    const prepareCoinCharts = () => {
+    const prepareCharts = () => {
+        if (loading) return <CircularProgress className={classes.chart}/>
         if (coinData.length)
             return <CoinComparisonChart coinValue={requestValue} data={coinData}/>
+
+        return <Typography className={classes.headerSpace} align={'center'} variant={'body1'} color={'primary'}><strong>No
+            coins selected!</strong></Typography>
     }
 
     return (
@@ -105,14 +109,10 @@ const CompareCoinPage: FC = () => {
                         Coin comparison
                     </Typography>
                 </Grid>
-                <Grid item container xs={12}>
-                    <Typography variant={'body1'}>
-                        Press the ADD button to insert coins. Then press get data to fetch results.
-                    </Typography>
-                    <Grid item xs={12}>
-                        <Divider/>
-                    </Grid>
+                <Grid item xs={12}>
+                    <Divider/>
                 </Grid>
+
                 <Grid item xs={12} className={classes.pillSpace}>
                     <CustomButtonBig onClick={() => setCoinModal(true)}>ADD COIN</CustomButtonBig>
                     <Button disabled={!requestValue.coins.length} onClick={onFetchClick}
@@ -126,13 +126,13 @@ const CompareCoinPage: FC = () => {
                 </Grid>
                 <Grid item className={classes.tabGrid} xs={12}>
                     <Divider/>
-                    <Grid item container style={{margin: '4px 16px'}} alignItems={'center'} xs={12}>
-                        <Grid item style={{margin: '0 16px'}}>
+                    <Grid item container style={{padding: 4}} alignItems={'center'} xs={12}>
+                        <Grid item xs={3} sm={2} md={'auto'}>
                             <CustomCalendar dateValue={dateValue} setDateValue={setDateValue}/>
                         </Grid>
-                        <Grid item>
+                        <Grid item xs={9} sm={10} md={'auto'}>
                             <CustomTabs variant="scrollable"
-                                        scrollButtons="auto" value={requestValue.time}
+                                        scrollButtons="on" value={requestValue.time}
                                         setValue={(val) => setRequestValue({...requestValue, time: val})}>
                                 {frequencyOptions.map(freq => {
                                     return <Tab label={freq.title} value={freq.value}/>
@@ -147,7 +147,7 @@ const CompareCoinPage: FC = () => {
                         <CustomTable coins={requestValue.coins}/>
                     </Grid> : undefined}
                 <Grid item xs={12} container justify={'center'}>
-                    {loading ? <CircularProgress className={classes.chart}/> : prepareCoinCharts()}
+                    {prepareCharts()}
                 </Grid>
             </Grid>
             <CoinDialog open={coinModal} handleClose={() => setCoinModal(false)}

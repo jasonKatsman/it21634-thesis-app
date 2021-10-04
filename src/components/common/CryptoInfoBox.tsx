@@ -21,12 +21,14 @@ type extraProps = {
     title?: string
     value?: number
     extraTitle?: string
-    isPercentage?:boolean
+    firstPrercentage?: boolean
+    isPercentage?: boolean
     extraValue?: number
 }
 
 const CryptoInfoBox: FC<BoxProps & extraProps> = ({
-                                                      isPercentage=true,
+                                                      firstPrercentage,
+                                                      isPercentage = true,
                                                       extraTitle,
                                                       extraValue = 0,
                                                       title,
@@ -38,9 +40,15 @@ const CryptoInfoBox: FC<BoxProps & extraProps> = ({
     const colorDay = preparePercentageClass(extraValue)
     return (
         <Box className={`${classes.root} ${className}`} {...props}>
-            <Typography className={classes.title} color={'primary'}
-                        variant={'h6'}><strong>{title}</strong></Typography>
-            <Typography color={'primary'} variant={'body1'}><strong>€{value}</strong></Typography>
+            <Typography className={classes.title} color={'primary'} variant={'h6'}>
+                <strong>{title}</strong>
+            </Typography>
+            <Typography color={'primary'} variant={'body1'}>
+                {firstPrercentage ?
+                    <strong>{value?.toFixed(2)}%</strong>
+                    :
+                    <strong>€{value}</strong>}
+            </Typography>
             <Grid container wrap={'nowrap'} className={classes.extraBox}>
                 <Grid item>
                     <Typography color={'primary'}>
@@ -49,9 +57,9 @@ const CryptoInfoBox: FC<BoxProps & extraProps> = ({
                 </Grid>
                 <Box className={classes.icon}>
                     {isPercentage && prepareIcon(extraValue)}
-                    {isPercentage?<Typography style={{color: colorDay}}>
+                    {isPercentage ? <Typography style={{color: colorDay}}>
                         {extraValue?.toFixed(2)}%
-                    </Typography>:<Typography color={'secondary'}>
+                    </Typography> : <Typography color={'secondary'}>
                         <strong>{extraValue}€</strong>
                     </Typography>}
                 </Box>

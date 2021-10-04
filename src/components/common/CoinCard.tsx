@@ -75,21 +75,25 @@ const CoinCard: FC<BoxProps & extraProps> = ({
                 </Grid>
 
                 <Grid item container className={classes.gridItems} justify={'space-around'}>
-
-
-
-                    <Grid item xs={12} md={4}>
+                    <Grid item xs={12} sm={6} md={3}>
                         <CryptoInfoBox isPercentage={false} title={'24h High Price'} value={data.high_24h}
                                        extraTitle={'24h low Price'}
                                        extraValue={data.low_24h}/>
                     </Grid>
-                    <Grid item xs={12} md={4}>
+                    <Grid item xs={12} sm={6} md={3}>
+                        <CryptoInfoBox
+                            title={'Price Week Ago'}
+                            value={data.week_price}
+                            extraTitle={'1w Change'}
+                            extraValue={data.price_week_percentage}/>
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={3}>
                         <CryptoInfoBox title={'Market Cap'} value={data.market_cap}
                                        extraTitle={'24h Change'}
                                        extraValue={data.market_cap_change_percentage_24h}/>
                     </Grid>
 
-                    <Grid item xs={12} md={4}>
+                    <Grid item xs={12} sm={6} md={3}>
                         <CryptoInfoBox title={'All Time High'} value={data.ath}
                                        extraTitle={'All Time High Change'}
                                        extraValue={data.ath_change_percentage}/>

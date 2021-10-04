@@ -1,57 +1,121 @@
-import React, {FC} from 'react';
-import {BoxProps, makeStyles, Table, TableBody, TableCell, TableHead, TableRow, Theme} from "@material-ui/core";
-import StatisticRow from "./StatisticRow";
+import React, {FC, useEffect, useState} from 'react';
+import {CircularProgress, Fade, Grid, makeStyles, TableCell, Theme, Typography} from "@material-ui/core";
+import {useHistory} from "react-router";
+import {getOverviewStats} from "../../http/endpoints/overviewCoins";
+import {prepareIcon, preparePercentageClass} from "../../utils/rowPercentageColorFunctions";
+import CoinRow from "./CoinRow";
+import CoinTable from "./CoinTable";
+
 
 const useStyles = makeStyles((theme: Theme) => ({
-    root: {
-        background: '#f0f0f0',
-        marginTop: 40,
-        borderRadius: 4,
-        boxShadow: '0px 0px 0px 2px #02254b',
-        overflow:'hidden'
+    page: {
+        marginBottom: 32
     },
-    headRow: {
-        background: 'rgba(2, 37, 75,0.8)',
-        '& th': {
-            color: 'white',
-            fontWeight: 'bold'
-        }
+    regularSpacing: {
+        marginTop: 16
+    },
+    pageTitle: {
+        marginTop: 32
+    },
+    loading: {
+        margin: '80px 0 500px 0'
+    },
+    overflow: {
+        overflow: 'auto',
+        borderRadius: 4,
+        border: '1px solid #02254b'
     }
 }))
-
-type extraProps = {
-    className?: any
-    coins: any[]
-    time: string
+type customTableProps = {
+    coins: { name: string, abr: string }[]
 }
-
-const CustomTable: FC<BoxProps & extraProps> = ({
-                                                    time,
-                                                    coins,
-                                                    className
-                                                }) => {
+const CustomTable: FC<customTableProps> = ({coins}) => {
     const classes = useStyles();
+    const history = useHistory()
+    const [sort, setSort] = useState({value: '', asc: false})
 
-    return (
-        <Table className={classes.root}>
-            <TableHead>
-                <TableRow className={classes.headRow}>
-                    <TableCell align="left">Name</TableCell>
-                    <TableCell align="center">Price</TableCell>
-                    <TableCell align="center">{time} change (%)</TableCell>
-                    <TableCell align="center">market cap</TableCell>
-                    <TableCell align="center">volume</TableCell>
-                    <TableCell align="center">Circulating supply</TableCell>
+    const [data, setData] = useState([])
+    const [loading, setLoading] = useState(false)
 
-                </TableRow>
-            </TableHead>
-            <TableBody>
-                {coins.map((coin) => {
-                    return <StatisticRow coinStart={coin[0]} coinEnd={coin[coin.length - 1]}/>
-                })}
-            </TableBody>
-        </Table>
-    );
+    const getStats = async () => {
+        setLoading(true)
+        try {
+            const res = await getOverviewStats({coins: coins.map(item => item.name.toLowerCase()).toString(), date: new Date()})
+            setData(res.data)
+            setLoading(false)
+        } catch (e) {
+            setLoading(false)
+        }
+    }
+
+    useEffect(() => {
+        getStats()
+    }, [])
+
+    const prepareTableRows = () => {
+
+        const sortedData = sort.value ? data.sort((a: any, b: any) => {
+            if (a[sort.value] > b[sort.value]) {
+                return sort.asc ? -1 : 1
+            }
+            if (a[sort.value] < b[sort.value]) {
+                return sort.asc ? 1 : -1
+            }
+            return 0
+        }) : data
+
+        return sortedData.map((coin: any) => {
+            const colorDay = preparePercentageClass(coin?.price_change_percentage_24h)
+            const colorWeek = preparePercentageClass(coin?.price_week_percentage)
+
+            return <CoinRow onClick={() => history.push(`/preview/${coin?.id}`)}>
+                <TableCell align={'left'}>
+                    <Typography>{coin?.name}</Typography>
+                </TableCell>
+                <TableCell align="center"> <Typography>{coin?.current_price} €</Typography></TableCell>
+                <TableCell align="center">
+                    <Grid container justify={'center'}>
+                        {prepareIcon(coin?.price_change_percentage_24h)}
+                        <Typography style={{color: colorDay}}>
+                            {coin?.price_change_percentage_24h.toFixed(2)}%
+                        </Typography>
+                    </Grid>
+                </TableCell>
+                <TableCell align="center">
+                    <Grid container justify={'center'}>
+                        {prepareIcon(coin?.price_week_percentage)}
+                        <Typography style={{color: colorWeek}}>
+                            {coin?.price_week_percentage.toFixed(2)}%
+                        </Typography>
+                    </Grid>
+                </TableCell>
+                <TableCell align="center"><Typography>{coin?.market_cap}€</Typography></TableCell>
+                <TableCell align="center"><Typography>{coin?.total_volume} €</Typography></TableCell>
+                <TableCell align="center"><Typography>{coin?.circulating_supply}</Typography></TableCell>
+            </CoinRow>
+        })
+    }
+
+    const prepareTable = () => {
+        if (loading && !data.length) {
+            return <Grid className={classes.loading} item container justify={'center'} alignItems={'center'} xs={12}>
+                <CircularProgress size={45}/>
+            </Grid>
+        }
+        if (data.length) {
+            return (
+                <Fade in={true} timeout={1000}>
+                    <Grid item xs={12} className={`${classes.regularSpacing} ${classes.overflow}`}>
+                        <CoinTable sort={sort} setSort={setSort}>
+                            {prepareTableRows()}
+                        </CoinTable>
+                    </Grid>
+                </Fade>
+            )
+        }
+    }
+
+    return <>{prepareTable()}</>;
 }
 
 export default CustomTable;

@@ -138,7 +138,7 @@ const CompareCoinPage: FC = () => {
                 </Grid>
                 {coinData.length && !loading ?
                     <Grid item xs={12}>
-                        <CustomTable  coins={coinData} time={requestValue.time}/>
+                        <CustomTable   coins={requestValue.coins}/>
                     </Grid> : undefined}
                 <Grid item xs={12} container justify={'center'}>
                     {loading ? <CircularProgress className={classes.chart}/> : prepareCoinCharts()}

@@ -1,8 +1,6 @@
 import React, {FC, useState} from 'react';
-import {Checkbox, FormControlLabel, Grid, makeStyles, Theme, Tooltip, Typography} from "@material-ui/core";
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
-import CandleStickChart from "../compareCharts/CandleStickChart";
-import {prepareCoinSeparation} from "../../utils/prepareCoinSeparation";
+import {Checkbox, FormControlLabel, Grid, makeStyles, Theme, Typography} from "@material-ui/core";
+import SelectedCandleStickChartContainer from "../SelectedCoins/SelectedCandleStickChartContainer";
 
 const useStyles = makeStyles((theme: Theme) => ({
     headerTitle: {
@@ -32,7 +30,8 @@ const CandleStickContainer: FC<coinProps> = ({data, coinValue}) => {
 
     const prepareCandleStick = () => {
         if (priceWaterFall.value) {
-            return <CandleStickChart data={prepareCoinSeparation(data[priceWaterFall.index])}/>
+            return <SelectedCandleStickChartContainer coinId={priceWaterFall.value.toLowerCase()}/>
+            // <CandleStickChart data={prepareCoinSeparation(data[priceWaterFall.index])}/>
         }
 
         return <Typography color={'secondary'} className={classes.coinWarning}>
@@ -53,13 +52,10 @@ const CandleStickContainer: FC<coinProps> = ({data, coinValue}) => {
                         labelPlacement="end"
                     />
                 })}
-                <Tooltip
-                    title={<Typography align={'center'}>Low and high values not accurate, since they are calculated by
-                        data taken every 10 minutes.</Typography>}>
-                    <ErrorOutlineIcon style={{color: 'red'}}/>
-                </Tooltip>
             </Grid>
-            {prepareCandleStick()}
+            <Grid item xs={12}>
+                {prepareCandleStick()}
+            </Grid>
         </Grid>)
 }
 

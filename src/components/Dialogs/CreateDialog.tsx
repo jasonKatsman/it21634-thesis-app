@@ -17,7 +17,7 @@ import SyncIcon from '@material-ui/icons/Sync';
 import TextFieldsIcon from '@material-ui/icons/TextFields';
 import SettingsApplicationsIcon from '@material-ui/icons/SettingsApplications';
 import ColorLensIcon from '@material-ui/icons/ColorLens';
-import {Mark, Transform, vegaEncodingType, vegaFieldType, vegaSimpleStylesType} from "../../Types/VegaFieldType";
+import {Mark, Transform, vegaFieldType, vegaSimpleStylesType} from "../../Types/VegaFieldType";
 import {findValueType} from "../../utils/findValueType";
 import FieldsTab from "./tabs/FieldsTab";
 import DetailsTab from "./tabs/DetailsTab";
@@ -273,7 +273,7 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
 
     }, [coinData, simpleStyles, transform, xAxis, yAxis, mark])
 
-    const fetchCustomCoin = async (id: string, frequency: string, date:Date) => {
+    const fetchCustomCoin = async (id: string, frequency: string, date: Date) => {
         setLoading(true)
         try {
             const res = await getCustomCoinById({id: id, frequency: frequency, date})
@@ -396,7 +396,7 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
                     {!coinData.length ? undefined
                         : (<Box className={classes.selectSection}>
                                 <CustomCalendar dateValue={requestValue.date}
-                                                setDateValue={(date:any) => setRequestValue({...requestValue, date})}/>
+                                                setDateValue={(date: any) => setRequestValue({...requestValue, date})}/>
                                 <SelectAggregate selectTitle={'Select a duration'} value={requestValue.time}
                                                  onChange={(e) => onSelectCoinChange(e, 'time')}
                                                  id={'coin-select'}
@@ -447,8 +447,9 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
                                 </Grid>
                                 <Grid item xs={9} className={classes.chartBox} container justify={'center'}
                                       alignItems={'center'}>
-                                    <Box style={{width:'100%',height:'80%'}}>
-                                        <VegaLitePreview style={{width:'100%',height:'100%', overflow:'auto'}} vegaConfig={vlSpec} keyId={"vegaLite-create"}/>
+                                    <Box>
+                                        <VegaLitePreview
+                                            vegaConfig={vlSpec} keyId={"vegaLite-create"}/>
                                     </Box>
                                     {prepareChartArea()}
                                 </Grid>
@@ -460,7 +461,7 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
                                                          coin: requestValue.coin,
                                                          time: requestValue.time,
                                                          date: requestValue.date,
-                                                         description: prepareDate(requestValue.time,requestValue.date)
+                                                         description: prepareDate(requestValue.time, requestValue.date)
                                                      })} color={'primary'}>
                                         <Typography>SAVE</Typography>
                                     </CustomButtonBig>

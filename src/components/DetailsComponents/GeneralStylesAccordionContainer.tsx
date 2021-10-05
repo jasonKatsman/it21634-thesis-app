@@ -1,4 +1,13 @@
-import {Accordion, AccordionDetails, AccordionSummary, Grid, makeStyles, Slider, Typography} from "@material-ui/core";
+import {
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
+    Checkbox,
+    Grid,
+    makeStyles,
+    Slider,
+    Typography
+} from "@material-ui/core";
 import React, {ChangeEvent, FC} from "react";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import {vegaSimpleStylesType} from "../../Types/VegaFieldType";
@@ -53,24 +62,29 @@ const GeneralStylesAccordionContainer: FC<GeneralStylesAccordionContainerProps> 
                         <Grid item xs={12}>
                             <Typography variant={'body1'}>Canvas Width</Typography>
                         </Grid>
-                        <Grid item xs={12}>
-                            <Slider name={'width'} value={simpleStyles.width}
+                        <Grid item xs={12} container alignItems={'center'} wrap={'nowrap'}>
+                            <Slider name={'width'}
+                                    value={simpleStyles.width}
                                     onChange={(val, newVal) => onSlidersChange(newVal as number, 'width')}
                                     min={150}
                                     max={1000}
                                     valueLabelDisplay="auto"/>
+                            {/*<Checkbox className={classes.checkbox} checked={simpleStyles.width === 'container'}*/}
+                            {/*          onClick={() => setSimpleStyles({...simpleStyles, width: 'container'})}/>*/}
                         </Grid>
                     </Grid>
                     <Grid container item xs={12}>
                         <Grid item xs={12}>
                             <Typography variant={'body1'}>Canvas Height</Typography>
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item container alignItems={'center'} wrap={'nowrap'} xs={12}>
                             <Slider name={'height'} value={simpleStyles.height}
                                     onChange={(val, newVal) => onSlidersChange(newVal as number, 'height')}
                                     min={150}
                                     max={1000}
                                     valueLabelDisplay="auto"/>
+                            {/*<Checkbox className={classes.checkbox} checked={simpleStyles.height === 'container'}*/}
+                            {/*          onClick={() => setSimpleStyles({...simpleStyles, height: 'container'})}/>*/}
                         </Grid>
                     </Grid>
                     <Grid container item xs={12}>

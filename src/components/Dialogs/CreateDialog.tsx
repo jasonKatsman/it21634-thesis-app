@@ -230,8 +230,8 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
     const [transform, setTransform] = useState<Transform>({})
 
     const [simpleStyles, setSimpleStyles] = useState<vegaSimpleStylesType>({
-        width: 200,
-        height: 200,
+        width: 400,
+        height: 300,
         background: 'white',
     })
     const [mark, setMark] = useState<Mark>({
@@ -447,8 +447,8 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
                                 </Grid>
                                 <Grid item xs={9} className={classes.chartBox} container justify={'center'}
                                       alignItems={'center'}>
-                                    <Box>
-                                        <VegaLitePreview vegaConfig={vlSpec} keyId={"vegaLite-create"}/>
+                                    <Box style={{width:'100%',height:'80%'}}>
+                                        <VegaLitePreview style={{width:'100%',height:'100%', overflow:'auto'}} vegaConfig={vlSpec} keyId={"vegaLite-create"}/>
                                     </Box>
                                     {prepareChartArea()}
                                 </Grid>

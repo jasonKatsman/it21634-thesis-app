@@ -63,7 +63,6 @@ const AxisAccordionContainer: FC<AxisAccordionContainerProps> = ({axis, setAxis,
     }
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(e.target.name, e.target.value)
         setAxis({...axis, [e.target.name]: e.target.value})
     }
 
@@ -96,21 +95,6 @@ const AxisAccordionContainer: FC<AxisAccordionContainerProps> = ({axis, setAxis,
                                              onChange={(e: any) => onInputChange(e)}>{prepareOptions()}</SelectAggregate>
                         </Grid>
                     </Grid> : undefined}
-
-                    {/*{axis.type !== 'temporal' ? <Grid container item xs={12}>*/}
-                    {/*    <Grid item xs={12}>*/}
-                    {/*        <Typography variant={'body1'}>Bin Data</Typography>*/}
-                    {/*    </Grid>*/}
-                    {/*    <Grid item xs={12}>*/}
-                    {/*        <RadioGroup aria-label="quiz" name="bin" value={axis.bin ?? false}*/}
-                    {/*                    onChange={(event => setAxis({...axis, bin: event.target.value === 'true'}))}*/}
-                    {/*                    className={classes.radios}>*/}
-                    {/*            <FormControlLabel value={true} control={<Radio color={'primary'}/>} label="yes"/>*/}
-                    {/*            <FormControlLabel value={false} control={<Radio/>} label="no"/>*/}
-                    {/*        </RadioGroup>*/}
-                    {/*    </Grid>*/}
-                    {/*</Grid> : undefined}*/}
-
                     {axis.type === 'temporal' ? <Grid container item xs={12}>
                         <Grid item xs={12}>
                             <Typography variant={'body1'}>Time Unit</Typography>
@@ -120,23 +104,6 @@ const AxisAccordionContainer: FC<AxisAccordionContainerProps> = ({axis, setAxis,
                                              onChange={(e: any) => onInputChange(e)}>{prepareDateOptions()}</SelectAggregate>
                         </Grid>
                     </Grid> : undefined}
-                    {axis.type === 'temporal' ? <Grid container item xs={12}>
-                        <Grid item xs={12}>
-                            <Typography variant={'body1'}>Band Position (shift)</Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Slider name={'bandPosition'} value={axis?.bandPosition ? axis.bandPosition * 10 : 0}
-                                    onChange={(val, newVal) => {
-                                        console.log(newVal as number / 10)
-                                        setAxis({...axis, bandPosition: newVal as number / 10})
-                                    }}
-                                    min={0}
-                                    max={10}
-                                    scale={(x) => x / 10}
-                                    valueLabelDisplay="auto"/>
-                        </Grid>
-                    </Grid> : undefined}
-
                     {axis.type !== 'temporal' ? <Grid container item xs={12}>
                         <Grid item xs={12}>
                             Start at zero:

@@ -45,9 +45,15 @@ const MarkAccordionContainer: FC<DetailsTabProps> = ({axisX, setAxisX, setAxisY,
         if (e.target.value === 'bar') {
             if (axisX.type !== 'temporal') {
                 setAxisX({...axisX, aggregate: 'average'})
+                if (axisY.type === 'temporal') {
+                    setAxisY({...axisY, timeUnit: 'monthdatehours'})
+                }
             }
             if (axisY.type !== 'temporal') {
                 setAxisY({...axisY, aggregate: 'average'})
+                if (axisX.type === 'temporal') {
+                    setAxisX({...axisX, timeUnit: 'monthdatehours'})
+                }
             }
         }
         setMark({

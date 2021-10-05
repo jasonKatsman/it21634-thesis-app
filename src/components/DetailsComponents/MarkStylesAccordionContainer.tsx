@@ -121,12 +121,12 @@ const MarkStylesAccordionContainer: FC<MarkStylesAccordionContainerProps> = ({ti
                            valueLabelDisplay="auto"/>
         }
         if (mark.mark.type === 'bar') {
-            return <Slider value={mark.mark.width ?? 1}
+            return <Slider value={mark.mark.width?.band * 100 ?? 1}
                            onChange={(val, newVal) => {
-                               setMark({...mark, mark: {...mark.mark, width: newVal as number}})
+                               setMark({...mark, mark: {...mark.mark, width: {band: (newVal as number) / 100}}})
                            }}
-                           min={5}
-                           max={100}
+                           min={1}
+                           max={99}
                            valueLabelDisplay="auto"/>
         }
         return <Slider value={mark.mark.size ?? 1}
@@ -137,7 +137,7 @@ const MarkStylesAccordionContainer: FC<MarkStylesAccordionContainerProps> = ({ti
                        max={1000}
                        valueLabelDisplay="auto"/>
     }
-console.log(mark.mark.type)
+    console.log(mark.mark.type)
     return (
         <Accordion>
             <AccordionSummary

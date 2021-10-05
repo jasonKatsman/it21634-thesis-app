@@ -42,7 +42,7 @@ export type Mark = {
         type: string;
         interpolate: string
         color?: string
-        width?: number
+        width?: any
         strokeWidth?: number
         cornerRadius?: number
         size?: number

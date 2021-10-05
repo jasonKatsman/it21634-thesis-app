@@ -8,43 +8,23 @@
     "title": "year"
   },
   {
-    "value": "quarter",
-    "title": "quarter (3-month)"
-  },
-  {
     "value": "month",
     "title": "month"
   },
   {
-    "value": "date",
-    "title": "date"
-  },
-  {
-    "value": "week",
-    "title": "week"
-  },
-  {
-    "value": "day",
+    "value": "monthdate",
     "title": "day"
   },
   {
-    "value": "dayofyear",
-    "title": "dayofyear"
-  },
-  {
-    "value": "hours",
+    "value": "monthdatehours",
     "title": "hours"
   },
   {
-    "value": "minutes",
+    "value": "monthdatehoursminutes",
     "title": "minutes"
   },
   {
-    "value": "seconds",
+    "value": "monthdatehoursminutesseconds",
     "title": "seconds"
-  },
-  {
-    "value": "milliseconds",
-    "title": "milliseconds"
   }
 ]

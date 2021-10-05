@@ -1,4 +1,4 @@
-import coinFields from "../../../Dummy/coinFields.json";
+import coinFields from "../../../Dummy/customDataCoinFields.json";
 import {List, ListItem, makeStyles} from "@material-ui/core";
 import React, {FC} from "react";
 

@@ -89,7 +89,7 @@ const CreatePage: FC = () => {
                     onDeleteClick={() => dispatch(removeCombinedEntity(i))} isInteractive={false}
                     selected={selectedIndex.findIndex(value => value === i) > -1}
                     onClick={() => setSelectedVega(i)}>
-                    <VegaLitePreview vegaConfig={vega.vega} keyId={`preview-${i}-COMBINED`}/>
+                    <VegaLitePreview style={{paddingRight: 40}} vegaConfig={vega.vega} keyId={`preview-${i}-COMBINED`}/>
                 </PreviewWrapper>
             </Grid>
         })

@@ -21,8 +21,10 @@ const useStyles = makeStyles(() => ({
     },
     vegaLocation: {
         minHeight: 'calc( 90vh - 150px )',
+        overflow:'auto'
     },
     settingsBox: {
+        zIndex:10,
         maxHeight: 'calc( 90vh - 170px )',
         overflow: 'auto',
         width: '100%',
@@ -56,7 +58,6 @@ type CombineDialogType = {
 const CombineDialog: FC<CombineDialogType> = ({vegaConfigs, onClose, onSaveClick}) => {
     const classes = useStyles()
     const [vegaCombination, setVegaCombination] = useState<any>({
-        background: 'white',
         vconcat: [
             ...vegaConfigs
         ]
@@ -90,7 +91,8 @@ const CombineDialog: FC<CombineDialogType> = ({vegaConfigs, onClose, onSaveClick
                             <Grid item xs={12}>
                                 <CombinationAccordionContainer vegaConfigs={vegaConfigs}
                                                                vegaCombination={vegaCombination}
-                                                               setVegaCombination={setVegaCombination}/>
+                                                               setVegaCombination={setVegaCombination}
+                                />
                             </Grid>
                             <Grid item xs={12}>
                                 <CombinationSettingsAccordionContainer vegaCombination={vegaCombination}

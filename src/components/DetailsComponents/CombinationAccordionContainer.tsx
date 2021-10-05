@@ -37,6 +37,7 @@ const CombinationAccordionContainer: FC<CombinationAccordionContainerProps> = ({
     const classes = useStyles()
 
     const getValue = () => {
+        console.log(vegaCombination)
         const key = Object.keys(vegaCombination)
         return key[0]
     }

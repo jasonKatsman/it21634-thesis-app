@@ -1,7 +1,8 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect} from 'react';
 import {Box, Container, makeStyles} from "@material-ui/core";
 import Header from "./Header";
 import Footer from "./Footer";
+import {useLocation} from "react-router";
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -11,7 +12,7 @@ const useStyles = makeStyles(() => ({
     container: {
         height: (props: any) => `calc(100vh - ${props.headerHeight}px)`,
         overflow: 'auto',
-        background:'#f6f6f6'
+        background: '#f6f6f6'
     },
     childContainer: {
         minHeight: (props: any) => `calc(100% - ${props.footerHeight}px)`,
@@ -23,6 +24,10 @@ const headerHeight = 80
 const footerHeight = 100
 const Layout: FC = ({children}) => {
     const classes = useStyles({headerHeight, footerHeight});
+    const location = useLocation();
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [location]);
     return (
         <Box className={classes.root}>
             <Header height={headerHeight}/>

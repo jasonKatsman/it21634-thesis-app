@@ -29,7 +29,7 @@ const VegaLitePreview: FC<VegaComponentProps & BoxProps> = ({className, vegaConf
     const classes = useStyles();
 
     useEffect(() => {
-        vegaEmbed(`#${keyId}`, vegaConfig).then(() => console.log('success')).catch((e) => console.log(e));
+        vegaEmbed(`#${keyId}`, vegaConfig).then(() => console.log('success')).catch((e) => console.log('e'));
     }, [vegaConfig])
 
 

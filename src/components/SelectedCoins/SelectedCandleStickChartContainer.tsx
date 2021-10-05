@@ -1,10 +1,22 @@
 import React, {FC, useEffect, useState} from 'react';
-import {Box, Button, CircularProgress, Fade, Grid, makeStyles, Tab, Theme, Typography} from "@material-ui/core";
+import {
+    Box,
+    Button,
+    CircularProgress,
+    Fade,
+    Grid,
+    makeStyles,
+    Tab,
+    Theme,
+    Typography,
+    useMediaQuery
+} from "@material-ui/core";
 import {getCandleStickData} from "../../http/endpoints/coins";
 import CustomButtonTabs from "../common/CustomButtonTab";
 import PureCandleStickChart from "../compareCharts/PureCandleStickChart";
 import {KeyboardArrowLeft, KeyboardArrowRight} from "@material-ui/icons";
 import moment from "moment";
+import {theme} from "../../theme";
 
 const useStyles = makeStyles((theme: Theme) => ({
     tabs: {
@@ -37,6 +49,8 @@ const SelectedCandleStickChartContainer: FC<singlePriceChartType> = ({coinId}) =
     const [loading, setLoading] = useState(false)
     const [timeValue, setTimeValue] = useState('weekly')
     const [intervalValue, setIntervalValue] = useState('1')
+    const smUp = useMediaQuery(theme.breakpoints.up('sm'));
+
     const [selectedDate, setSelectedDate] = useState(new Date())
     const getStats = async () => {
         setLoading(true)
@@ -82,7 +96,7 @@ const SelectedCandleStickChartContainer: FC<singlePriceChartType> = ({coinId}) =
                             </CustomButtonTabs>
                         </Grid>
                         <Grid item xs={12}>
-                            <PureCandleStickChart height={400}
+                            <PureCandleStickChart height={smUp?400:250}
                                                   timeUnit={intervalValue === '24' || intervalValue === '48' ? 'monthdate' : {
                                                       unit: 'monthdatehours',
                                                       step: parseInt(intervalValue)

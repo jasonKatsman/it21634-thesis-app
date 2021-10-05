@@ -31,7 +31,7 @@ const VegaFieldsComparison: FC<coinProps> = ({hasPoints = true, extraStyle, heig
         setVega({
             "selection": {"grid": {"type": "interval", "bind": "scales"}},
             "width": "container",
-            "height": height,
+            "height": "container",
             background: '#f0f0f0',
             "data": {"values": dataArray},
             "mark": {
@@ -81,6 +81,7 @@ const VegaFieldsComparison: FC<coinProps> = ({hasPoints = true, extraStyle, heig
                 <VegaLitePreview
                     className={classes.chart}
                     style={extraStyle ? extraStyle : {
+                        height:height,
                         background: '#f0f0f0',
                         boxShadow: '0 0 0 2px #72621d',
                         borderRadius: 4

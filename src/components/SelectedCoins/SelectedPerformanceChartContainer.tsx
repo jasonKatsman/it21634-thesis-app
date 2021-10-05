@@ -1,8 +1,9 @@
 import React, {FC, useEffect, useState} from 'react';
-import {Box, CircularProgress, Fade, Grid, makeStyles, Tab, Theme} from "@material-ui/core";
+import {Box, CircularProgress, Fade, Grid, makeStyles, Tab, Theme, useMediaQuery} from "@material-ui/core";
 import {getCustomCoinById} from "../../http/endpoints/coins";
 import VegaPerformanceComparison from "../compareCharts/VegaPerformanceComparison";
 import CustomButtonTabs from "../common/CustomButtonTab";
+import {theme} from "../../theme";
 
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -23,6 +24,7 @@ const SelectedPerformanceChartContainer: FC<singlePriceChartType> = ({coinId}) =
     const [chartData, setChartData] = useState<any[]>([])
     const [loading, setLoading] = useState(false)
     const [timeValue, setTimeValue] = useState('daily')
+    const smUp = useMediaQuery(theme.breakpoints.up('sm'));
 
     const getStats = async () => {
         setLoading(true)
@@ -53,6 +55,7 @@ const SelectedPerformanceChartContainer: FC<singlePriceChartType> = ({coinId}) =
                     <Grid item xs={12}>
                         <VegaPerformanceComparison
                             extraStyle={{
+                                height: smUp ? 300 : 250,
                                 borderRadius: 4,
                                 boxShadow: '2px 2px 6px 3px lightgray',
                                 border: '1px solid gray'

@@ -35,7 +35,7 @@ const VegaPerformanceComparison: FC<coinProps> = ({extraStyle, height = 200, dat
         setVega({
             "selection": {"grid": {"type": "interval", "bind": "scales"}},
             "width": "container",
-            "height": height,
+            "height": "container",
             background: '#f0f0f0',
             "data": {"values": dataArray},
             "mark": {
@@ -87,6 +87,7 @@ const VegaPerformanceComparison: FC<coinProps> = ({extraStyle, height = 200, dat
                 <VegaLitePreview
                     className={classes.chart}
                     style={extraStyle ? extraStyle : {
+                        height: height,
                         background: '#f0f0f0',
                         boxShadow: '0 0 0 2px #72621d',
                         borderRadius: 4

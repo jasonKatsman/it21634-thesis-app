@@ -17,7 +17,7 @@ interface coinProps {
     extraStyle?: any
 }
 
-const VegaFieldsComparison: FC<coinProps> = ({hasPoints = true, extraStyle, height = 300, time, data, field}) => {
+const VegaFieldsComparison: FC<coinProps> = ({hasPoints = true, extraStyle, height = 350, time, data, field}) => {
     const [vega, setVega] = useState<any>()
     const classes = useStyles()
     useEffect(() => {

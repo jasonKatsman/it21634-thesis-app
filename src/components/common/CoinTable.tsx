@@ -37,7 +37,7 @@ type extraProps = {
 const stockHeader = [
     {align: 'left', title: 'Name', sort: 'name'},
     {align: 'center', title: 'Price', sort: 'current_price'},
-    {align: 'center', title: '24h%', sort: 'price_change_24h'},
+    {align: 'center', title: '24h%', sort: 'price_change_percentage_24h'},
     {align: 'center', title: '7d%', sort: 'price_week_percentage'},
     {align: 'center', title: 'market cap', sort: 'market_cap'},
     {align: 'center', title: 'volume', sort: 'total_volume'},

@@ -1,11 +1,12 @@
 import React, {FC, useState} from 'react';
-import {Grid, makeStyles, Tab, Theme, Typography} from "@material-ui/core";
+import {Grid, makeStyles, Tab, Theme, Typography, useMediaQuery} from "@material-ui/core";
 import VegaPerformanceComparison from "../compareCharts/VegaPerformanceComparison";
 import VegaFieldsComparison from "../compareCharts/VegaFieldsComparison";
 import GroupedChartsVega from "../compareCharts/GroupedChartsVega";
 import CustomButtonTabs from "./CustomButtonTab";
 import BarChart from "../compareCharts/BarChart";
 import CandleStickContainer from "./CandleStickContainer";
+import {theme} from "../../theme";
 
 const useStyles = makeStyles((theme: Theme) => ({
     headerTitle: {
@@ -33,11 +34,14 @@ const CoinComparisonChart: FC<coinProps> = ({data, coinValue}) => {
     const classes = useStyles();
     const [chartTabs, setChartTabs] = useState({priceTab: 'line', marketCap: 'line', volume: 'line'})
     const [priceWaterFall, setPriceWaterFall] = useState({value: '', index: 0})
+    const smUp = useMediaQuery(theme.breakpoints.up('sm'));
 
     const preparePriceCharts = () => {
         switch (chartTabs.priceTab) {
             case "line":
-                return <VegaFieldsComparison time={coinValue.time} data={data} field={'current_price'}/>
+                return <VegaFieldsComparison hasPoints={false} time={coinValue.time} height={smUp ? 400 : 250}
+                                             data={data}
+                                             field={'current_price'}/>
             case "bar":
                 return <BarChart time={coinValue.time} data={data} field={'current_price'}/>
             case "grouped":
@@ -46,33 +50,38 @@ const CoinComparisonChart: FC<coinProps> = ({data, coinValue}) => {
                 return <CandleStickContainer coinValue={coinValue} data={data}/>
 
             default:
-                return <VegaFieldsComparison time={coinValue.time} data={data} field={'current_price'}/>
+                return <VegaFieldsComparison hasPoints={false} height={smUp ? 400 : 250} time={coinValue.time} data={data}
+                                             field={'current_price'}/>
         }
     }
 
     const prepareCapCharts = () => {
         switch (chartTabs.marketCap) {
             case "line":
-                return <VegaFieldsComparison time={coinValue.time} data={data} field={'market_cap'}/>
+                return <VegaFieldsComparison hasPoints={false} height={smUp ? 400 : 250} time={coinValue.time} data={data}
+                                             field={'market_cap'}/>
             case "bar":
                 return <BarChart time={coinValue.time} data={data} field={'market_cap'}/>
             case "grouped":
                 return <GroupedChartsVega time={coinValue.time} data={data} field={'market_cap'}/>
             default:
-                return <VegaFieldsComparison time={coinValue.time} data={data} field={'market_cap'}/>
+                return <VegaFieldsComparison hasPoints={false} height={smUp ? 400 : 250} time={coinValue.time} data={data}
+                                             field={'market_cap'}/>
         }
     }
 
     const prepareVolumeCharts = () => {
         switch (chartTabs.volume) {
             case "line":
-                return <VegaFieldsComparison time={coinValue.time} data={data} field={'total_volume'}/>
+                return <VegaFieldsComparison hasPoints={false} height={smUp ? 400 : 250} time={coinValue.time} data={data}
+                                             field={'total_volume'}/>
             case "bar":
                 return <BarChart time={coinValue.time} data={data} field={'total_volume'}/>
             case "grouped":
                 return <GroupedChartsVega time={coinValue.time} data={data} field={'total_volume'}/>
             default:
-                return <VegaFieldsComparison time={coinValue.time} data={data} field={'total_volume'}/>
+                return <VegaFieldsComparison hasPoints={false} height={smUp ? 400 : 250} time={coinValue.time} data={data}
+                                             field={'total_volume'}/>
         }
     }
 
@@ -84,7 +93,7 @@ const CoinComparisonChart: FC<coinProps> = ({data, coinValue}) => {
                 </Typography>
             </Grid>
             <Grid item xs={12}>
-                <VegaPerformanceComparison data={data}/>
+                <VegaPerformanceComparison height={smUp ? 350 : 250} data={data}/>
             </Grid>
             <Grid item xs={12}>
                 <Typography className={classes.headerTitle} variant={'body1'} color={'primary'}>

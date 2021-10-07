@@ -58,6 +58,7 @@ const VegaPerformanceComparison: FC<coinProps> = ({extraStyle, height = 200, dat
                     title: "",
                     "field": "date",
                     "type": "temporal",
+                    "timeUnit": "yearmonthdatehoursminutes",
                     "axis": {
                         "gridDash": [5, 5],
                         "labelColor": "#02254b",
@@ -65,6 +66,7 @@ const VegaPerformanceComparison: FC<coinProps> = ({extraStyle, height = 200, dat
                     }
                 },
                 "y": {
+                    aggregate:'average',
                     "field": "percentage", "title": "percentage %", "type": "quantitative", "axis": {
                         "gridColor": "lightgray",
                         "labelColor": "#02254b",

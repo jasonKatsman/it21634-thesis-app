@@ -46,7 +46,7 @@ const VegaFieldsComparison: FC<coinProps> = ({hasPoints = true, extraStyle, heig
                     title: "",
                     "field": "date",
                     "type": "temporal",
-                    "timeUnit": "",
+                    "timeUnit": "yearmonthdatehoursminutes",
                     "axis": {
                         "gridDash": [5, 5],
                         "labelColor": "#02254b",
@@ -54,7 +54,7 @@ const VegaFieldsComparison: FC<coinProps> = ({hasPoints = true, extraStyle, heig
                     }
                 },
                 "y": {
-                    "aggregate": "",
+                    "aggregate": "average",
                     "stack": "none",
                     "scale": {"zero": false},
                     "field": "customField",

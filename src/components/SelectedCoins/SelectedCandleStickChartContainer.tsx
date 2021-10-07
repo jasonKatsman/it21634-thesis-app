@@ -47,7 +47,6 @@ const SelectedCandleStickChartContainer: FC<singlePriceChartType> = ({coinId}) =
     const classes = useStyles();
     const [chartData, setChartData] = useState<any[]>([])
     const [loading, setLoading] = useState(false)
-    const [timeValue, setTimeValue] = useState('weekly')
     const [intervalValue, setIntervalValue] = useState('1')
     const smUp = useMediaQuery(theme.breakpoints.up('sm'));
 
@@ -57,7 +56,7 @@ const SelectedCandleStickChartContainer: FC<singlePriceChartType> = ({coinId}) =
         try {
             const res = await getCandleStickData({
                 id: coinId,
-                frequency: timeValue,
+                frequency: parseInt(intervalValue) < 24 ? 'weekly' : 'monthly',
                 interval: parseInt(intervalValue),
                 date: selectedDate
             })
@@ -70,7 +69,7 @@ const SelectedCandleStickChartContainer: FC<singlePriceChartType> = ({coinId}) =
 
     useEffect(() => {
         getStats()
-    }, [coinId, timeValue, intervalValue, selectedDate])
+    }, [coinId, intervalValue, selectedDate])
 
     const prepareChart = () => {
         if (loading) {
@@ -96,7 +95,7 @@ const SelectedCandleStickChartContainer: FC<singlePriceChartType> = ({coinId}) =
                             </CustomButtonTabs>
                         </Grid>
                         <Grid item xs={12}>
-                            <PureCandleStickChart height={smUp?400:250}
+                            <PureCandleStickChart height={smUp ? 400 : 250}
                                                   timeUnit={intervalValue === '24' || intervalValue === '48' ? 'monthdate' : {
                                                       unit: 'monthdatehours',
                                                       step: parseInt(intervalValue)
@@ -138,7 +137,7 @@ const SelectedCandleStickChartContainer: FC<singlePriceChartType> = ({coinId}) =
                     <KeyboardArrowLeft/>
                 </Button>
                 <Typography color={'secondary'} variant={'subtitle2'} className={classes.arrowText}>
-                    {moment(selectedDate).subtract(7, 'days').format('DD/MM/YYYY')} - {moment(selectedDate).format('DD/MM/YYYY')}
+                    {moment(selectedDate).subtract(parseInt(intervalValue) < 24 ? 7 : 30, 'days').format('DD/MM/YYYY')} - {moment(selectedDate).format('DD/MM/YYYY')}
                 </Typography>
                 <Button onClick={onAddDate} disabled={checkIfDisabled()} className={classes.arrowButton}>
                     <KeyboardArrowRight/>

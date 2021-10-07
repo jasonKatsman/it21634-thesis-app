@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useRef, useState} from 'react';
-import {Grid, makeStyles, Slider, Switch, Theme, Typography} from "@material-ui/core";
+import {Grid, makeStyles, Theme, Typography} from "@material-ui/core";
 import VegaLitePreview from "../vega/VegaLitePreview";
 import {prepareTimeUnits} from "../../utils/prepareTimeUnits";
 import {prepareTimeNumber} from "../../utils/prepareTimeNumber";
@@ -18,6 +18,15 @@ const GroupedChartsVega: FC<coinProps> = ({time, data, field}) => {
     const [vega, setVega] = useState<any>()
     const widthRef = useRef<any>()
     const [step, setStep] = useState(1)
+
+    const calculateRefWidth = () => {
+        const barWidth = (widthRef?.current?.offsetWidth - 250) / prepareTimeNumber(time)
+        if (barWidth > 50) {
+            return barWidth
+        }
+        return 50
+    }
+
     useEffect(() => {
         let dataArray: any[] = []
         data.forEach((coin) => {
@@ -29,7 +38,7 @@ const GroupedChartsVega: FC<coinProps> = ({time, data, field}) => {
         setVega({
             "selection": {"grid": {"type": "interval", "bind": "scales"}},
             "autosize": {"type": "fit", "contains": "padding"},
-            "width": (widthRef?.current?.offsetWidth-250)/prepareTimeNumber(time),
+            "width": calculateRefWidth(),
             "height": 300,
             background: '#f0f0f0',
             "data": {"values": dataArray},
@@ -43,7 +52,7 @@ const GroupedChartsVega: FC<coinProps> = ({time, data, field}) => {
             },
             "encoding": {
                 "facet": {
-                    title:"",
+                    title: "",
                     "field": "date",
                     "type": "temporal",
                     "timeUnit": {
@@ -80,18 +89,17 @@ const GroupedChartsVega: FC<coinProps> = ({time, data, field}) => {
                 }
             }
         })
-    }, [data,step])
-
+    }, [data, step])
 
 
     return (
         <Grid item container xs={12}>
-            <Grid style={{margin:'0 12px 8px'}} item container alignItems={'center'} xs={12}>
+            <Grid style={{margin: '0 12px 8px'}} item container alignItems={'center'} xs={12}>
                 <Typography color={'primary'}
-                             style={{marginRight:12,fontSize: 14, fontWeight: 800}}>Time step</Typography>
+                            style={{marginRight: 12, fontSize: 14, fontWeight: 800}}>Time step</Typography>
                 <ButtonNumberAdder step={step} setStep={setStep}/>
             </Grid>
-                        <Grid item xs={12} ref={widthRef}>
+            <Grid item xs={12} ref={widthRef}>
                 <VegaLitePreview
                     style={{
                         overflow: "auto",

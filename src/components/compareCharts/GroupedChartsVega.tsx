@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useRef, useState} from 'react';
+import React, {FC, memo, useEffect, useRef, useState} from 'react';
 import {Grid, makeStyles, Theme, Typography} from "@material-ui/core";
 import VegaLitePreview from "../vega/VegaLitePreview";
 import {prepareTimeUnits} from "../../utils/prepareTimeUnits";
@@ -114,4 +114,4 @@ const GroupedChartsVega: FC<coinProps> = ({time, data, field}) => {
     )
 }
 
-export default GroupedChartsVega;
+export default memo(GroupedChartsVega);

@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useRef, useState} from 'react';
+import React, {FC, memo, useEffect, useRef, useState} from 'react';
 import {Grid, makeStyles, Theme} from "@material-ui/core";
 import VegaLitePreview from "../vega/VegaLitePreview";
 
@@ -72,4 +72,4 @@ const WaterFallChart: FC<coinProps> = ({data, field}) => {
     )
 }
 
-export default WaterFallChart;
+export default memo(WaterFallChart);

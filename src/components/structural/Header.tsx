@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {FC, memo, useState} from 'react';
 import {Box, Drawer, Grid, IconButton, makeStyles, Theme, Typography, useMediaQuery, useTheme} from "@material-ui/core";
 import {NavLink} from 'react-router-dom';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -130,4 +130,4 @@ const Header: FC<headerProps> = ({height = 60}) => {
     );
 }
 
-export default Header;
+export default memo(Header);

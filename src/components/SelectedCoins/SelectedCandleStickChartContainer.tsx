@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, memo, useEffect, useState} from 'react';
 import {
     Box,
     Button,
@@ -149,4 +149,4 @@ const SelectedCandleStickChartContainer: FC<singlePriceChartType> = ({coinId}) =
     );
 }
 
-export default SelectedCandleStickChartContainer;
+export default memo(SelectedCandleStickChartContainer);

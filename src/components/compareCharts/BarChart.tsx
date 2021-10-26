@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, memo, useEffect, useState} from 'react';
 import {Box, Grid, makeStyles, Slider, Switch, Theme, Typography} from "@material-ui/core";
 import VegaLitePreview from "../vega/VegaLitePreview";
 import {prepareTimeUnits} from "../../utils/prepareTimeUnits";
@@ -131,4 +131,4 @@ const BarChart: FC<coinProps> = ({time, data, field}) => {
     )
 }
 
-export default BarChart;
+export default memo(BarChart);

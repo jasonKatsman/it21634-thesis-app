@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, memo, useEffect, useState} from 'react';
 import {Grid, makeStyles, Theme} from "@material-ui/core";
 import VegaLitePreview from "../vega/VegaLitePreview";
 
@@ -100,4 +100,4 @@ const VegaPerformanceComparison: FC<coinProps> = ({extraStyle, height = 200, dat
     )
 }
 
-export default VegaPerformanceComparison;
+export default memo(VegaPerformanceComparison);

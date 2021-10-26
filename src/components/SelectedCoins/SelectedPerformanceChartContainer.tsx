@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, memo, useEffect, useState} from 'react';
 import {Box, CircularProgress, Fade, Grid, makeStyles, Tab, Theme, useMediaQuery} from "@material-ui/core";
 import {getCustomCoinById} from "../../http/endpoints/coins";
 import VegaPerformanceComparison from "../compareCharts/VegaPerformanceComparison";
@@ -84,4 +84,4 @@ const SelectedPerformanceChartContainer: FC<singlePriceChartType> = ({coinId}) =
     );
 }
 
-export default SelectedPerformanceChartContainer;
+export default memo(SelectedPerformanceChartContainer);

@@ -1,15 +1,6 @@
 import {get} from "../axios";
 
-export const getCoinById = (params: { id: string }) => {
-    console.log(params)
-    return get('getById', {
-        params: {
-            ...params
-        }
-    })
-}
-
-export const getCustomCoinById = (params: { id: string, frequency: string, date?: any }) => {
+export const getCustomCoinById = (params: { id: string, frequency: string, date?: any, extraFields?:boolean }) => {
     console.log(params)
     return get('getByIdCustom', {
         params: {

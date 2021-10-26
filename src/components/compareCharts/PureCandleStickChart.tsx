@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, memo, useEffect, useState} from 'react';
 import {Button, Grid, makeStyles, Slider, Theme, Tooltip, Typography} from "@material-ui/core";
 import VegaLitePreview from "../vega/VegaLitePreview";
 import SettingsIcon from "@material-ui/icons/Settings";
@@ -199,4 +199,4 @@ const PureCandleStickChart: FC<coinProps> = ({timeUnit = 'monthdatehours', heigh
     )
 }
 
-export default PureCandleStickChart;
+export default memo(PureCandleStickChart);

@@ -276,7 +276,7 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
     const fetchCustomCoin = async (id: string, frequency: string, date: Date) => {
         setLoading(true)
         try {
-            const res = await getCustomCoinById({id: id, frequency: frequency, date})
+            const res = await getCustomCoinById({id: id, frequency: frequency, date, extraFields: true})
             setLoading(false)
             setCoinData(res.data)
         } catch (e) {

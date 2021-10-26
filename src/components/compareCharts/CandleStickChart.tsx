@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, memo, useEffect, useState} from 'react';
 import {Grid, makeStyles, Slider, Theme} from "@material-ui/core";
 import VegaLitePreview from "../vega/VegaLitePreview";
 
@@ -132,4 +132,4 @@ const CandleStickChart: FC<coinProps> = ({data}) => {
     )
 }
 
-export default CandleStickChart;
+export default memo(CandleStickChart);

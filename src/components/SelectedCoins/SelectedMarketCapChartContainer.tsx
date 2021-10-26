@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, memo, useEffect, useState} from 'react';
 import {CircularProgress, Fade, Grid, makeStyles, Tab, Theme, useMediaQuery} from "@material-ui/core";
 import {getCustomCoinById} from "../../http/endpoints/coins";
 import VegaFieldsComparison from "../compareCharts/VegaFieldsComparison";
@@ -85,4 +85,4 @@ const SelectedMarketCapChartContainer: FC<singlePriceChartType> = ({coinId}) => 
     );
 }
 
-export default SelectedMarketCapChartContainer;
+export default memo(SelectedMarketCapChartContainer);

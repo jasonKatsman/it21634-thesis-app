@@ -34,9 +34,10 @@ const Footer: FC<FooterProps> = ({height = 60}) => {
                         <Typography
                             align={'center'}>API USED: <strong>COINGECKO</strong>
                         </Typography>
+
                     </a>
                 </Grid>
-                <a href={'https://reactjs.org/'} target="_blank">
+                                <a href={'https://reactjs.org/'} target="_blank">
                     <IconButton>
                         <img src={reactLogo} width={35} height={35}/>
                     </IconButton>
@@ -52,8 +53,8 @@ const Footer: FC<FooterProps> = ({height = 60}) => {
                     </IconButton>
                 </a>
 
-                <Grid item  xs={12}>
-                    <Typography align={'center'}>Page made by <strong>Jason Katsoutas</strong></Typography>
+                <Grid item container justify={'center'} xs={12}>
+                    <Typography align={'center'}>for <strong>academic</strong> purposes</Typography>
                 </Grid>
 
             </Grid>

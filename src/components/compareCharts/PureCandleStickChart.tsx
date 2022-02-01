@@ -45,7 +45,6 @@ const PureCandleStickChart: FC<coinProps> = ({timeUnit = 'monthdatehours', heigh
     const [innerWidth, setInnerWidth] = useState(0.01)
     useEffect(() => {
         setVega({
-
                 background: '#f0f0f0',
                 "description": "A candlestick chart",
                 "data": {

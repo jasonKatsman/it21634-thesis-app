@@ -29,45 +29,45 @@ const VegaFieldsComparison: FC<coinProps> = ({hasPoints = true, extraStyle, heig
             })
         })
         setVega({
-            "selection": {"grid": {"type": "interval", "bind": "scales"}},
-            "width": "container",
-            "height": "container",
+            selection: {grid: {type: "interval", bind: "scales"}},
+            width: "container",
+            height: "container",
             background: '#f0f0f0',
-            "data": {"values": dataArray},
-            "mark": {
-                "type": "area",
+            data: {values: dataArray},
+            mark: {
+                type: "area",
                 width: '',
-                "line": true, "point": hasPoints,
-                "tooltip": true,
+                line: true, "point": hasPoints,
+                tooltip: true,
                 opacity: 0.1
             },
-            "encoding": {
-                "x": {
+            encoding: {
+                x: {
                     title: "",
-                    "field": "date",
-                    "type": "temporal",
-                    "timeUnit": "yearmonthdatehoursminutes",
-                    "axis": {
-                        "gridDash": [5, 5],
-                        "labelColor": "#02254b",
-                        "titleColor": "#02254b"
+                    field: "date",
+                    type: "temporal",
+                    timeUnit: "yearmonthdatehoursminutes",
+                    axis: {
+                        gridDash: [5, 5],
+                        labelColor: "#02254b",
+                        titleColor: "#02254b"
                     }
                 },
-                "y": {
-                    "aggregate": "average",
-                    "stack": "none",
-                    "scale": {"zero": false},
-                    "field": "customField",
-                    "title": `${field}`,
-                    "type": "quantitative",
-                    "axis": {
-                        "gridColor": "lightgray",
-                        "labelColor": "#02254b",
-                        "titleColor": "#02254b"
+                y: {
+                    aggregate: "average",
+                    stack: "none",
+                    scale: {"zero": false},
+                    field: "customField",
+                    title: `${field}`,
+                    type: "quantitative",
+                    axis: {
+                        gridColor: "lightgray",
+                        labelColor: "#02254b",
+                        titleColor: "#02254b"
                     }
                 },
-                "color": {
-                    "field": "name", "type": "nominal", legend: {
+                color: {
+                    field: "name", type: "nominal", legend: {
                         orient: "bottom"
                     }
                 }
@@ -81,7 +81,7 @@ const VegaFieldsComparison: FC<coinProps> = ({hasPoints = true, extraStyle, heig
                 <VegaLitePreview
                     className={classes.chart}
                     style={extraStyle ? extraStyle : {
-                        height:height,
+                        height: height,
                         background: '#f0f0f0',
                         boxShadow: '0 0 0 2px #72621d',
                         borderRadius: 4

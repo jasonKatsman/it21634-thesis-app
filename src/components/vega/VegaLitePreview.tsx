@@ -32,7 +32,6 @@ const VegaLitePreview: FC<VegaComponentProps & BoxProps> = ({className, vegaConf
         vegaEmbed(`#${keyId}`, vegaConfig).then(() => console.log('success')).catch((e) => console.log('e'));
     }, [vegaConfig])
 
-
     return (
         <div className={`${classes.root} ${className}`} id={keyId} {...props}/>
     );

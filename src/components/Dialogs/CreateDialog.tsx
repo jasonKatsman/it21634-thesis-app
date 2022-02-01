@@ -261,16 +261,12 @@ const CreateDialog: FC<dialogType> = ({onClose, onSaveClick}) => {
                 ...transform,
                 ...mark,
                 encoding: {
-                    y: {
-                        ...yAxis
-                    },
+                    y: {...yAxis},
                     x: {
-
                         ...xAxis
                     },
                 }
             })
-
     }, [coinData, simpleStyles, transform, xAxis, yAxis, mark])
 
     const fetchCustomCoin = async (id: string, frequency: string, date: Date) => {

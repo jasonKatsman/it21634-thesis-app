@@ -8,23 +8,23 @@
     "title": "year"
   },
   {
-    "value": "month",
+    "value": "yearmonth",
     "title": "month"
   },
   {
-    "value": "monthdate",
+    "value": "yearmonthdate",
     "title": "day"
   },
   {
-    "value": "monthdatehours",
+    "value": "yearmonthdatehours",
     "title": "hours"
   },
   {
-    "value": "monthdatehoursminutes",
+    "value": "yearmonthdatehoursminutes",
     "title": "minutes"
   },
   {
-    "value": "monthdatehoursminutesseconds",
+    "value": "yearmonthdatehoursminutesseconds",
     "title": "seconds"
   }
 ]
